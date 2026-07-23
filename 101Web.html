@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>101 STUDIO | Pixel Perfect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --window-bg: rgba(11, 16, 30, 0.95);
+            --orange-main: #ff6b00;
+            --orange-dark: #b34a00;
+            --text-light: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Chakra Petch', sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            /* รูปพื้นหลังของเว็บ */
+            background-image: url('482bc578-6c0c-41c5-a91d-c1ea840b343f.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            
+            image-rendering: -webkit-optimize-contrast; 
+            image-rendering: pixelated;
+
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden; 
+        }
+
+        /* ---------------------------------
+           NAVBAR 
+           --------------------------------- */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 40px; background-color: rgba(9, 12, 21, 0.95);
+            border-bottom: 4px solid var(--orange-main); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 50;
+        }
+
+        .logo { font-family: 'VT323', monospace; font-size: 2.5rem; color: var(--orange-main); text-shadow: 2px 2px 0px var(--orange-dark); letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 15px; }
+        .nav-btn { background: transparent; color: var(--orange-main); border: none; font-size: 1.2rem; font-weight: 700; cursor: pointer; padding: 8px 16px; transition: 0.2s; }
+        .nav-btn:hover { background: rgba(255, 107, 0, 0.2); }
+        .nav-btn.active { background-color: var(--orange-main); color: #000; border-radius: 4px; }
+
+        /* ---------------------------------
+           MAIN CONTENT & WINDOW UI
+           --------------------------------- */
+        .container { max-width: 1000px; margin: 50px auto; padding: 0 20px; }
+        .section { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        .retro-window { background-color: var(--window-bg); border: 4px solid var(--orange-main); border-radius: 8px; box-shadow: 15px 15px 0px rgba(0,0,0,0.8); overflow: hidden; backdrop-filter: blur(5px); }
+        .window-header { background-color: var(--orange-main); padding: 10px 15px; display: flex; gap: 8px; align-items: center; }
+        .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.3); }
+        .dot.red { background-color: #ff5f56; } .dot.yellow { background-color: #ffbd2e; } .dot.green { background-color: #27c93f; }
+        
+        .window-body { padding: 50px 40px; text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; }
+
+        /* การตั้งค่า z-index ของส่วนต่างๆ ในหน้า Home */
+        .home-content { position: relative; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        
+        /* ห่อโซนด้านบนเพื่อทำ Matrix Effect ให้ไม่เกินเส้น */
+        .hero-section { position: relative; width: 100%; padding-bottom: 20px; display: flex; flex-direction: column; align-items: center; }
+        .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.4; }
+
+        /* พื้นหลังไดโนเสาร์ */
+        .dino-bg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.15; }
+
+        h1 { font-size: 3.5rem; color: var(--orange-main); margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 0px rgba(0,0,0,0.8); text-align: center; }
+        .subtitle { font-size: 1.4rem; color: #ddd; margin-bottom: 20px; margin-top: 10px; text-align: center; }
+
+        /* ---------------------------------
+           โลโก้ตรงกลางหน้า HOME
+           --------------------------------- */
+        .hero-logo {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 30px auto;
+            filter: invert(1) drop-shadow(4px 4px 0px var(--orange-dark));
+        }
+
+        /* ---------------------------------
+           ปุ่มต่างๆ (Retro Buttons)
+           --------------------------------- */
+        .btn-retro { display: inline-block; background-color: var(--orange-main); color: #000; font-size: 1.8rem; font-weight: 700; padding: 15px 60px; text-decoration: none; border: 4px solid #000; box-shadow: 6px 6px 0px #000; transition: all 0.2s ease; cursor: pointer; font-family: 'VT323'; letter-spacing: 2px; margin-top: 10px; }
+        .btn-retro:not(.btn-drive):hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0px #000; }
+        .btn-retro:active { transform: translate(6px, 6px) !important; box-shadow: 0px 0px 0px #000 !important; }
+        
+        .drive-btn-container { display: flex; flex-direction: column; gap: 25px; align-items: center; margin: 40px 0; width: 100%; }
+        .btn-drive { width: 100%; max-width: 500px; padding: 20px 40px; font-size: 2rem; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0; }
+        .btn-code { background-color: #00e5ff; }
+        .btn-exam { background-color: #ffde00; }
+        .btn-portfolio { background-color: #ff3399; color: #fff; }
+        .btn-drive:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px #000; filter: brightness(1.1); }
+
+        .social-container { display: flex; justify-content: center; gap: 20px; margin-top: 40px; flex-wrap: wrap; width: 100%; }
+        .btn-social { display: inline-flex; align-items: center; color: #fff; font-size: 1.4rem; font-weight: 700; padding: 12px 30px; text-decoration: none; border: 4px solid #000; box-shadow: 5px 5px 0px #000; transition: 0.1s; font-family: 'VT323'; letter-spacing: 1px; }
+        .btn-social:active { transform: translate(5px, 5px); box-shadow: 0px 0px 0px #000; }
+        .btn-fb { background-color: #1877F2; } 
+        .btn-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        .btn-tt { background-color: #000; border-color: #25F4EE; box-shadow: 5px 5px 0px #FE2C55; }
+        .btn-tt:active { box-shadow: 0px 0px 0px #FE2C55 !important; }
+
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; border-top: 2px dashed rgba(255, 107, 0, 0.3); padding-top: 50px; width: 100%; }
+        .service-item { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .service-item h3 { color: var(--text-light); font-size: 2.2rem; margin-bottom: 10px; font-family: 'VT323', monospace; }
+        .service-item p { font-size: 1.2rem; color: #ddd; margin-top: 5px; }
+
+        /* ---------------------------------
+           ABOUT PAGE 
+           --------------------------------- */
+        .about-layout { display: flex; gap: 40px; align-items: flex-start; margin: 30px 0; text-align: left; width: 100%; }
+        .about-image-wrapper { flex: 0 0 280px; border: 4px solid var(--orange-main); background-color: #000; padding: 8px; box-shadow: 10px 10px 0px rgba(0,0,0,0.8); position: relative; }
+        .about-image-wrapper img { width: 100%; height: auto; display: block; border: 2px solid var(--orange-dark); object-fit: cover; image-rendering: auto; image-rendering: high-quality; }
+        .about-text-content { flex: 1; background: rgba(0,0,0,0.5); padding: 30px; border: 2px dashed #444; border-radius: 8px; width: 100%; }
+
+        /* ---------------------------------
+           BLOG PAGE (ระบบ Scroll)
+           --------------------------------- */
+        .blog-scroll-box {
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px dashed #444;
+            margin: 30px 0;
+            text-align: left;
+            max-height: 450px; 
+            overflow-y: auto; 
+            width: 100%;
+        }
+
+        .blog-scroll-box::-webkit-scrollbar { width: 14px; }
+        .blog-scroll-box::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.5); border-left: 2px solid #444; }
+        .blog-scroll-box::-webkit-scrollbar-thumb { background: var(--orange-main); border: 2px solid #000; border-radius: 0; }
+        .blog-scroll-box::-webkit-scrollbar-thumb:hover { background: var(--orange-dark); }
+
+        @media screen and (max-width: 768px) {
+            .navbar { flex-direction: column; padding: 15px 20px; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .nav-btn { font-size: 1rem; padding: 6px 12px; }
+            .container { margin: 20px auto; padding: 0 15px; }
+            .window-body { padding: 30px 20px; }
+            h1 { font-size: 2.2rem; }
+            .btn-retro { font-size: 1.3rem; padding: 12px 30px; }
+            .btn-drive { font-size: 1.5rem; padding: 15px 20px; }
+            .services-grid { grid-template-columns: 1fr; gap: 20px; margin-top: 40px; padding-top: 30px;}
+            .retro-window { box-shadow: 8px 8px 0px rgba(0,0,0,0.8); }
+            .btn-social { font-size: 1.2rem; padding: 10px 20px; width: 100%; justify-content: center; }
+            .about-layout { flex-direction: column; align-items: center; gap: 20px; }
+            .about-image-wrapper { flex: none; width: 200px; }
+            .about-text-content { width: 100%; padding: 20px; }
+            .hero-logo { max-width: 200px; }
+        }
+
+        /* ---------------------------------
+           ระบบแก้ไขข้อความ (Firebase)
+           --------------------------------- */
+        .editable { padding: 4px 8px; border-radius: 4px; transition: 0.3s; display: inline-block; min-width: 50px; }
+        .edit-mode .editable { background-color: rgba(255, 107, 0, 0.15); border: 1px dashed var(--orange-main); cursor: text; }
+        .edit-mode .editable:focus { outline: none; background-color: rgba(255, 107, 0, 0.3); }
+        
+        h1.editable, h3.editable { 
+            display: block !important;
+            width: 100% !important; 
+            text-align: center !important; 
+            white-space: normal !important; 
+            word-break: break-word !important; 
+            margin: 0 auto 20px auto !important;
+        }
+
+        .editable-block { 
+            display: block; 
+            text-align: left; 
+            padding: 15px; 
+            min-height: 200px;
+            white-space: pre-wrap; 
+            word-wrap: break-word; 
+            width: 100%;
+        } 
+        .edit-mode .editable-block { background-color: rgba(255, 107, 0, 0.15); border: 1px dashed var(--orange-main); cursor: text; }
+        .edit-mode .editable:empty { display: inline-block; min-width: 50px; min-height: 1.5em; }
+        .edit-mode .editable:empty::before { content: "[สามารถพิมพ์ข้อความตรงนี้ได้]"; color: #888; font-size: 0.9em; }
+
+        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: #000; border: 2px solid var(--orange-main); padding: 15px; display: flex; gap: 10px; z-index: 100;}
+        #admin-panel button { background: #333; color: white; border: none; padding: 8px 16px; cursor: pointer; font-family: 'VT323'; font-size: 1.2rem;}
+        #save-btn { background-color: var(--orange-main) !important; color: #000 !important; font-weight: bold; display: none; }
+        #logout-btn { display: none; background-color: #ff5f56 !important; }
+        
+        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 999;}
+        .login-box { background: #0b101e; border: 4px solid var(--orange-main); padding: 40px; text-align: center; max-width: 90%; }
+        .login-box input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 2px solid var(--orange-main); color: var(--orange-main); font-family: 'VT323'; font-size: 1.2rem;}
+        .login-box button { width: 100%; background: var(--orange-main); color: #000; border: none; padding: 12px; margin-top: 15px; font-weight: bold; cursor: pointer; font-family: 'VT323'; font-size: 1.5rem;}
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">101 STUDIO</div>
+        <div class="nav-links">
+            <button class="nav-btn active sound-trigger" onclick="switchTab(event, 'home')">HOME</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'archive')">ARCHIVE</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'blog')">BLOG</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'about')">ABOUT</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'contact')">CONTACT</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <!-- HOME -->
+        <main id="home" class="section active">
+            <div class="retro-window">
+                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-body">
+                    
+                    <!-- ส่วนพื้นหลังไดโนเสาร์กระโดด (อยู่ล่างสุด) -->
+                    <canvas id="dinoCanvas" class="dino-bg"></canvas>
+
+                    <div class="home-content">
+                        
+                        <!-- สร้างกรอบพิเศษเฉพาะโซนบนเพื่อขังฝน Matrix ไว้ไม่ให้เลยเส้นประ -->
+                        <div class="hero-section">
+                            <!-- แคนวาสโค้ด Matrix พิมพ์ไหลลงมา -->
+                            <canvas id="matrixCanvas" class="matrix-bg"></canvas>
+                            
+                            <!-- โลโก้ใหม่ -->
+                            <img src="Code_Generated_Image.png" alt="PEEM Logo" class="hero-logo">
+                            
+                            <a href="https://codecontrav2by101studio.netlify.app/" target="_blank" class="btn-retro sound-trigger">
+                                ▶ START GAME
+                            </a>
+                        </div>
+
+                        <!-- เส้นคั่นแบ่งและบริการ 3 ช่อง -->
+                        <div class="services-grid">
+                            <div class="service-item">
+                                <h3 class="editable" id="serv1-title" data-field="serv1_title">DESIGN</h3>
+                                <p class="editable" id="serv1-desc" data-field="serv1_desc">UI/UX &amp; Graphic</p>
+                            </div>
+                            <div class="service-item">
+                                <h3 class="editable" id="serv2-title" data-field="serv2_title">DEVELOPMENT</h3>
+                                <p class="editable" id="serv2-desc" data-field="serv2_desc">Web &amp; Application</p>
+                            </div>
+                            <div class="service-item">
+                                <h3 class="editable" id="serv3-title" data-field="serv3_title">ANIMATION</h3>
+                                <p class="editable" id="serv3-desc" data-field="serv3_desc">Motion &amp; Video</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- ARCHIVE -->
+        <main id="archive" class="section">
+            <div class="retro-window">
+                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-body">
+                    <h1 class="editable" id="archive-title" data-field="archive_title">DATA ARCHIVE</h1>
+                    
+                    <div class="drive-btn-container">
+                        <a href="https://drive.google.com/drive/folders/17TUnUfOEEOAdxi050iieJe0YMPFbc0G4?usp=sharing" target="_blank" class="btn-retro btn-drive btn-code sound-trigger">
+                            <span>📁</span> CODE
+                        </a>
+                        <a href="https://drive.google.com/drive/folders/1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3?usp=sharing" target="_blank" class="btn-retro btn-drive btn-exam sound-trigger">
+                            <span>📁</span> WORK AND EXAM
+                        </a>
+                        <a href="https://drive.google.com/drive/folders/1JIzrSaA0m32kf85xLa54qO82fPVQYWPj?usp=sharing" target="_blank" class="btn-retro btn-drive btn-portfolio sound-trigger">
+                            <span>📁</span> PORTFOLIO
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- BLOG -->
+        <main id="blog" class="section">
+            <div class="retro-window">
+                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-body">
+                    <h1 class="editable" id="blog-title" data-field="blog_title" style="margin-bottom: 30px;">MY DIARY</h1>
+                    
+                    <div class="blog-scroll-box">
+                        <div class="editable editable-block" id="blog-content" data-field="blog_content" style="font-size: 1.2rem; color: #ddd; line-height: 1.8;">
+                            คลิกที่นี่เพื่อเริ่มเขียนเรื่องราวของคุณ...<br><br>
+                            (คุณสามารถเขียนเนื้อหายาวๆ และเคาะเว้นบรรทัดได้ตามต้องการ หากเนื้อหายาวเกินกล่อง ระบบจะสร้างแถบเลื่อน Scrollbar ให้โดยอัตโนมัติ)
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+
+        <!-- ABOUT -->
+        <main id="about" class="section">
+            <div class="retro-window">
+                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-body">
+                    
+                    <div class="about-layout">
+                        <div class="about-image-wrapper">
+                            <img src="S__5734407.jpg" alt="Profile Picture">
+                        </div>
+
+                        <div class="about-text-content">
+                            <h2 style="color: var(--orange-main); font-family: 'VT323', monospace; font-size: 2.5rem; margin-bottom: 15px; text-transform: uppercase;">PLAYER PROFILE</h2>
+                            
+                            <p class="editable editable-block" id="about-details" data-field="about_details" style="font-size: 1.2rem; color: #ddd; line-height: 1.8;">
+                                เพิ่มประวัติและประสบการณ์การทำงานของคุณที่นี่...
+                            </p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+
+        <!-- CONTACT -->
+        <main id="contact" class="section">
+            <div class="retro-window">
+                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-body">
+                    <h1 class="editable" id="contact-title" data-field="contact_title">CONTACT</h1>
+                    <p class="subtitle" style="margin-bottom: 5px;">Email: <span class="editable" id="contact-email" data-field="contact_email">hello@101studio.com</span></p>
+                    <p class="subtitle">Tel: <span class="editable" id="contact-tel" data-field="contact_tel">08X-XXX-XXXX</span></p>
+                    
+                    <div class="social-container">
+                        <a href="https://www.facebook.com/peem.pongpetch" target="_blank" class="btn-social btn-fb sound-trigger">[f] FACEBOOK</a>
+                        <a href="https://www.instagram.com/peem_pongpetch?igsh=MTVjZjVmNzVibXQ0NA==" target="_blank" class="btn-social btn-ig sound-trigger">[ig] INSTAGRAM</a>
+                        <a href="https://www.tiktok.com/@yaknoom101?is_from_webapp=1&sender_device=pc" target="_blank" class="btn-social btn-tt sound-trigger">[t] TIKTOK</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel">
+        <button id="login-show-btn" class="sound-trigger">ADMIN LOGIN</button>
+        <button id="save-btn" class="sound-trigger">SAVE DATA</button>
+        <button id="logout-btn" class="sound-trigger">LOGOUT</button>
+    </div>
+
+    <div id="login-modal">
+        <div class="login-box">
+            <h2 style="color: var(--orange-main); margin-bottom: 20px; font-family: 'VT323'; font-size: 2.5rem;">SYSTEM LOGIN</h2>
+            <input type="email" id="email" placeholder="ADMIN EMAIL">
+            <input type="password" id="password" placeholder="PASSWORD">
+            <button id="login-submit-btn" class="sound-trigger">ENTER</button>
+            <button onclick="document.getElementById('login-modal').style.display='none'" class="sound-trigger" style="background: transparent; color: #fff; border: 2px solid #555;">CANCEL</button>
+        </div>
+    </div>
+
+
+    <!-- --------------------------------------------------------
+         MATRIX RAIN SCRIPT (โค้ดพิมพ์ไหลลงมา)
+         -------------------------------------------------------- -->
+    <script>
+        const mCanvas = document.getElementById('matrixCanvas');
+        const mCtx = mCanvas.getContext('2d');
+        let mWidth, mHeight;
+        
+        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</>{}[]~#'.split('');
+        const fontSize = 14;
+        let columns;
+        let drops = [];
+
+        function initMatrix() {
+            const resizeMatrix = () => {
+                mWidth = mCanvas.parentElement.clientWidth;
+                mHeight = mCanvas.parentElement.clientHeight;
+                mCanvas.width = mWidth;
+                mCanvas.height = mHeight;
+                columns = Math.floor(mWidth / fontSize);
+                drops = [];
+                for(let i = 0; i < columns; i++) {
+                    drops[i] = Math.random() * -100;
+                }
+            };
+            window.addEventListener('resize', resizeMatrix);
+            resizeMatrix();
+            setInterval(drawMatrix, 50); 
+        }
+
+        function drawMatrix() {
+            mCtx.fillStyle = 'rgba(11, 16, 30, 0.3)';
+            mCtx.fillRect(0, 0, mWidth, mHeight);
+
+            mCtx.fillStyle = '#ff6b00'; 
+            mCtx.font = fontSize + 'px "VT323", monospace';
+
+            for(let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if(drops[i] * fontSize > mHeight && Math.random() > 0.95) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        
+        initMatrix();
+    </script>
+
+
+    <!-- --------------------------------------------------------
+         DINO BACKGROUND GAME SCRIPT
+         -------------------------------------------------------- -->
+    <script>
+        const canvas = document.getElementById('dinoCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let frame = 0;
+        let cactusList = [];
+        let dino = { x: 80, y: 0, vY: 0, isJumping: false };
+
+        function initDino() {
+            const resize = () => {
+                width = canvas.parentElement.clientWidth;
+                height = canvas.parentElement.clientHeight;
+                canvas.width = width;
+                canvas.height = height;
+            };
+            window.addEventListener('resize', resize);
+            resize();
+            requestAnimationFrame(drawDino);
+        }
+
+        function drawDino() {
+            ctx.clearRect(0, 0, width, height);
+            
+            const groundY = height - 50; 
+            
+            ctx.strokeStyle = '#ff6b00';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, groundY);
+            ctx.lineTo(width, groundY);
+            ctx.stroke();
+
+            if (frame % 150 === 0) { 
+                cactusList.push({ x: width + 50, type: Math.floor(Math.random() * 3) });
+            }
+
+            for (let i = 0; i < cactusList.length; i++) {
+                let c = cactusList[i];
+                c.x -= 4; 
+                
+                ctx.fillStyle = '#ff6b00';
+                ctx.fillRect(c.x, groundY - 30, 8, 30); 
+                if(c.type > 0) {
+                    ctx.fillRect(c.x - 8, groundY - 20, 6, 15); 
+                    ctx.fillRect(c.x - 8, groundY - 10, 12, 4); 
+                }
+                if(c.type > 1) {
+                    ctx.fillRect(c.x + 10, groundY - 25, 6, 15); 
+                    ctx.fillRect(c.x + 4, groundY - 15, 12, 4); 
+                }
+
+                if (c.x > dino.x && c.x < dino.x + 100 && !dino.isJumping) {
+                    dino.isJumping = true;
+                    dino.vY = -10; 
+                }
+            }
+            cactusList = cactusList.filter(c => c.x > -50);
+
+            if (dino.isJumping) {
+                dino.y += dino.vY;
+                dino.vY += 0.5; 
+                if (dino.y >= 0) {
+                    dino.y = 0;
+                    dino.isJumping = false;
+                }
+            }
+
+            ctx.fillStyle = '#ff6b00';
+            let dy = groundY - 40 + dino.y;
+            let dx = dino.x;
+            
+            ctx.fillRect(dx + 20, dy, 24, 16); 
+            ctx.clearRect(dx + 24, dy + 2, 4, 4); 
+            ctx.clearRect(dx + 28, dy + 10, 16, 4); 
+            ctx.fillRect(dx + 10, dy + 16, 20, 20); 
+            ctx.fillRect(dx + 30, dy + 18, 8, 4); 
+            ctx.fillRect(dx + 34, dy + 22, 4, 4); 
+            ctx.fillRect(dx, dy + 20, 4, 12); 
+            ctx.fillRect(dx + 4, dy + 16, 6, 16); 
+            
+            if (!dino.isJumping) {
+                if (Math.floor(frame / 8) % 2 === 0) {
+                    ctx.fillRect(dx + 12, dy + 36, 6, 8); 
+                    ctx.fillRect(dx + 22, dy + 36, 6, 4); 
+                } else {
+                    ctx.fillRect(dx + 12, dy + 36, 6, 4); 
+                    ctx.fillRect(dx + 22, dy + 36, 6, 8); 
+                }
+            } else {
+                ctx.fillRect(dx + 12, dy + 36, 6, 4); 
+                ctx.fillRect(dx + 22, dy + 36, 6, 4);
+            }
+
+            frame++;
+            requestAnimationFrame(drawDino);
+        }
+        
+        initDino();
+    </script>
+
+
+    <!-- ระบบเสียง Click Sound -->
+    <script>
+        let audioCtx = null;
+        function playRetroClick() {
+            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = 'square'; 
+            oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.05); 
+        }
+        document.querySelectorAll('.sound-trigger').forEach(btn => {
+            btn.addEventListener('click', playRetroClick);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                if (event.target.classList.contains('editable-block')) {
+                    event.preventDefault();
+                    document.execCommand('insertLineBreak');
+                } else if (event.target.classList.contains('editable')) {
+                    event.preventDefault();
+                    event.target.blur();
+                }
+            }
+        });
+
+        document.querySelectorAll('.editable:not(.editable-block)').forEach(el => {
+            el.addEventListener('blur', function() {
+                let cleanText = this.innerText.replace(/\s+/g, ' ').trim();
+                this.innerHTML = cleanText;
+            });
+        });
+
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); }
+        });
+
+        function switchTab(e, tabId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (e && e.currentTarget) { e.currentTarget.classList.add('active'); }
+        }
+    </script>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAME4-lEvIycQnsWHPbi7CaBlwNiu7_qFk",
+            authDomain: "website101-1f97f.firebaseapp.com",
+            projectId: "website101-1f97f",
+            storageBucket: "website101-1f97f.firebasestorage.app",
+            messagingSenderId: "1001758477689",
+            appId: "1:1001758477689:web:80bc85fb1a2e8af90873a8",
+            measurementId: "G-JB4XSPMCLS"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        const docRef = db.collection("website").doc("pixel_portfolio");
+
+        async function loadData() {
+            try {
+                const docSnap = await docRef.get();
+                if (docSnap.exists) {
+                    const data = docSnap.data();
+                    document.querySelectorAll('.editable').forEach(el => {
+                        const fieldName = el.getAttribute('data-field');
+                        if (data[fieldName] !== undefined) { el.innerHTML = data[fieldName]; }
+                    });
+                }
+            } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); }
+        }
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                document.body.classList.add('edit-mode');
+                document.getElementById('login-show-btn').style.display = 'none';
+                document.getElementById('save-btn').style.display = 'block';
+                document.getElementById('logout-btn').style.display = 'block';
+                document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true'));
+            } else {
+                document.body.classList.remove('edit-mode');
+                document.getElementById('login-show-btn').style.display = 'block';
+                document.getElementById('save-btn').style.display = 'none';
+                document.getElementById('logout-btn').style.display = 'none';
+                document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false'));
+            }
+        });
+
+        document.getElementById('login-show-btn').onclick = () => document.getElementById('login-modal').style.display = 'flex';
+        document.getElementById('login-submit-btn').onclick = async () => {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                document.getElementById('login-modal').style.display = 'none';
+                alert("ระบบแอดมินพร้อมใช้งาน!");
+            } catch (error) { alert("ล็อกอินล้มเหลว ตรวจสอบอีเมล/รหัสผ่าน"); }
+        };
+        document.getElementById('logout-btn').onclick = () => auth.signOut();
+
+        document.getElementById('save-btn').onclick = async () => {
+            const newData = {};
+            document.querySelectorAll('.editable').forEach(el => { newData[el.getAttribute('data-field')] = el.innerHTML; });
+            try {
+                document.getElementById('save-btn').innerHTML = "SAVING...";
+                await docRef.set(newData, { merge: true });
+                document.getElementById('save-btn').innerHTML = "SAVE DATA";
+                alert("อัปเดตข้อมูลสำเร็จ!");
+            } catch (error) { alert("บันทึกข้อมูลล้มเหลว: " + error.message); }
+        };
+        
+        loadData();
+    </script>
+</body>
+</html>
