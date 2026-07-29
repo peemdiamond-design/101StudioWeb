@@ -314,11 +314,11 @@
                             
                             <div class="timeline">
                                 
-                                <!-- อัลบั้มที่ 1 บนเส้นเวลา ใช้รูปใหม่เป็นปก -->
+                                <!-- อัลบั้มที่ 1 บนเส้นเวลา ใช้รูป cover.jpg -->
                                 <div class="timeline-item left">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'first_meet')">
-                                        <img src="images/LINE_ALBUM_First meet cn25🤩_260729_29_4.jpg" alt="First Meet Cover">
+                                        <img src="images/cover.jpg" alt="First Meet Cover">
                                         <p class="editable" id="album-name-1" data-field="album_name_1">FIRST MEET CN25</p>
                                     </div>
                                 </div>
@@ -419,7 +419,7 @@
     </div>
 
     <!-- --------------------------------------------------------
-         MODAL GALLERY (Popup โชว์รูปกิจกรรมทั้งหมด - เอาข้อความซ้ำออกแล้ว)
+         MODAL GALLERY (Popup โชว์รูปกิจกรรมทั้งหมด)
          -------------------------------------------------------- -->
     <div class="gallery-modal" id="galleryModal">
         <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
@@ -429,7 +429,7 @@
             <div id="album-first_meet" class="album-images-container" style="display: none;">
                 
                 <div class="gallery-item">
-                    <img src="images/LINE_ALBUM_First meet cn25🤩_260729_29_4.jpg" alt="Cover">
+                    <img src="images/cover.jpg" alt="Cover">
                     <p class="editable" id="gal-desc0" data-field="gal_desc0">ร่วมพูดคุย ระดมความคิดเห็นอย่างใกล้ชิดและตรวจสอบความถูกต้องของข้อมูล</p>
                 </div>
                 
@@ -735,6 +735,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     
     <script>
+        const Firestore = ...; // (ใช้ค่าเดิมของคุณ)
+    </script>
+    
+    <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAME4-lEvIycQnsWHPbi7CaBlwNiu7_qFk",
             authDomain: "website101-1f97f.firebaseapp.com",
@@ -788,7 +792,7 @@
                 alert("ระบบแอดมินพร้อมใช้งาน!");
             } catch (error) { alert("ล็อกอินล้มเหลว ตรวจสอบอีเมล/รหัสผ่าน"); }
         };
-        document.getElementById('logout-btn').onclick = () => auth.signOut();
+        document.getElementById('logout-db').onclick = () => auth.signOut(); // ป้องกันตัวแปรชน
 
         document.getElementById('save-btn').onclick = async () => {
             const newData = {};
