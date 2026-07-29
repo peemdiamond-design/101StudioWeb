@@ -314,7 +314,7 @@
                             
                             <div class="timeline">
                                 
-                                <!-- อัลบั้มที่ 1 บนเส้นเวลา ใช้รูป cover.jpg -->
+                                <!-- อัลบั้มที่ 1 บนเส้นเวลา ใช้รูป cover.jpg เป็นปก -->
                                 <div class="timeline-item left">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'first_meet')">
@@ -419,7 +419,7 @@
     </div>
 
     <!-- --------------------------------------------------------
-         MODAL GALLERY (Popup โชว์รูปกิจกรรมทั้งหมด)
+         MODAL GALLERY (Popup โชว์รูปกิจกรรมที่พร้อมใช้งานแล้วเท่านั้น)
          -------------------------------------------------------- -->
     <div class="gallery-modal" id="galleryModal">
         <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
@@ -437,11 +437,6 @@
                     <img src="images/LINE_ALBUM_First meet cn25🤩_260729_3.jpg" alt="Activity 1">
                     <p class="editable" id="gal-desc1" data-field="gal_desc1">สืบสวนหาเบาะแสที่ Evidence Board</p>
                 </div>
-
-                <div class="gallery-item">
-                    <img src="images/LINE_ALBUM_First meet cn25🤩_260729_3_2.jpg" alt="Activity 1-2">
-                    <p class="editable" id="gal-desc1_2" data-field="gal_desc1_2">มุมมองเพิ่มเติมในการสืบสวนหาหลักฐาน</p>
-                </div>
                 
                 <div class="gallery-item">
                     <img src="images/LINE_ALBUM_First meet cn25🤩_260729_22.jpg" alt="Activity 2">
@@ -456,16 +451,6 @@
                 <div class="gallery-item">
                     <img src="images/LINE_ALBUM_First meet cn25🤩_260729_29.jpg" alt="Activity 4">
                     <p class="editable" id="gal-desc4" data-field="gal_desc4">แชร์ไอเดียและวางแผนงานร่วมกันภายในกลุ่ม</p>
-                </div>
-
-                <div class="gallery-item">
-                    <img src="images/LINE_ALBUM_First meet cn25🤩_260729_29_2.jpg" alt="Activity 5">
-                    <p class="editable" id="gal-desc5" data-field="gal_desc5">ตรวจสอบรายละเอียดข้อมูลและข้อสงสัยต่างๆ</p>
-                </div>
-
-                <div class="gallery-item">
-                    <img src="images/LINE_ALBUM_First meet cn25🤩_260729_29_3.jpg" alt="Activity 6">
-                    <p class="editable" id="gal-desc6" data-field="gal_desc6">สรุปผลการทำงานร่วมกัน</p>
                 </div>
 
             </div>
@@ -735,10 +720,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     
     <script>
-        const Firestore = ...; // (ใช้ค่าเดิมของคุณ)
-    </script>
-    
-    <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAME4-lEvIycQnsWHPbi7CaBlwNiu7_qFk",
             authDomain: "website101-1f97f.firebaseapp.com",
@@ -792,7 +773,7 @@
                 alert("ระบบแอดมินพร้อมใช้งาน!");
             } catch (error) { alert("ล็อกอินล้มเหลว ตรวจสอบอีเมล/รหัสผ่าน"); }
         };
-        document.getElementById('logout-db').onclick = () => auth.signOut(); // ป้องกันตัวแปรชน
+        document.getElementById('logout-btn').onclick = () => auth.signOut();
 
         document.getElementById('save-btn').onclick = async () => {
             const newData = {};
