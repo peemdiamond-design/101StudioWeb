@@ -147,7 +147,7 @@
         .timeline-content p { font-size: 1.6rem; color: var(--text-light); font-family: 'VT323', monospace; margin: 0; text-transform: uppercase; cursor: text; }
 
         /* ---------------------------------
-           GALLERY MODAL (Popup โชว์รูปภาพกิจกรรม)
+           GALLERY MODAL (Popup โชว์รูปทั้งหมด)
            --------------------------------- */
         .gallery-modal {
             display: none; 
@@ -318,6 +318,7 @@
                                 <div class="timeline-item left">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'first_meet')">
+                                        <!-- ใช้รูปปกใหม่ตามที่คุณต้องการ -->
                                         <img src="images/LINE_ALBUM_First meet cn25🤩_260729_29_2.jpg" alt="First Meet Cover">
                                         <p class="editable" id="album-name-1" data-field="album_name_1">FIRST MEET CN25</p>
                                     </div>
@@ -419,7 +420,7 @@
     </div>
 
     <!-- --------------------------------------------------------
-         MODAL GALLERY (Popup โชว์รูปทั้งหมดเมื่อคลิกปกอัลบั้ม)
+         MODAL GALLERY (Popup โชว์รูปทั้งหมด พร้อมรูปใหม่ที่คุณส่งมา)
          -------------------------------------------------------- -->
     <div class="gallery-modal" id="galleryModal">
         <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
@@ -429,7 +430,7 @@
             <div id="album-first_meet" class="album-images-container" style="display: none;">
                 
                 <div class="gallery-item">
-                    <img src="images/LINE_ALBUM_First meet cn25🤩_260729_29_2.jpg" alt="Activity Cover">
+                    <img src="images/LINE_ALBUM_First meet cn25🤩_260729_29_2.jpg" alt="Cover">
                     <p class="editable" id="gal-desc0" data-field="gal_desc0">เริ่มกิจกรรม First Meet ระดมสมองทำความรู้จักเพื่อนๆ</p>
                 </div>
                 
@@ -437,10 +438,30 @@
                     <img src="images/LINE_ALBUM_First meet cn25🤩_260729_3.jpg" alt="Activity 1">
                     <p class="editable" id="gal-desc1" data-field="gal_desc1">ร่วมกันสืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p>
                 </div>
+
+                <div class="gallery-item">
+                    <img src="images/LINE_ALBUM_First meet cn25🤩_260729_3_2.jpg" alt="Activity 1-2">
+                    <p class="editable" id="gal-desc1_2" data-field="gal_desc1_2">มุมมองเพิ่มเติมในการสืบสวนหาหลักฐาน</p>
+                </div>
                 
                 <div class="gallery-item">
                     <img src="images/LINE_ALBUM_First meet cn25🤩_260729_22.jpg" alt="Activity 2">
                     <p class="editable" id="gal-desc2" data-field="gal_desc2">ปิดท้ายกิจกรรม! ถ่ายรูปรวมแก๊งค์เป็นที่ระลึก</p>
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/LINE_ALBUM_First meet cn25🤩_260729_24.jpg" alt="Activity 2-2">
+                    <p class="editable" id="gal-desc2_2" data-field="gal_desc2_2">ท่าโพสต์สุดเท่ประจำทีม</p>
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/LINE_ALBUM_First meet cn25🤩_260729_29.jpg" alt="Activity 3">
+                    <p class="editable" id="gal-desc3" data-field="gal_desc3">พูดคุยและสรุปแผนงานร่วมกันภายในกลุ่ม</p>
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/LINE_ALBUM_First meet cn25🤩_260729_29_3.jpg" alt="Activity 3-2">
+                    <p class="editable" id="gal-desc3_2" data-field="gal_desc3_2">แชร์ไอเดียและตรวจเช็คความเรียบร้อยของงาน</p>
                 </div>
 
             </div>
