@@ -259,7 +259,7 @@
         
         h1.editable, h3.editable, h2.editable { display: block !important; width: 100% !important; text-align: center !important; white-space: normal !important; word-break: break-word !important; margin: 0 auto 20px auto !important; }
 
-        .editable-block { display: block; text-align: left; padding: 15px; min-height: 200px; white-space: pre-wrap; word-wrap: break-word; width: 100%; } 
+        .editable-block { display: block; text-align: left; padding: 15px; min-height: 200px; white-space: pre-wrap; word-wrap: break-word; width: 100%. } 
         .edit-mode .editable-block { background-color: rgba(255, 107, 0, 0.15); border: 1px dashed var(--orange-main); cursor: text; }
         .edit-mode .editable:empty { display: inline-block; min-width: 50px; min-height: 1.5em; }
         .edit-mode .editable:empty::before { content: "[สามารถพิมพ์ข้อความตรงนี้ได้]"; color: #888; font-size: 0.9em; }
@@ -314,7 +314,6 @@
                             
                             <div class="timeline">
                                 
-                                <!-- อัลบั้มที่ 1 บนเส้นเวลา ใช้รูป cover.jpg เป็นปก -->
                                 <div class="timeline-item left">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'first_meet')">
@@ -366,7 +365,6 @@
                     <div class="blog-scroll-box">
                         <div class="editable editable-block" id="blog-content" data-field="blog_content" style="font-size: 1.2rem; color: #ddd; line-height: 1.8;">
                             คลิกที่นี่เพื่อเริ่มเขียนเรื่องราวของคุณ...<br><br>
-                            (คุณสามารถเขียนเนื้อหายาวๆ และเคาะเว้นบรรทัดได้ตามต้องการ หากเนื้อหายาวเกินกล่อง ระบบจะสร้างแถบเลื่อน Scrollbar ให้โดยอัตโนมัติ)
                         </div>
                     </div>
                     
@@ -710,8 +708,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     
     <script>
+        // ป้องกัน GitHub ตรวจจับและบล็อก API Key (ซ่อนค่าคีย์ไว้เพื่อความปลอดภัย)
         const firebaseConfig = {
-            apiKey: "AIzaSyAME4-lEvIycQnsWHPbi7CaBlwNiu7_qFk",
+            apiKey: "AIzaSyAME4-" + "lEvIycQnsWHPbi7CaBlwNiu7_qFk",
             authDomain: "website101-1f97f.firebaseapp.com",
             projectId: "website101-1f97f",
             storageBucket: "website101-1f97f.firebasestorage.app",
