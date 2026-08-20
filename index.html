@@ -225,24 +225,38 @@
         .about-text-content { flex: 1; background: rgba(0,0,0,0.5); padding: 30px; border: 2px dashed #444; border-radius: 8px; width: 100%; }
 
         /* ---------------------------------
-           BLOG PAGE 
+           CALENDAR (Desktop Calendar UI)
            --------------------------------- */
-        .blog-scroll-box { background: rgba(0,0,0,0.5); padding: 20px; border-radius: 8px; border: 2px dashed #444; margin: 30px 0; text-align: left; max-height: 450px; overflow-y: auto; width: 100%; }
-        .blog-scroll-box::-webkit-scrollbar { width: 14px; }
-        .blog-scroll-box::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.5); border-left: 2px solid #444; }
-        .blog-scroll-box::-webkit-scrollbar-thumb { background: var(--orange-main); border: 2px solid #000; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; width: 100%; }
+        .calendar-header button { background: #000; border: 2px solid var(--orange-main); color: var(--orange-main); padding: 5px 20px; cursor: pointer; font-family: 'VT323'; font-size: 2rem; box-shadow: 3px 3px 0 #000; transition: 0.1s; }
+        .calendar-header button:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #000; }
+        .calendar-header h2 { font-family: 'VT323'; color: #fff; font-size: 2.5rem; margin: 0; text-shadow: 2px 2px 0 #000; }
+        
+        .calendar-wrapper { width: 100%; overflow-x: auto; padding-bottom: 10px; }
+        .calendar-wrapper::-webkit-scrollbar { height: 10px; }
+        .calendar-wrapper::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); border-radius: 5px;}
+        .calendar-wrapper::-webkit-scrollbar-thumb { background: var(--orange-main); border-radius: 5px;}
+        
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; background: var(--orange-main); border: 2px solid var(--orange-main); min-width: 700px; }
+        .calendar-day-header { background: #111; color: var(--orange-main); text-align: center; padding: 10px; font-family: 'VT323'; font-size: 1.5rem; font-weight: bold; }
+        .calendar-day { background: rgba(11, 16, 30, 0.9); min-height: 100px; padding: 5px; display: flex; flex-direction: column; position: relative; transition: 0.2s; }
+        .calendar-day.empty { background: #05080f; }
+        
+        /* เมื่อเข้าโหมดแก้ไข ให้ชี้แล้วมีลูกเล่น */
+        .edit-mode .calendar-day:not(.empty):hover { background: #1a1a1a; cursor: crosshair; box-shadow: inset 0 0 0 2px var(--orange-main); }
+        
+        .day-number { text-align: right; font-family: 'VT323'; font-size: 1.2rem; color: #666; margin-bottom: 5px; }
+        .events-container { flex: 1; display: flex; flex-direction: column; gap: 3px; overflow-y: auto; }
+        .events-container::-webkit-scrollbar { display: none; } /* ซ่อนสกอร์บาร์ในแต่ละวัน */
+        
+        .calendar-event { background: rgba(255, 107, 0, 0.2); border-left: 3px solid var(--orange-main); font-size: 0.9rem; padding: 4px 6px; line-height: 1.3; position: relative; padding-right: 20px; color: #fff; word-break: break-word; }
+        
+        /* ปุ่มลบกิจกรรม (โชว์เฉพาะตอน Login) */
+        .delete-event-btn { position: absolute; right: 2px; top: 2px; background: #ff5f56; color: #fff; border: none; font-size: 0.8rem; width: 16px; height: 16px; display: none; cursor: pointer; line-height: 1; text-align: center; padding: 0; font-family: 'VT323'; }
+        .edit-mode .delete-event-btn { display: block; }
 
-        /* ---------------------------------
-           SCHEDULE / QUEST BOARD PAGE
-           --------------------------------- */
-        .schedule-card { background: rgba(0,0,0,0.7); border-left: 4px solid var(--orange-main); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; text-align: left; transition: 0.2s; border-radius: 0 8px 8px 0; border-top: 1px solid #222; border-right: 1px solid #222; border-bottom: 1px solid #222; }
-        .schedule-card:hover { transform: translateX(5px); background: rgba(255,107,0,0.1); border-color: var(--orange-main); }
-        .schedule-date { font-family: 'VT323'; color: var(--orange-main); font-size: 1.5rem; margin-bottom: 5px; text-shadow: 1px 1px 0px #000;}
-        .schedule-title { color: #fff; font-size: 1.2rem; }
-        .btn-delete-event { background: #ff5f56; color: white; border: 2px solid #b32a22; padding: 8px 12px; cursor: pointer; font-family: 'VT323'; display: none; font-size: 1.2rem; box-shadow: 2px 2px 0px #000; }
-        .btn-delete-event:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
-        .edit-mode .btn-delete-event { display: block; }
-        .edit-mode #admin-schedule-form { display: block !important; }
+        #admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #27c93f; margin-bottom: 15px; }
+        .edit-mode #admin-hint { display: block; }
 
         @media screen and (max-width: 768px) {
             .navbar { flex-direction: column; padding: 15px 20px; gap: 15px; }
@@ -254,16 +268,11 @@
             .hero-logo { max-width: 200px; }
             .about-layout { flex-direction: column; align-items: center; gap: 20px; }
             .about-image-wrapper { flex: none; width: 200px; }
-            
             .timeline::after { left: 20px; }
             .timeline-item { width: 100%; padding-left: 50px; padding-right: 0; margin-bottom: 30px; }
             .timeline-item.left { left: 0; }
             .timeline-item.right { left: 0; }
             .timeline-item.left .timeline-dot, .timeline-item.right .timeline-dot { left: 8px; right: auto; }
-
-            .schedule-card { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .btn-delete-event { width: 100%; text-align: center; }
-            #admin-schedule-form input { width: 100% !important; margin-bottom: 10px; }
         }
 
         /* ---------------------------------
@@ -299,7 +308,6 @@
             <button class="nav-btn active sound-trigger" onclick="switchTab(event, 'home')">HOME</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'schedule')">SCHEDULE</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'archive')">ARCHIVE</button>
-            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'blog')">BLOG</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'about')">ABOUT</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'contact')">CONTACT</button>
         </div>
@@ -330,7 +338,6 @@
                             <h2 class="editable timeline-title-main" id="timeline-main-title" data-field="timeline_main_title">MEMORIES TIMELINE</h2>
                             
                             <div class="timeline">
-                                
                                 <div class="timeline-item left">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'first_meet')">
@@ -338,7 +345,6 @@
                                         <p class="editable" id="album-name-1" data-field="album_name_1">FIRST MEET CN25</p>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
@@ -347,27 +353,28 @@
             </div>
         </main>
 
-        <!-- SCHEDULE (ตารางงาน) -->
+        <!-- SCHEDULE (ปฏิทินตั้งโต๊ะ) -->
         <main id="schedule" class="section">
             <div class="retro-window">
                 <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
                 <div class="window-body">
-                    <h1 class="editable" id="schedule-title" data-field="schedule_title" style="margin-bottom: 30px;">QUEST BOARD (SCHEDULE)</h1>
+                    <h1 class="editable" id="schedule-title" data-field="schedule_title" style="margin-bottom: 20px;">QUEST CALENDAR</h1>
                     
-                    <!-- ฟอร์มเพิ่มตารางงาน (โชว์เฉพาะแอดมิน) -->
-                    <div id="admin-schedule-form" style="display: none; background: rgba(0,0,0,0.8); border: 2px dashed var(--orange-main); padding: 20px; margin-bottom: 30px; width: 100%; text-align: left;">
-                        <h3 style="color: var(--orange-main); margin-bottom: 15px; font-family: 'VT323'; font-size: 1.8rem;">[+] ADD NEW QUEST (อย่าลืมกด SAVE DATA ด้านล่างสุดด้วย)</h3>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <input type="date" id="event-date" style="padding: 10px; background: #000; color: var(--orange-main); border: 2px solid var(--orange-main); font-family: 'Chakra Petch'; font-size: 1.1rem; flex: 1; min-width: 150px;">
-                            <input type="text" id="event-title" placeholder="พิมพ์ชื่องาน / รายละเอียด เช่น ประชุมโปรเจกต์ 14.00 น." style="padding: 10px; background: #000; color: #fff; border: 2px solid var(--orange-main); font-family: 'Chakra Petch'; font-size: 1.1rem; flex: 3; min-width: 250px;">
-                            <button onclick="addScheduleEvent()" class="sound-trigger" style="background: var(--orange-main); color: #000; padding: 10px 20px; border: 2px solid #000; font-weight: bold; cursor: pointer; font-family: 'VT323'; font-size: 1.5rem; box-shadow: 3px 3px 0px #000;">ADD</button>
+                    <!-- โชว์ข้อความนี้เฉพาะแอดมิน -->
+                    <div id="admin-hint">[!] ระบบแอดมิน: คลิกที่ช่องวันที่เพื่อเพิ่มตารางงาน แล้วกดปุ่ม SAVE DATA มุมขวาล่างเพื่อบันทึก</div>
+
+                    <div class="calendar-header">
+                        <button class="sound-trigger" onclick="changeMonth(-1)">&#9664;</button>
+                        <h2 id="month-year-label">MONTH YEAR</h2>
+                        <button class="sound-trigger" onclick="changeMonth(1)">&#9654;</button>
+                    </div>
+
+                    <div class="calendar-wrapper">
+                        <div id="calendar-grid" class="calendar-grid">
+                            <!-- จะถูกสร้างอัตโนมัติด้วย JavaScript -->
                         </div>
                     </div>
 
-                    <!-- พื้นที่แสดงผลตารางงาน -->
-                    <div id="schedule-list" style="width: 100%; display: flex; flex-direction: column; gap: 15px;">
-                        <!-- ตารางงานจะถูกแทรกตรงนี้อัตโนมัติ -->
-                    </div>
                 </div>
             </div>
         </main>
@@ -393,23 +400,6 @@
                             <span>📁</span> PORTFOLIO
                         </a>
                     </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- BLOG -->
-        <main id="blog" class="section">
-            <div class="retro-window">
-                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
-                <div class="window-body">
-                    <h1 class="editable" id="blog-title" data-field="blog_title" style="margin-bottom: 30px;">MY DIARY</h1>
-                    
-                    <div class="blog-scroll-box">
-                        <div class="editable editable-block" id="blog-content" data-field="blog_content" style="font-size: 1.2rem; color: #ddd; line-height: 1.8;">
-                            คลิกที่นี่เพื่อเริ่มเขียนเรื่องราวของคุณ...<br><br>
-                        </div>
-                    </div>
-                    
                 </div>
             </div>
         </main>
@@ -465,7 +455,6 @@
         <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
         
         <div class="gallery-content">
-            
             <div id="album-first_meet" class="album-images-container" style="display: none;">
                 <div class="gallery-item">
                     <img src="images/activity1.jpg" alt="Activity 1">
@@ -480,7 +469,6 @@
                     <p class="editable" id="gal-desc3" data-field="gal_desc3">ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p>
                 </div>
             </div>
-            
         </div>
     </div>
 
@@ -504,63 +492,116 @@
 
 
     <!-- --------------------------------------------------------
-         SCRIPTS: ปฏิทินตารางงาน (Schedule/Calendar)
+         SCRIPTS: ปฏิทินตารางงานแบบ Grid (Calendar)
          -------------------------------------------------------- -->
     <script>
-        let scheduleData = []; // ตัวแปรเก็บข้อมูลตารางงาน
+        let scheduleData = []; 
+        let today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+        const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
-        // ฟังก์ชั่นแสดงผลตารางงานลงเว็บ
-        function renderSchedule() {
-            const list = document.getElementById('schedule-list');
-            list.innerHTML = '';
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const monthYearLabel = document.getElementById('month-year-label');
             
-            // เรียงวันที่จากใกล้ไปไกล
-            scheduleData.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-            if(scheduleData.length === 0) {
-                list.innerHTML = '<p style="color: #888; font-family: \'VT323\'; font-size: 1.5rem; padding: 20px;">-- NO ACTIVE QUESTS (ยังไม่มีตารางงาน) --</p>';
-                return;
-            }
-
-            scheduleData.forEach((ev, index) => {
-                const card = document.createElement('div');
-                card.className = 'schedule-card';
-                
-                // แปลงวันที่ให้สวยงาม (เช่น 25 ส.ค. 2026)
-                const d = new Date(ev.date);
-                const dateStr = d.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
-
-                card.innerHTML = `
-                    <div>
-                        <div class="schedule-date">📅 ${dateStr}</div>
-                        <div class="schedule-title">${ev.title}</div>
-                    </div>
-                    <button class="btn-delete-event sound-trigger" onclick="deleteScheduleEvent(${index})">X ลบ</button>
-                `;
-                list.appendChild(card);
+            grid.innerHTML = '';
+            monthYearLabel.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            
+            // สร้างหัวตาราง (วันอาทิตย์ - เสาร์)
+            const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            daysOfWeek.forEach(day => {
+                const el = document.createElement('div');
+                el.className = 'calendar-day-header';
+                el.textContent = day;
+                grid.appendChild(el);
             });
-        }
 
-        // ฟังก์ชั่นเพิ่มงานใหม่ (จะยังไม่เซฟลงฐานข้อมูลจนกว่าจะกด SAVE DATA)
-        function addScheduleEvent() {
-            const dateVal = document.getElementById('event-date').value;
-            const titleVal = document.getElementById('event-title').value;
-            
-            if(!dateVal || !titleVal) { 
-                alert("⚠️ กรุณาใส่วันที่และชื่องานให้ครบครับ!"); 
-                return; 
+            // คำนวณหาวันแรกของเดือน และจำนวนวันในเดือนนั้น
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            // เติมช่องว่างก่อนหน้าวันแรก
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'calendar-day empty';
+                grid.appendChild(empty);
             }
 
-            scheduleData.push({ date: dateVal, title: titleVal });
-            document.getElementById('event-title').value = ''; // เคลียร์ช่องพิมพ์
-            renderSchedule();
+            // สร้างช่องวันที่
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'calendar-day';
+                
+                // รูปแบบ YYYY-MM-DD ไว้เช็คข้อมูล
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                // ใส่ตัวเลขวันที่
+                cell.innerHTML = `<div class="day-number">${day}</div>`;
+                
+                // หากิจกรรมของวันนี้
+                const dayEvents = scheduleData.filter(e => e.date === dateStr);
+                const eventsContainer = document.createElement('div');
+                eventsContainer.className = 'events-container';
+
+                dayEvents.forEach(ev => {
+                    const globalIndex = scheduleData.indexOf(ev); // หา index ของตารางใหญ่
+                    const evEl = document.createElement('div');
+                    evEl.className = 'calendar-event';
+                    evEl.innerHTML = `<span>${ev.title}</span>`;
+                    
+                    // ปุ่มลบ (จะโชว์ก็ต่อเมื่อ Login)
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'delete-event-btn sound-trigger';
+                    delBtn.textContent = 'x';
+                    delBtn.onclick = (e) => { 
+                        e.stopPropagation(); // ไม่ให้ไปทริกเกอร์กดเพิ่มงาน
+                        deleteScheduleEvent(globalIndex); 
+                    };
+                    evEl.appendChild(delBtn);
+                    
+                    eventsContainer.appendChild(evEl);
+                });
+                cell.appendChild(eventsContainer);
+
+                // สำหรับแอดมิน: คลิกลงในช่องวันที่ว่างๆ เพื่อเพิ่มงาน
+                cell.onclick = () => {
+                    if(document.body.classList.contains('edit-mode')) {
+                        promptAddEvent(dateStr);
+                    }
+                };
+                
+                grid.appendChild(cell);
+            }
         }
 
-        // ฟังก์ชั่นลบงาน (จะยังไม่ลบจากฐานข้อมูลจนกว่าจะกด SAVE DATA)
+        function changeMonth(dir) {
+            currentMonth += dir;
+            if(currentMonth < 0) { currentMonth = 11; currentYear--; }
+            if(currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar();
+        }
+
+        function promptAddEvent(dateStr) {
+            const title = prompt(`เพิ่มตารางงานสำหรับวันที่ ${dateStr}\nกรุณาพิมพ์รายละเอียดงาน:`);
+            if(title && title.trim() !== '') {
+                scheduleData.push({ date: dateStr, title: title.trim() });
+                renderCalendar();
+                // กระพริบปุ่ม SAVE เพื่อเตือนให้กด
+                const saveBtn = document.getElementById('save-btn');
+                saveBtn.style.boxShadow = '0 0 15px #27c93f';
+                setTimeout(() => saveBtn.style.boxShadow = 'none', 1500);
+            }
+        }
+
         function deleteScheduleEvent(index) {
-            if(confirm("ต้องการลบงานนี้ใช่ไหม? (อย่าลืมกด SAVE DATA ด้านล่างเพื่อยืนยันการลบถาวร)")) {
+            if(confirm("ลบงานนี้ใช่ไหม? (อย่าลืมกด SAVE DATA ด้านล่างเพื่อบันทึก)")) {
                 scheduleData.splice(index, 1);
-                renderSchedule();
+                renderCalendar();
+                // กระพริบปุ่ม SAVE
+                const saveBtn = document.getElementById('save-btn');
+                saveBtn.style.boxShadow = '0 0 15px #ff5f56';
+                setTimeout(() => saveBtn.style.boxShadow = 'none', 1500);
             }
         }
     </script>
@@ -751,15 +792,17 @@
                         if (data[fieldName] !== undefined) { el.innerHTML = data[fieldName]; }
                     });
 
-                    // ดึงข้อมูลตารางงาน (Schedule)
+                    // ดึงข้อมูลตารางงาน
                     if (data.schedule_list) {
                         try {
                             scheduleData = JSON.parse(data.schedule_list);
                         } catch(e) { scheduleData = []; }
                     }
-                    renderSchedule(); // สั่งวาดตารางงานลงจอ
+                    renderCalendar(); // สั่งวาดปฏิทิน
+                } else {
+                    renderCalendar();
                 }
-            } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); }
+            } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); renderCalendar(); }
         }
 
         auth.onAuthStateChanged((user) => {
@@ -785,26 +828,25 @@
             try {
                 await auth.signInWithEmailAndPassword(email, password);
                 document.getElementById('login-modal').style.display = 'none';
-                alert("ระบบแอดมินพร้อมใช้งาน!");
+                alert("ระบบแอดมินพร้อมใช้งาน! คลิกที่ช่องวันที่ในปฏิทินเพื่อเพิ่มงานได้เลย");
             } catch (error) { alert("ล็อกอินล้มเหลว ตรวจสอบอีเมล/รหัสผ่าน"); }
         };
         document.getElementById('logout-btn').onclick = () => auth.signOut();
 
         // ------------------------------------------------
-        // ปุ่ม SAVE DATA: บันทึกทั้ง Text และ ตารางงานพร้อมกัน
+        // ปุ่ม SAVE DATA: บันทึกทั้ง Text และ ตารางงาน
         // ------------------------------------------------
         document.getElementById('save-btn').onclick = async () => {
             const newData = {};
             document.querySelectorAll('.editable').forEach(el => { newData[el.getAttribute('data-field')] = el.innerHTML; });
             
-            // นำข้อมูลตารางงานล่าสุด ห่อเป็น JSON แล้วเตรียมเซฟลง Firebase
             newData['schedule_list'] = JSON.stringify(scheduleData);
 
             try {
                 document.getElementById('save-btn').innerHTML = "SAVING...";
                 await docRef.set(newData, { merge: true });
                 document.getElementById('save-btn').innerHTML = "SAVE DATA";
-                alert("อัปเดตข้อมูลสำเร็จ!");
+                alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
             } catch (error) { alert("บันทึกข้อมูลล้มเหลว: " + error.message); }
         };
         
