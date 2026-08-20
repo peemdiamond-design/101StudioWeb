@@ -582,12 +582,34 @@
             renderCalendar();
         }
 
+        // ฟังก์ชั่นเชื่อมต่อไปหา LINE Messaging API
+        function sendLineNotify(dateStr, title) {
+            // URL สะพานเชื่อมของคุณที่ประกอบร่างเสร็จแล้ว 
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbwqUKD-Qjm88QR5WbqqhbXlNZY8BrlnIccKig4MgEgg8aIf-nS7wOZzTM3v4yn_RQ2m/exec"; 
+            
+            const message = `\n📢 [101 STUDIO] มีเควสใหม่!\n📅 วันที่: ${dateStr}\n📌 ภารกิจ: ${title}`;
+
+            const formData = new URLSearchParams();
+            formData.append("message", message);
+
+            fetch(scriptUrl, {
+                method: "POST",
+                body: formData,
+                mode: 'no-cors' 
+            }).then(() => console.log("ส่งแจ้งเตือนเข้า LINE สำเร็จ!"));
+        }
+
+        // อัปเดตฟังก์ชั่นเพิ่มงาน ให้เรียกใช้ LINE ด้วย
         function promptAddEvent(dateStr) {
             const title = prompt(`เพิ่มตารางงานสำหรับวันที่ ${dateStr}\nกรุณาพิมพ์รายละเอียดงาน:`);
             if(title && title.trim() !== '') {
                 scheduleData.push({ date: dateStr, title: title.trim() });
                 renderCalendar();
-                // กระพริบปุ่ม SAVE เพื่อเตือนให้กด
+                
+                // สั่งให้ส่ง LINE แจ้งเตือนทันทีที่กดตกลง!
+                sendLineNotify(dateStr, title.trim());
+
+                // กระพริบปุ่ม SAVE เพื่อเตือนให้กดเซฟลงฐานข้อมูลด้วย
                 const saveBtn = document.getElementById('save-btn');
                 saveBtn.style.boxShadow = '0 0 15px #27c93f';
                 setTimeout(() => saveBtn.style.boxShadow = 'none', 1500);
