@@ -587,7 +587,8 @@
             // URL สะพานเชื่อมของคุณที่ประกอบร่างเสร็จแล้ว 
             const scriptUrl = "https://script.google.com/macros/s/AKfycbwqUKD-Qjm88QR5WbqqhbXlNZY8BrlnIccKig4MgEgg8aIf-nS7wOZzTM3v4yn_RQ2m/exec"; 
             
-            const message = `\n📢 [101 STUDIO] มีเควสใหม่!\n📅 วันที่: ${dateStr}\n📌 ภารกิจ: ${title}`;
+            // 📝 ข้อความแจ้งเตือนที่ปรับปรุงแล้ว
+            const message = `\n[BOT_CN25] แจ้งเตือน!\n📅 วันที่: ${dateStr}\n📌 ภารกิจ: ${title}`;
 
             const formData = new URLSearchParams();
             formData.append("message", message);
