@@ -147,7 +147,7 @@
         .timeline-content p { font-size: 1.6rem; color: var(--text-light); font-family: 'VT323', monospace; margin: 0; text-transform: uppercase; cursor: text; }
 
         /* ---------------------------------
-           GALLERY MODAL (Popup โชว์รูปทั้งหมด)
+           GALLERY MODAL
            --------------------------------- */
         .gallery-modal {
             display: none; 
@@ -232,6 +232,18 @@
         .blog-scroll-box::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.5); border-left: 2px solid #444; }
         .blog-scroll-box::-webkit-scrollbar-thumb { background: var(--orange-main); border: 2px solid #000; }
 
+        /* ---------------------------------
+           SCHEDULE / QUEST BOARD PAGE
+           --------------------------------- */
+        .schedule-card { background: rgba(0,0,0,0.7); border-left: 4px solid var(--orange-main); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; text-align: left; transition: 0.2s; border-radius: 0 8px 8px 0; border-top: 1px solid #222; border-right: 1px solid #222; border-bottom: 1px solid #222; }
+        .schedule-card:hover { transform: translateX(5px); background: rgba(255,107,0,0.1); border-color: var(--orange-main); }
+        .schedule-date { font-family: 'VT323'; color: var(--orange-main); font-size: 1.5rem; margin-bottom: 5px; text-shadow: 1px 1px 0px #000;}
+        .schedule-title { color: #fff; font-size: 1.2rem; }
+        .btn-delete-event { background: #ff5f56; color: white; border: 2px solid #b32a22; padding: 8px 12px; cursor: pointer; font-family: 'VT323'; display: none; font-size: 1.2rem; box-shadow: 2px 2px 0px #000; }
+        .btn-delete-event:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+        .edit-mode .btn-delete-event { display: block; }
+        .edit-mode #admin-schedule-form { display: block !important; }
+
         @media screen and (max-width: 768px) {
             .navbar { flex-direction: column; padding: 15px 20px; gap: 15px; }
             .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; }
@@ -248,6 +260,10 @@
             .timeline-item.left { left: 0; }
             .timeline-item.right { left: 0; }
             .timeline-item.left .timeline-dot, .timeline-item.right .timeline-dot { left: 8px; right: auto; }
+
+            .schedule-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .btn-delete-event { width: 100%; text-align: center; }
+            #admin-schedule-form input { width: 100% !important; margin-bottom: 10px; }
         }
 
         /* ---------------------------------
@@ -259,7 +275,7 @@
         
         h1.editable, h3.editable, h2.editable { display: block !important; width: 100% !important; text-align: center !important; white-space: normal !important; word-break: break-word !important; margin: 0 auto 20px auto !important; }
 
-        .editable-block { display: block; text-align: left; padding: 15px; min-height: 200px; white-space: pre-wrap; word-wrap: break-word; width: 100%. } 
+        .editable-block { display: block; text-align: left; padding: 15px; min-height: 200px; white-space: pre-wrap; word-wrap: break-word; width: 100%; } 
         .edit-mode .editable-block { background-color: rgba(255, 107, 0, 0.15); border: 1px dashed var(--orange-main); cursor: text; }
         .edit-mode .editable:empty { display: inline-block; min-width: 50px; min-height: 1.5em; }
         .edit-mode .editable:empty::before { content: "[สามารถพิมพ์ข้อความตรงนี้ได้]"; color: #888; font-size: 0.9em; }
@@ -281,6 +297,7 @@
         <div class="logo">101 STUDIO</div>
         <div class="nav-links">
             <button class="nav-btn active sound-trigger" onclick="switchTab(event, 'home')">HOME</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'schedule')">SCHEDULE</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'archive')">ARCHIVE</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'blog')">BLOG</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'about')">ABOUT</button>
@@ -325,6 +342,31 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- SCHEDULE (ตารางงาน) -->
+        <main id="schedule" class="section">
+            <div class="retro-window">
+                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-body">
+                    <h1 class="editable" id="schedule-title" data-field="schedule_title" style="margin-bottom: 30px;">QUEST BOARD (SCHEDULE)</h1>
+                    
+                    <!-- ฟอร์มเพิ่มตารางงาน (โชว์เฉพาะแอดมิน) -->
+                    <div id="admin-schedule-form" style="display: none; background: rgba(0,0,0,0.8); border: 2px dashed var(--orange-main); padding: 20px; margin-bottom: 30px; width: 100%; text-align: left;">
+                        <h3 style="color: var(--orange-main); margin-bottom: 15px; font-family: 'VT323'; font-size: 1.8rem;">[+] ADD NEW QUEST (อย่าลืมกด SAVE DATA ด้านล่างสุดด้วย)</h3>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <input type="date" id="event-date" style="padding: 10px; background: #000; color: var(--orange-main); border: 2px solid var(--orange-main); font-family: 'Chakra Petch'; font-size: 1.1rem; flex: 1; min-width: 150px;">
+                            <input type="text" id="event-title" placeholder="พิมพ์ชื่องาน / รายละเอียด เช่น ประชุมโปรเจกต์ 14.00 น." style="padding: 10px; background: #000; color: #fff; border: 2px solid var(--orange-main); font-family: 'Chakra Petch'; font-size: 1.1rem; flex: 3; min-width: 250px;">
+                            <button onclick="addScheduleEvent()" class="sound-trigger" style="background: var(--orange-main); color: #000; padding: 10px 20px; border: 2px solid #000; font-weight: bold; cursor: pointer; font-family: 'VT323'; font-size: 1.5rem; box-shadow: 3px 3px 0px #000;">ADD</button>
+                        </div>
+                    </div>
+
+                    <!-- พื้นที่แสดงผลตารางงาน -->
+                    <div id="schedule-list" style="width: 100%; display: flex; flex-direction: column; gap: 15px;">
+                        <!-- ตารางงานจะถูกแทรกตรงนี้อัตโนมัติ -->
                     </div>
                 </div>
             </div>
@@ -417,7 +459,7 @@
     </div>
 
     <!-- --------------------------------------------------------
-         MODAL GALLERY (Popup โชว์รูป activity1, activity2, cover)
+         MODAL GALLERY
          -------------------------------------------------------- -->
     <div class="gallery-modal" id="galleryModal">
         <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
@@ -425,22 +467,18 @@
         <div class="gallery-content">
             
             <div id="album-first_meet" class="album-images-container" style="display: none;">
-                
                 <div class="gallery-item">
                     <img src="images/activity1.jpg" alt="Activity 1">
                     <p class="editable" id="gal-desc1" data-field="gal_desc1">สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p>
                 </div>
-                
                 <div class="gallery-item">
                     <img src="images/activity2.jpg" alt="Activity 2">
                     <p class="editable" id="gal-desc2" data-field="gal_desc2">ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p>
                 </div>
-
                 <div class="gallery-item">
                     <img src="images/cover.jpg" alt="Activity 3">
                     <p class="editable" id="gal-desc3" data-field="gal_desc3">ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p>
                 </div>
-
             </div>
             
         </div>
@@ -466,184 +504,175 @@
 
 
     <!-- --------------------------------------------------------
-         GALLERY JS SCRIPT 
+         SCRIPTS: ปฏิทินตารางงาน (Schedule/Calendar)
          -------------------------------------------------------- -->
     <script>
-        function openGallery(event, albumId) {
-            if (event.target.classList.contains('editable')) {
+        let scheduleData = []; // ตัวแปรเก็บข้อมูลตารางงาน
+
+        // ฟังก์ชั่นแสดงผลตารางงานลงเว็บ
+        function renderSchedule() {
+            const list = document.getElementById('schedule-list');
+            list.innerHTML = '';
+            
+            // เรียงวันที่จากใกล้ไปไกล
+            scheduleData.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            if(scheduleData.length === 0) {
+                list.innerHTML = '<p style="color: #888; font-family: \'VT323\'; font-size: 1.5rem; padding: 20px;">-- NO ACTIVE QUESTS (ยังไม่มีตารางงาน) --</p>';
                 return;
             }
 
-            document.getElementById('galleryModal').classList.add('active');
-            
-            document.querySelectorAll('.gallery-content > div').forEach(el => {
-                el.style.display = 'none';
+            scheduleData.forEach((ev, index) => {
+                const card = document.createElement('div');
+                card.className = 'schedule-card';
+                
+                // แปลงวันที่ให้สวยงาม (เช่น 25 ส.ค. 2026)
+                const d = new Date(ev.date);
+                const dateStr = d.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
+
+                card.innerHTML = `
+                    <div>
+                        <div class="schedule-date">📅 ${dateStr}</div>
+                        <div class="schedule-title">${ev.title}</div>
+                    </div>
+                    <button class="btn-delete-event sound-trigger" onclick="deleteScheduleEvent(${index})">X ลบ</button>
+                `;
+                list.appendChild(card);
             });
-            
-            const targetAlbum = document.getElementById('album-' + albumId);
-            if (targetAlbum) {
-                targetAlbum.style.display = 'flex';
-            }
         }
 
-        function closeGallery() {
-            document.getElementById('galleryModal').classList.remove('active');
+        // ฟังก์ชั่นเพิ่มงานใหม่ (จะยังไม่เซฟลงฐานข้อมูลจนกว่าจะกด SAVE DATA)
+        function addScheduleEvent() {
+            const dateVal = document.getElementById('event-date').value;
+            const titleVal = document.getElementById('event-title').value;
+            
+            if(!dateVal || !titleVal) { 
+                alert("⚠️ กรุณาใส่วันที่และชื่องานให้ครบครับ!"); 
+                return; 
+            }
+
+            scheduleData.push({ date: dateVal, title: titleVal });
+            document.getElementById('event-title').value = ''; // เคลียร์ช่องพิมพ์
+            renderSchedule();
+        }
+
+        // ฟังก์ชั่นลบงาน (จะยังไม่ลบจากฐานข้อมูลจนกว่าจะกด SAVE DATA)
+        function deleteScheduleEvent(index) {
+            if(confirm("ต้องการลบงานนี้ใช่ไหม? (อย่าลืมกด SAVE DATA ด้านล่างเพื่อยืนยันการลบถาวร)")) {
+                scheduleData.splice(index, 1);
+                renderSchedule();
+            }
         }
     </script>
 
 
     <!-- --------------------------------------------------------
-         MATRIX RAIN SCRIPT 
+         GALLERY & UI SCRIPT 
          -------------------------------------------------------- -->
     <script>
+        function openGallery(event, albumId) {
+            if (event.target.classList.contains('editable')) return;
+            document.getElementById('galleryModal').classList.add('active');
+            document.querySelectorAll('.gallery-content > div').forEach(el => el.style.display = 'none');
+            const targetAlbum = document.getElementById('album-' + albumId);
+            if (targetAlbum) targetAlbum.style.display = 'flex';
+        }
+        function closeGallery() { document.getElementById('galleryModal').classList.remove('active'); }
+        
+        function switchTab(e, tabId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (e && e.currentTarget) e.currentTarget.classList.add('active');
+        }
+    </script>
+
+    <!-- --------------------------------------------------------
+         MATRIX RAIN & DINO GAME SCRIPT 
+         -------------------------------------------------------- -->
+    <script>
+        // Matrix Effect
         const mCanvas = document.getElementById('matrixCanvas');
         const mCtx = mCanvas.getContext('2d');
-        let mWidth, mHeight;
-        
+        let mWidth, mHeight, columns, drops = [];
         const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</>{}[]~#'.split('');
         const fontSize = 14;
-        let columns;
-        let drops = [];
 
         function initMatrix() {
             const resizeMatrix = () => {
                 mWidth = mCanvas.parentElement.clientWidth;
                 mHeight = mCanvas.parentElement.clientHeight;
-                mCanvas.width = mWidth;
-                mCanvas.height = mHeight;
+                mCanvas.width = mWidth; mCanvas.height = mHeight;
                 columns = Math.floor(mWidth / fontSize);
                 drops = [];
-                for(let i = 0; i < columns; i++) {
-                    drops[i] = Math.random() * -100;
-                }
+                for(let i = 0; i < columns; i++) drops[i] = Math.random() * -100;
             };
-            window.addEventListener('resize', resizeMatrix);
-            resizeMatrix();
+            window.addEventListener('resize', resizeMatrix); resizeMatrix();
             setInterval(drawMatrix, 50); 
         }
 
         function drawMatrix() {
-            mCtx.fillStyle = 'rgba(11, 16, 30, 0.3)';
-            mCtx.fillRect(0, 0, mWidth, mHeight);
-
-            mCtx.fillStyle = '#ff6b00'; 
-            mCtx.font = fontSize + 'px "VT323", monospace';
-
+            mCtx.fillStyle = 'rgba(11, 16, 30, 0.3)'; mCtx.fillRect(0, 0, mWidth, mHeight);
+            mCtx.fillStyle = '#ff6b00'; mCtx.font = fontSize + 'px "VT323", monospace';
             for(let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                if(drops[i] * fontSize > mHeight && Math.random() > 0.95) {
-                    drops[i] = 0;
-                }
+                if(drops[i] * fontSize > mHeight && Math.random() > 0.95) drops[i] = 0;
                 drops[i]++;
             }
         }
-        
         initMatrix();
-    </script>
 
-
-    <!-- --------------------------------------------------------
-         DINO BACKGROUND GAME SCRIPT 
-         -------------------------------------------------------- -->
-    <script>
+        // Dino Game Effect
         const canvas = document.getElementById('dinoCanvas');
         const ctx = canvas.getContext('2d');
-        let width, height;
-        let frame = 0;
-        let cactusList = [];
-        let dino = { x: 80, y: 0, vY: 0, isJumping: false };
+        let width, height, frame = 0, cactusList = [], dino = { x: 80, y: 0, vY: 0, isJumping: false };
 
         function initDino() {
             const resize = () => {
-                width = canvas.parentElement.clientWidth;
-                height = canvas.parentElement.clientHeight;
-                canvas.width = width;
-                canvas.height = height;
+                width = canvas.parentElement.clientWidth; height = canvas.parentElement.clientHeight;
+                canvas.width = width; canvas.height = height;
             };
-            window.addEventListener('resize', resize);
-            resize();
+            window.addEventListener('resize', resize); resize();
             requestAnimationFrame(drawDino);
         }
 
         function drawDino() {
             ctx.clearRect(0, 0, width, height);
-            
             const groundY = height - 50; 
-            
-            ctx.strokeStyle = '#ff6b00';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(0, groundY);
-            ctx.lineTo(width, groundY);
-            ctx.stroke();
+            ctx.strokeStyle = '#ff6b00'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(width, groundY); ctx.stroke();
 
-            if (frame % 150 === 0) { 
-                cactusList.push({ x: width + 50, type: Math.floor(Math.random() * 3) });
-            }
-
+            if (frame % 150 === 0) cactusList.push({ x: width + 50, type: Math.floor(Math.random() * 3) });
             for (let i = 0; i < cactusList.length; i++) {
-                let c = cactusList[i];
-                c.x -= 4; 
-                
+                let c = cactusList[i]; c.x -= 4; 
                 ctx.fillStyle = '#ff6b00';
                 ctx.fillRect(c.x, groundY - 30, 8, 30); 
-                if(c.type > 0) {
-                    ctx.fillRect(c.x - 8, groundY - 20, 6, 15); 
-                    ctx.fillRect(c.x - 8, groundY - 10, 12, 4); 
-                }
-                if(c.type > 1) {
-                    ctx.fillRect(c.x + 10, groundY - 25, 6, 15); 
-                    ctx.fillRect(c.x + 4, groundY - 15, 12, 4); 
-                }
-
-                if (c.x > dino.x && c.x < dino.x + 100 && !dino.isJumping) {
-                    dino.isJumping = true;
-                    dino.vY = -10; 
-                }
+                if(c.type > 0) { ctx.fillRect(c.x - 8, groundY - 20, 6, 15); ctx.fillRect(c.x - 8, groundY - 10, 12, 4); }
+                if(c.type > 1) { ctx.fillRect(c.x + 10, groundY - 25, 6, 15); ctx.fillRect(c.x + 4, groundY - 15, 12, 4); }
+                if (c.x > dino.x && c.x < dino.x + 100 && !dino.isJumping) { dino.isJumping = true; dino.vY = -10; }
             }
             cactusList = cactusList.filter(c => c.x > -50);
 
             if (dino.isJumping) {
-                dino.y += dino.vY;
-                dino.vY += 0.5; 
-                if (dino.y >= 0) {
-                    dino.y = 0;
-                    dino.isJumping = false;
-                }
+                dino.y += dino.vY; dino.vY += 0.5; 
+                if (dino.y >= 0) { dino.y = 0; dino.isJumping = false; }
             }
 
             ctx.fillStyle = '#ff6b00';
-            let dy = groundY - 40 + dino.y;
-            let dx = dino.x;
-            
-            ctx.fillRect(dx + 20, dy, 24, 16); 
-            ctx.clearRect(dx + 24, dy + 2, 4, 4); 
-            ctx.clearRect(dx + 28, dy + 10, 16, 4); 
-            ctx.fillRect(dx + 10, dy + 16, 20, 20); 
-            ctx.fillRect(dx + 30, dy + 18, 8, 4); 
-            ctx.fillRect(dx + 34, dy + 22, 4, 4); 
-            ctx.fillRect(dx, dy + 20, 4, 12); 
-            ctx.fillRect(dx + 4, dy + 16, 6, 16); 
+            let dy = groundY - 40 + dino.y; let dx = dino.x;
+            ctx.fillRect(dx + 20, dy, 24, 16); ctx.clearRect(dx + 24, dy + 2, 4, 4); ctx.clearRect(dx + 28, dy + 10, 16, 4); 
+            ctx.fillRect(dx + 10, dy + 16, 20, 20); ctx.fillRect(dx + 30, dy + 18, 8, 4); ctx.fillRect(dx + 34, dy + 22, 4, 4); 
+            ctx.fillRect(dx, dy + 20, 4, 12); ctx.fillRect(dx + 4, dy + 16, 6, 16); 
             
             if (!dino.isJumping) {
-                if (Math.floor(frame / 8) % 2 === 0) {
-                    ctx.fillRect(dx + 12, dy + 36, 6, 8); 
-                    ctx.fillRect(dx + 22, dy + 36, 6, 4); 
-                } else {
-                    ctx.fillRect(dx + 12, dy + 36, 6, 4); 
-                    ctx.fillRect(dx + 22, dy + 36, 6, 8); 
-                }
+                if (Math.floor(frame / 8) % 2 === 0) { ctx.fillRect(dx + 12, dy + 36, 6, 8); ctx.fillRect(dx + 22, dy + 36, 6, 4); } 
+                else { ctx.fillRect(dx + 12, dy + 36, 6, 4); ctx.fillRect(dx + 22, dy + 36, 6, 8); }
             } else {
-                ctx.fillRect(dx + 12, dy + 36, 6, 4); 
-                ctx.fillRect(dx + 22, dy + 36, 6, 4);
+                ctx.fillRect(dx + 12, dy + 36, 6, 4); ctx.fillRect(dx + 22, dy + 36, 6, 4);
             }
-
-            frame++;
-            requestAnimationFrame(drawDino);
+            frame++; requestAnimationFrame(drawDino);
         }
-        
         initDino();
     </script>
 
@@ -661,12 +690,10 @@
             oscillator.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
             gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.05); 
+            oscillator.connect(gainNode); gainNode.connect(audioCtx.destination);
+            oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.05); 
         }
-        document.querySelectorAll('.sound-trigger').forEach(btn => {
+        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-retro, .btn-delete-event').forEach(btn => {
             btn.addEventListener('click', playRetroClick);
         });
     </script>
@@ -675,40 +702,29 @@
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
                 if (event.target.classList.contains('editable-block')) {
-                    event.preventDefault();
-                    document.execCommand('insertLineBreak');
+                    event.preventDefault(); document.execCommand('insertLineBreak');
                 } else if (event.target.classList.contains('editable')) {
-                    event.preventDefault();
-                    event.target.blur();
+                    event.preventDefault(); event.target.blur();
                 }
             }
         });
-
         document.querySelectorAll('.editable:not(.editable-block)').forEach(el => {
             el.addEventListener('blur', function() {
                 let cleanText = this.innerText.replace(/\s+/g, ' ').trim();
                 this.innerHTML = cleanText;
             });
         });
-
         document.getElementById('password').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); }
         });
-
-        function switchTab(e, tabId) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            if (e && e.currentTarget) { e.currentTarget.classList.add('active'); }
-        }
     </script>
     
+    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     
     <script>
-        // ป้องกัน GitHub ตรวจจับและบล็อก API Key (ซ่อนค่าคีย์ไว้เพื่อความปลอดภัย)
         const firebaseConfig = {
             apiKey: "AIzaSyAME4-" + "lEvIycQnsWHPbi7CaBlwNiu7_qFk",
             authDomain: "website101-1f97f.firebaseapp.com",
@@ -728,10 +744,20 @@
                 const docSnap = await docRef.get();
                 if (docSnap.exists) {
                     const data = docSnap.data();
+                    
+                    // ดึงข้อมูล Text ปกติ
                     document.querySelectorAll('.editable').forEach(el => {
                         const fieldName = el.getAttribute('data-field');
                         if (data[fieldName] !== undefined) { el.innerHTML = data[fieldName]; }
                     });
+
+                    // ดึงข้อมูลตารางงาน (Schedule)
+                    if (data.schedule_list) {
+                        try {
+                            scheduleData = JSON.parse(data.schedule_list);
+                        } catch(e) { scheduleData = []; }
+                    }
+                    renderSchedule(); // สั่งวาดตารางงานลงจอ
                 }
             } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); }
         }
@@ -764,9 +790,16 @@
         };
         document.getElementById('logout-btn').onclick = () => auth.signOut();
 
+        // ------------------------------------------------
+        // ปุ่ม SAVE DATA: บันทึกทั้ง Text และ ตารางงานพร้อมกัน
+        // ------------------------------------------------
         document.getElementById('save-btn').onclick = async () => {
             const newData = {};
             document.querySelectorAll('.editable').forEach(el => { newData[el.getAttribute('data-field')] = el.innerHTML; });
+            
+            // นำข้อมูลตารางงานล่าสุด ห่อเป็น JSON แล้วเตรียมเซฟลง Firebase
+            newData['schedule_list'] = JSON.stringify(scheduleData);
+
             try {
                 document.getElementById('save-btn').innerHTML = "SAVING...";
                 await docRef.set(newData, { merge: true });
