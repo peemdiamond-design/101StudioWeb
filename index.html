@@ -536,11 +536,13 @@
                 // รูปแบบ YYYY-MM-DD ไว้เช็คข้อมูล
                 const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 
-                // ใส่ตัวเลขวันที่
-                cell.innerHTML = `<div class="day-number">${day}</div>`;
-                
                 // หากิจกรรมของวันนี้
                 const dayEvents = scheduleData.filter(e => e.date === dateStr);
+                
+                // 📍 ใส่ตัวเลขวันที่ พร้อมหมุด 📌 ถ้ามีกิจกรรม
+                const pinIcon = dayEvents.length > 0 ? ' <span style="font-size: 1rem;">📌</span>' : '';
+                cell.innerHTML = `<div class="day-number">${day}${pinIcon}</div>`;
+                
                 const eventsContainer = document.createElement('div');
                 eventsContainer.className = 'events-container';
 
@@ -548,7 +550,7 @@
                     const globalIndex = scheduleData.indexOf(ev); // หา index ของตารางใหญ่
                     const evEl = document.createElement('div');
                     evEl.className = 'calendar-event';
-                    evEl.innerHTML = `<span>${ev.title}</span>`;
+                    evEl.innerHTML = `<span>▪️ ${ev.title}</span>`;
                     
                     // ปุ่มลบ (จะโชว์ก็ต่อเมื่อ Login)
                     const delBtn = document.createElement('button');
@@ -600,10 +602,14 @@
             }).then(() => console.log("ส่งแจ้งเตือนเข้า LINE สำเร็จ!"));
         }
 
-        // อัปเดตฟังก์ชั่นเพิ่มงาน ให้เรียกใช้ LINE ด้วย
+        // อัปเดตฟังก์ชั่นเพิ่มงาน ให้เรียกใช้ LINE ด้วยและป้องกัน XSS
         function promptAddEvent(dateStr) {
-            const title = prompt(`เพิ่มตารางงานสำหรับวันที่ ${dateStr}\nกรุณาพิมพ์รายละเอียดงาน:`);
+            let title = prompt(`เพิ่มตารางงานสำหรับวันที่ ${dateStr}\nกรุณาพิมพ์รายละเอียดงาน:`);
             if(title && title.trim() !== '') {
+                
+                // 🔒 ตัวกรองป้องกัน XSS (แปลงแท็ก HTML เป็นข้อความธรรมดา)
+                title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
                 scheduleData.push({ date: dateStr, title: title.trim() });
                 renderCalendar();
                 
