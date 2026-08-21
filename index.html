@@ -6,83 +6,39 @@
     <title>101 STUDIO | Pixel Perfect</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --window-bg: rgba(11, 16, 30, 0.95);
-            --orange-main: #ff6b00;
-            --orange-dark: #b34a00;
-            --text-light: #f8fafc;
-        }
-
-        /* 🖱️ เปลี่ยนเมาส์ทั้งเว็บเป็นเคอร์เซอร์ยุคเก่า 8-bit */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Chakra Petch', sans-serif;
-            cursor: url('https://cur.cursors-4u.net/system/sys-1/sys46.png'), auto !important;
-        }
-
-        /* 🖱️ เปลี่ยนเมาส์ตอนชี้ปุ่มเป็นรูปมือชี้ยุคเก่า */
-        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span {
-            cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important;
-        }
-
-        body {
-            background-color: #000;
-            background-image: url('images/482bc578-6c0c-41c5-a91d-c1ea840b343f.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            image-rendering: -webkit-optimize-contrast; 
-            image-rendering: pixelated;
-            color: var(--text-light);
-            min-height: 100vh;
-            overflow-x: hidden; 
-        }
-
-        /* NAVBAR */
+        :root { --window-bg: rgba(11, 16, 30, 0.95); --orange-main: #ff6b00; --orange-dark: #b34a00; --text-light: #f8fafc; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; cursor: url('https://cur.cursors-4u.net/system/sys-1/sys46.png'), auto !important; }
+        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
+        body { background-color: #000; background-image: url('images/482bc578-6c0c-41c5-a91d-c1ea840b343f.jpg'); background-size: cover; background-position: center; background-attachment: fixed; image-rendering: -webkit-optimize-contrast; image-rendering: pixelated; color: var(--text-light); min-height: 100vh; overflow-x: hidden; }
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background-color: rgba(9, 12, 21, 0.95); border-bottom: 4px solid var(--orange-main); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 50; }
         .logo { font-family: 'VT323', monospace; font-size: 2.5rem; color: var(--orange-main); text-shadow: 2px 2px 0px var(--orange-dark); letter-spacing: 2px; }
         .nav-links { display: flex; gap: 15px; }
         .nav-btn { background: transparent; color: var(--orange-main); border: none; font-size: 1.2rem; font-weight: 700; padding: 8px 16px; transition: 0.2s; }
-        .nav-btn:hover { background: rgba(255, 107, 0, 0.2); }
-        .nav-btn.active { background-color: var(--orange-main); color: #000; border-radius: 4px; }
-
-        /* MAIN CONTENT & WINDOW UI */
+        .nav-btn:hover { background: rgba(255, 107, 0, 0.2); } .nav-btn.active { background-color: var(--orange-main); color: #000; border-radius: 4px; }
         .container { max-width: 1000px; margin: 50px auto; padding: 0 20px; }
-        .section { display: none; animation: fadeIn 0.4s ease-in-out; }
-        .section.active { display: block; }
+        .section { display: none; animation: fadeIn 0.4s ease-in-out; } .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
         .retro-window { background-color: var(--window-bg); border: 4px solid var(--orange-main); border-radius: 8px; box-shadow: 15px 15px 0px rgba(0,0,0,0.8); overflow: hidden; backdrop-filter: blur(5px); }
         .window-header { background-color: var(--orange-main); padding: 10px 15px; display: flex; gap: 8px; align-items: center; }
-        .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.3); }
-        .dot.red { background-color: #ff5f56; } .dot.yellow { background-color: #ffbd2e; } .dot.green { background-color: #27c93f; }
+        .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.3); } .dot.red { background-color: #ff5f56; } .dot.yellow { background-color: #ffbd2e; } .dot.green { background-color: #27c93f; }
         .window-body { padding: 50px 40px; text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; }
-
         .home-content { position: relative; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; }
         .hero-section { position: relative; width: 100%; padding-bottom: 20px; display: flex; flex-direction: column; align-items: center; }
         .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.4; }
         .dino-bg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.15; }
-
         h1 { font-size: 3.5rem; color: var(--orange-main); margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 0px rgba(0,0,0,0.8); text-align: center; }
         .subtitle { font-size: 1.4rem; color: #ddd; margin-bottom: 20px; margin-top: 10px; text-align: center; }
         .hero-logo { max-width: 250px; width: 100%; height: auto; display: block; margin: 0 auto 30px auto; filter: invert(1) drop-shadow(4px 4px 0px var(--orange-dark)); }
-
         .btn-retro { display: inline-block; background-color: var(--orange-main); color: #000; font-size: 1.8rem; font-weight: 700; padding: 15px 60px; text-decoration: none; border: 4px solid #000; box-shadow: 6px 6px 0px #000; transition: all 0.2s ease; font-family: 'VT323'; letter-spacing: 2px; margin-top: 10px; }
-        .btn-retro:not(.btn-drive):hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0px #000; }
-        .btn-retro:active { transform: translate(6px, 6px) !important; box-shadow: 0px 0px 0px #000 !important; }
-        
+        .btn-retro:not(.btn-drive):hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0px #000; } .btn-retro:active { transform: translate(6px, 6px) !important; box-shadow: 0px 0px 0px #000 !important; }
         .drive-btn-container { display: flex; flex-direction: column; gap: 25px; align-items: center; margin: 40px 0; width: 100%; }
         .btn-drive { width: 100%; max-width: 500px; padding: 20px 40px; font-size: 2rem; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0; }
         .btn-server { background-color: #27c93f; color: #000; } .btn-code { background-color: #00e5ff; } .btn-exam { background-color: #ffde00; } .btn-portfolio { background-color: #ff3399; color: #fff; }
         .btn-drive:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px #000; filter: brightness(1.1); }
-
         .social-container { display: flex; justify-content: center; gap: 20px; margin-top: 40px; flex-wrap: wrap; width: 100%; }
         .btn-social { display: inline-flex; align-items: center; color: #fff; font-size: 1.4rem; font-weight: 700; padding: 12px 30px; text-decoration: none; border: 4px solid #000; box-shadow: 5px 5px 0px #000; transition: 0.1s; font-family: 'VT323'; letter-spacing: 1px; }
         .btn-social:active { transform: translate(5px, 5px); box-shadow: 0px 0px 0px #000; }
         .btn-fb { background-color: #1877F2; } .btn-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); } .btn-tt { background-color: #000; border-color: #25F4EE; box-shadow: 5px 5px 0px #FE2C55; }
-
         .timeline-section { margin-top: 60px; padding-top: 40px; border-top: 2px dashed rgba(255, 107, 0, 0.3); width: 100%; }
         .timeline-title-main { color: var(--orange-main); font-family: 'VT323', monospace; font-size: 2.8rem; margin-bottom: 40px; text-transform: uppercase; text-align: center; }
         .timeline { position: relative; max-width: 800px; margin: 0 auto; padding: 20px 0; }
@@ -94,7 +50,6 @@
         .timeline-content:hover { transform: translateY(-5px); box-shadow: 8px 8px 0px rgba(255, 107, 0, 0.5); border-color: #fff; }
         .timeline-content img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border: 2px solid #333; margin-bottom: 15px; border-radius: 4px; }
         .timeline-content p { font-size: 1.6rem; color: var(--text-light); font-family: 'VT323', monospace; margin: 0; text-transform: uppercase; }
-
         .gallery-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: flex-start; flex-direction: column; }
         .gallery-modal.active { display: flex; animation: fadeIn 0.3s; }
         .gallery-close { position: absolute; top: 20px; right: 30px; color: var(--orange-main); font-size: 4rem; z-index: 1001; font-family: 'VT323', monospace; transition: 0.2s; text-shadow: 2px 2px 0px #000; }
@@ -105,13 +60,10 @@
         .gallery-item { background: rgba(11, 16, 30, 0.9); border: 2px solid var(--orange-main); border-radius: 8px; padding: 20px; text-align: center; box-shadow: 5px 5px 0px #000; }
         .gallery-item img { width: 100%; max-height: 70vh; object-fit: contain; border-radius: 4px; border: 2px solid #333; margin-bottom: 15px; background-color: #000; }
         .gallery-item p { color: #ddd; font-size: 1.2rem; margin: 0; line-height: 1.6; text-align: left; }
-
         .about-layout { display: flex; gap: 40px; align-items: flex-start; margin: 30px 0; text-align: left; width: 100%; }
         .about-image-wrapper { flex: 0 0 280px; border: 4px solid var(--orange-main); background-color: #000; padding: 8px; box-shadow: 10px 10px 0px rgba(0,0,0,0.8); position: relative; }
         .about-image-wrapper img { width: 100%; height: auto; display: block; border: 2px solid var(--orange-dark); object-fit: cover; }
         .about-text-content { flex: 1; background: rgba(0,0,0,0.5); padding: 30px; border: 2px dashed #444; border-radius: 8px; width: 100%; }
-
-        /* CALENDAR */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; width: 100%; }
         .calendar-header button { background: #000; border: 2px solid var(--orange-main); color: var(--orange-main); padding: 5px 20px; font-family: 'VT323'; font-size: 2rem; box-shadow: 3px 3px 0 #000; transition: 0.1s; }
         .calendar-header button:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #000; }
@@ -126,26 +78,13 @@
         .day-number { text-align: right; font-family: 'VT323'; font-size: 1.2rem; color: #666; margin-bottom: 5px; }
         .events-container { flex: 1; display: flex; flex-direction: column; gap: 3px; overflow-y: auto; }
         .events-container::-webkit-scrollbar { display: none; }
-        
         .calendar-event { background: rgba(255, 107, 0, 0.2); border-left: 3px solid var(--orange-main); font-size: 0.9rem; padding: 4px 6px; line-height: 1.3; position: relative; padding-right: 20px; color: #fff; word-break: break-word; transition: 0.2s; }
-        
-        /* 🗡️ สไตล์เมื่อเควสถูกขีดฆ่า (Completed) */
-        .calendar-event.completed {
-            background: rgba(255, 255, 255, 0.05);
-            border-left-color: #555;
-            color: #777;
-            text-decoration: line-through;
-        }
-
+        .calendar-event.completed { background: rgba(255, 255, 255, 0.05); border-left-color: #555; color: #777; text-decoration: line-through; }
         .delete-event-btn { position: absolute; right: 2px; top: 2px; background: #ff5f56; color: #fff; border: none; font-size: 0.8rem; width: 16px; height: 16px; display: none; line-height: 1; text-align: center; padding: 0; font-family: 'VT323'; }
         .edit-mode .delete-event-btn { display: block; }
         #admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #27c93f; margin-bottom: 15px; }
         .edit-mode #admin-hint { display: block; }
-
-        @media screen and (max-width: 768px) {
-            .navbar { flex-direction: column; padding: 15px 20px; gap: 15px; } .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; } .container { margin: 20px auto; padding: 0 15px; } .window-body { padding: 30px 20px; } h1 { font-size: 2.2rem; } .btn-retro { font-size: 1.3rem; padding: 12px 30px; } .hero-logo { max-width: 200px; } .about-layout { flex-direction: column; align-items: center; gap: 20px; } .about-image-wrapper { flex: none; width: 200px; } .timeline::after { left: 20px; } .timeline-item { width: 100%; padding-left: 50px; padding-right: 0; margin-bottom: 30px; } .timeline-item.left, .timeline-item.right { left: 0; } .timeline-item.left .timeline-dot, .timeline-item.right .timeline-dot { left: 8px; right: auto; }
-        }
-
+        @media screen and (max-width: 768px) { .navbar { flex-direction: column; padding: 15px 20px; gap: 15px; } .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; } .container { margin: 20px auto; padding: 0 15px; } .window-body { padding: 30px 20px; } h1 { font-size: 2.2rem; } .btn-retro { font-size: 1.3rem; padding: 12px 30px; } .hero-logo { max-width: 200px; } .about-layout { flex-direction: column; align-items: center; gap: 20px; } .about-image-wrapper { flex: none; width: 200px; } .timeline::after { left: 20px; } .timeline-item { width: 100%; padding-left: 50px; padding-right: 0; margin-bottom: 30px; } .timeline-item.left, .timeline-item.right { left: 0; } .timeline-item.left .timeline-dot, .timeline-item.right .timeline-dot { left: 8px; right: auto; } }
         .editable { padding: 4px 8px; border-radius: 4px; transition: 0.3s; display: inline-block; min-width: 50px; }
         .edit-mode .editable { background-color: rgba(255, 107, 0, 0.15); border: 1px dashed var(--orange-main); }
         .edit-mode .editable:focus { outline: none; background-color: rgba(255, 107, 0, 0.3); }
@@ -154,12 +93,10 @@
         .edit-mode .editable-block { background-color: rgba(255, 107, 0, 0.15); border: 1px dashed var(--orange-main); }
         .edit-mode .editable:empty { display: inline-block; min-width: 50px; min-height: 1.5em; }
         .edit-mode .editable:empty::before { content: "[สามารถพิมพ์ข้อความตรงนี้ได้]"; color: #888; font-size: 0.9em; }
-
         #admin-panel { position: fixed; bottom: 20px; right: 20px; background: #000; border: 2px solid var(--orange-main); padding: 15px; display: flex; gap: 10px; z-index: 100;}
         #admin-panel button { background: #333; color: white; border: none; padding: 8px 16px; font-family: 'VT323'; font-size: 1.2rem;}
         #save-btn { background-color: var(--orange-main) !important; color: #000 !important; font-weight: bold; display: none; }
         #logout-btn { display: none; background-color: #ff5f56 !important; }
-        
         #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 999;}
         .login-box { background: #0b101e; border: 4px solid var(--orange-main); padding: 40px; text-align: center; max-width: 90%; }
         .login-box input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 2px solid var(--orange-main); color: var(--orange-main); font-family: 'VT323'; font-size: 1.2rem;}
@@ -180,7 +117,6 @@
     </nav>
 
     <div class="container">
-        
         <!-- HOME -->
         <main id="home" class="section active">
             <div class="retro-window">
@@ -191,9 +127,7 @@
                         <div class="hero-section">
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
                             <img src="images/Code_Generated_Image.png" alt="PEEM Logo" class="hero-logo">
-                            <a href="https://codecontrav2by101studio.netlify.app/" target="_blank" class="btn-retro sound-trigger">
-                                ▶ START GAME
-                            </a>
+                            <a href="https://codecontrav2by101studio.netlify.app/" target="_blank" class="btn-retro sound-trigger">▶ START GAME</a>
                         </div>
                         <div class="timeline-section">
                             <h2 class="editable timeline-title-main" id="timeline-main-title" data-field="timeline_main_title">MEMORIES TIMELINE</h2>
@@ -224,9 +158,7 @@
                         <h2 id="month-year-label">MONTH YEAR</h2>
                         <button class="sound-trigger" onclick="changeMonth(1)">&#9654;</button>
                     </div>
-                    <div class="calendar-wrapper">
-                        <div id="calendar-grid" class="calendar-grid"></div>
-                    </div>
+                    <div class="calendar-wrapper"><div id="calendar-grid" class="calendar-grid"></div></div>
                 </div>
             </div>
         </main>
@@ -279,7 +211,6 @@
                 </div>
             </div>
         </main>
-
     </div>
 
     <div class="gallery-modal" id="galleryModal">
@@ -311,206 +242,106 @@
     </div>
 
     <script>
-        let scheduleData = []; 
-        let today = new Date();
-        let currentMonth = today.getMonth();
-        let currentYear = today.getFullYear();
+        // 🚨 สคริปต์ URL ของคุณ
+        const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZ3uwHVFLXwHKSo930sf69qUI9xNQ2TjWGOMC_AbLYeZzdbchX6d8vPkiGuAA7--Lp/exec";
+        
+        let scheduleData = []; let today = new Date(); let currentMonth = today.getMonth(); let currentYear = today.getFullYear();
         const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
         function renderCalendar() {
-            const grid = document.getElementById('calendar-grid');
-            const monthYearLabel = document.getElementById('month-year-label');
-            grid.innerHTML = '';
-            monthYearLabel.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-            
-            ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].forEach(day => {
-                const el = document.createElement('div');
-                el.className = 'calendar-day-header'; el.textContent = day; grid.appendChild(el);
-            });
+            const grid = document.getElementById('calendar-grid'); const monthYearLabel = document.getElementById('month-year-label');
+            grid.innerHTML = ''; monthYearLabel.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].forEach(day => { const el = document.createElement('div'); el.className = 'calendar-day-header'; el.textContent = day; grid.appendChild(el); });
 
-            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-            for (let i = 0; i < firstDay; i++) {
-                const empty = document.createElement('div'); empty.className = 'calendar-day empty'; grid.appendChild(empty);
-            }
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay(); const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            for (let i = 0; i < firstDay; i++) { const empty = document.createElement('div'); empty.className = 'calendar-day empty'; grid.appendChild(empty); }
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const cell = document.createElement('div'); cell.className = 'calendar-day';
                 const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 
-                // ค้นหางานที่ไม่ถูกลบ (นับรวมงานที่ขีดฆ่าแล้วด้วย)
                 const dayEvents = scheduleData.filter(e => e.date === dateStr);
-                
-                // โชว์หมุด 📌 ถ้ามีงาน (และงานนั้นยังไม่เสร็จ)
                 const activeEvents = dayEvents.filter(e => !e.completed);
                 const pinIcon = activeEvents.length > 0 ? ' <span style="font-size: 1rem;">📌</span>' : '';
                 cell.innerHTML = `<div class="day-number">${day}${pinIcon}</div>`;
                 
-                const eventsContainer = document.createElement('div');
-                eventsContainer.className = 'events-container';
-
+                const eventsContainer = document.createElement('div'); eventsContainer.className = 'events-container';
                 dayEvents.forEach(ev => {
                     const globalIndex = scheduleData.indexOf(ev);
                     const evEl = document.createElement('div');
-                    // ถ้า completed = true ให้ใส่คลาสเพิ่มเพื่อขีดฆ่า
                     evEl.className = 'calendar-event' + (ev.completed ? ' completed' : '');
                     
-                    // 🗡️ ระบบคลิกขีดฆ่าเควส
-                    const textSpan = document.createElement('span');
-                    textSpan.innerHTML = `▪️ ${ev.title}`;
-                    textSpan.onclick = (e) => { 
-                        if(document.body.classList.contains('edit-mode')) {
-                            e.stopPropagation(); 
-                            toggleQuest(globalIndex); 
-                        }
-                    };
+                    const textSpan = document.createElement('span'); textSpan.innerHTML = `▪️ ${ev.title}`;
+                    textSpan.onclick = (e) => { if(document.body.classList.contains('edit-mode')) { e.stopPropagation(); toggleQuest(globalIndex); } };
                     evEl.appendChild(textSpan);
                     
-                    // ปุ่มลบงานทิ้งถาวร
-                    const delBtn = document.createElement('button');
-                    delBtn.className = 'delete-event-btn sound-trigger';
-                    delBtn.textContent = 'x';
-                    delBtn.onclick = (e) => { 
-                        e.stopPropagation(); 
-                        deleteScheduleEvent(globalIndex); 
-                    };
+                    const delBtn = document.createElement('button'); delBtn.className = 'delete-event-btn sound-trigger'; delBtn.textContent = 'x';
+                    delBtn.onclick = (e) => { e.stopPropagation(); deleteScheduleEvent(globalIndex); };
                     evEl.appendChild(delBtn);
-                    
                     eventsContainer.appendChild(evEl);
                 });
                 cell.appendChild(eventsContainer);
-
-                cell.onclick = () => {
-                    if(document.body.classList.contains('edit-mode')) promptAddEvent(dateStr);
-                };
+                cell.onclick = () => { if(document.body.classList.contains('edit-mode')) promptAddEvent(dateStr); };
                 grid.appendChild(cell);
             }
         }
 
-        function changeMonth(dir) {
-            currentMonth += dir;
-            if(currentMonth < 0) { currentMonth = 11; currentYear--; }
-            if(currentMonth > 11) { currentMonth = 0; currentYear++; }
-            renderCalendar();
-        }
-
-        // 🗡️ ฟังก์ชันฟันมอนสเตอร์ (ขีดฆ่าเควส)
+        function changeMonth(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
+        
         function toggleQuest(index) {
             scheduleData[index].completed = !scheduleData[index].completed;
-            if(scheduleData[index].completed) playLevelUpSound(); // เล่นเสียงตอนติ๊กถูก
+            if(scheduleData[index].completed) playLevelUpSound();
             renderCalendar();
-            
-            // ออโต้เซฟทันทีไม่ต้องรอกดปุ่ม (ถ้าล็อกอินอยู่)
-            if(document.body.classList.contains('edit-mode')){
-                document.getElementById('save-btn').click();
-            }
+            if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); }
         }
 
-        // 🟢 อัปเดตฟังก์ชันเชื่อมต่อ LINE ให้รองรับ Flex Message
+        // แจ้งเตือนเข้าไลน์ตอนแอดงาน
         function sendLineNotify(dateStr, title) {
-            const scriptUrl = "https://script.google.com/macros/s/AKfycbxcoEyRzEgGWd5BfMFeg8L7Do647IFP2Ya75ZaZGlD3W3OXSztAqQeRiSaSqOvnyMMr/exec"; 
-            
             const formData = new URLSearchParams();
-            formData.append("date", dateStr); // แยกส่งวันที่
-            formData.append("title", title);  // แยกส่งชื่อเควส
-
-            fetch(scriptUrl, {
-                method: "POST",
-                body: formData,
-                mode: 'no-cors' 
-            }).then(() => console.log("ส่งแจ้งเตือนเข้า LINE สำเร็จ!"));
+            formData.append("action", "notify_now"); // บอกบอทว่าให้เตือนเลย
+            formData.append("date", dateStr); 
+            formData.append("title", title); 
+            fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: formData, mode: 'no-cors' });
         }
 
         function promptAddEvent(dateStr) {
             let title = prompt(`เพิ่มเควสสำหรับวันที่ ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`);
             if(title && title.trim() !== '') {
-                title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // กันแฮกเกอร์
-                
-                // เพิ่ม completed: false เป็นค่าเริ่มต้น
+                title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); 
                 scheduleData.push({ date: dateStr, title: title.trim(), completed: false });
                 renderCalendar();
                 sendLineNotify(dateStr, title.trim());
-
-                const saveBtn = document.getElementById('save-btn');
-                saveBtn.style.boxShadow = '0 0 15px #27c93f';
-                setTimeout(() => saveBtn.style.boxShadow = 'none', 1500);
+                const saveBtn = document.getElementById('save-btn'); saveBtn.style.boxShadow = '0 0 15px #27c93f'; setTimeout(() => saveBtn.style.boxShadow = 'none', 1500);
             }
         }
 
         function deleteScheduleEvent(index) {
             if(confirm("ลบเควสนี้ออกจากระบบใช่ไหม?")) {
-                scheduleData.splice(index, 1);
-                renderCalendar();
-                const saveBtn = document.getElementById('save-btn');
-                saveBtn.style.boxShadow = '0 0 15px #ff5f56';
-                setTimeout(() => saveBtn.style.boxShadow = 'none', 1500);
+                scheduleData.splice(index, 1); renderCalendar();
+                const saveBtn = document.getElementById('save-btn'); saveBtn.style.boxShadow = '0 0 15px #ff5f56'; setTimeout(() => saveBtn.style.boxShadow = 'none', 1500);
                 if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); }
             }
         }
     </script>
-
     <script>
         function openGallery(event, albumId) { if (event.target.classList.contains('editable')) return; document.getElementById('galleryModal').classList.add('active'); document.querySelectorAll('.gallery-content > div').forEach(el => el.style.display = 'none'); const targetAlbum = document.getElementById('album-' + albumId); if (targetAlbum) targetAlbum.style.display = 'flex'; }
         function closeGallery() { document.getElementById('galleryModal').classList.remove('active'); }
         function switchTab(e, tabId) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(tabId).classList.add('active'); if (e && e.currentTarget) e.currentTarget.classList.add('active'); }
     </script>
-
     <script>
-        // Matrix Effect
         const mCanvas = document.getElementById('matrixCanvas'); const mCtx = mCanvas.getContext('2d'); let mWidth, mHeight, columns, drops = []; const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</>{}[]~#'.split(''); const fontSize = 14;
         function initMatrix() { const resizeMatrix = () => { mWidth = mCanvas.parentElement.clientWidth; mHeight = mCanvas.parentElement.clientHeight; mCanvas.width = mWidth; mCanvas.height = mHeight; columns = Math.floor(mWidth / fontSize); drops = []; for(let i = 0; i < columns; i++) drops[i] = Math.random() * -100; }; window.addEventListener('resize', resizeMatrix); resizeMatrix(); setInterval(drawMatrix, 50); }
-        function drawMatrix() { mCtx.fillStyle = 'rgba(11, 16, 30, 0.3)'; mCtx.fillRect(0, 0, mWidth, mHeight); mCtx.fillStyle = '#ff6b00'; mCtx.font = fontSize + 'px "VT323", monospace'; for(let i = 0; i < drops.length; i++) { const text = chars[Math.floor(Math.random() * chars.length)]; mCtx.fillText(text, i * fontSize, drops[i] * fontSize); if(drops[i] * fontSize > mHeight && Math.random() > 0.95) drops[i] = 0; drops[i]++; } }
-        initMatrix();
-
-        // Dino Game Effect
+        function drawMatrix() { mCtx.fillStyle = 'rgba(11, 16, 30, 0.3)'; mCtx.fillRect(0, 0, mWidth, mHeight); mCtx.fillStyle = '#ff6b00'; mCtx.font = fontSize + 'px "VT323", monospace'; for(let i = 0; i < drops.length; i++) { const text = chars[Math.floor(Math.random() * chars.length)]; mCtx.fillText(text, i * fontSize, drops[i] * fontSize); if(drops[i] * fontSize > mHeight && Math.random() > 0.95) drops[i] = 0; drops[i]++; } } initMatrix();
         const canvas = document.getElementById('dinoCanvas'); const ctx = canvas.getContext('2d'); let width, height, frame = 0, cactusList = [], dino = { x: 80, y: 0, vY: 0, isJumping: false };
         function initDino() { const resize = () => { width = canvas.parentElement.clientWidth; height = canvas.parentElement.clientHeight; canvas.width = width; canvas.height = height; }; window.addEventListener('resize', resize); resize(); requestAnimationFrame(drawDino); }
-        function drawDino() { ctx.clearRect(0, 0, width, height); const groundY = height - 50; ctx.strokeStyle = '#ff6b00'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(width, groundY); ctx.stroke();
-            if (frame % 150 === 0) cactusList.push({ x: width + 50, type: Math.floor(Math.random() * 3) });
-            for (let i = 0; i < cactusList.length; i++) { let c = cactusList[i]; c.x -= 4; ctx.fillStyle = '#ff6b00'; ctx.fillRect(c.x, groundY - 30, 8, 30); if(c.type > 0) { ctx.fillRect(c.x - 8, groundY - 20, 6, 15); ctx.fillRect(c.x - 8, groundY - 10, 12, 4); } if(c.type > 1) { ctx.fillRect(c.x + 10, groundY - 25, 6, 15); ctx.fillRect(c.x + 4, groundY - 15, 12, 4); } if (c.x > dino.x && c.x < dino.x + 100 && !dino.isJumping) { dino.isJumping = true; dino.vY = -10; } }
-            cactusList = cactusList.filter(c => c.x > -50);
-            if (dino.isJumping) { dino.y += dino.vY; dino.vY += 0.5; if (dino.y >= 0) { dino.y = 0; dino.isJumping = false; } }
-            ctx.fillStyle = '#ff6b00'; let dy = groundY - 40 + dino.y; let dx = dino.x;
-            ctx.fillRect(dx + 20, dy, 24, 16); ctx.clearRect(dx + 24, dy + 2, 4, 4); ctx.clearRect(dx + 28, dy + 10, 16, 4); ctx.fillRect(dx + 10, dy + 16, 20, 20); ctx.fillRect(dx + 30, dy + 18, 8, 4); ctx.fillRect(dx + 34, dy + 22, 4, 4); ctx.fillRect(dx, dy + 20, 4, 12); ctx.fillRect(dx + 4, dy + 16, 6, 16); 
-            if (!dino.isJumping) { if (Math.floor(frame / 8) % 2 === 0) { ctx.fillRect(dx + 12, dy + 36, 6, 8); ctx.fillRect(dx + 22, dy + 36, 6, 4); } else { ctx.fillRect(dx + 12, dy + 36, 6, 4); ctx.fillRect(dx + 22, dy + 36, 6, 8); } } else { ctx.fillRect(dx + 12, dy + 36, 6, 4); ctx.fillRect(dx + 22, dy + 36, 6, 4); }
-            frame++; requestAnimationFrame(drawDino); }
-        initDino();
+        function drawDino() { ctx.clearRect(0, 0, width, height); const groundY = height - 50; ctx.strokeStyle = '#ff6b00'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(width, groundY); ctx.stroke(); if (frame % 150 === 0) cactusList.push({ x: width + 50, type: Math.floor(Math.random() * 3) }); for (let i = 0; i < cactusList.length; i++) { let c = cactusList[i]; c.x -= 4; ctx.fillStyle = '#ff6b00'; ctx.fillRect(c.x, groundY - 30, 8, 30); if(c.type > 0) { ctx.fillRect(c.x - 8, groundY - 20, 6, 15); ctx.fillRect(c.x - 8, groundY - 10, 12, 4); } if(c.type > 1) { ctx.fillRect(c.x + 10, groundY - 25, 6, 15); ctx.fillRect(c.x + 4, groundY - 15, 12, 4); } if (c.x > dino.x && c.x < dino.x + 100 && !dino.isJumping) { dino.isJumping = true; dino.vY = -10; } } cactusList = cactusList.filter(c => c.x > -50); if (dino.isJumping) { dino.y += dino.vY; dino.vY += 0.5; if (dino.y >= 0) { dino.y = 0; dino.isJumping = false; } } ctx.fillStyle = '#ff6b00'; let dy = groundY - 40 + dino.y; let dx = dino.x; ctx.fillRect(dx + 20, dy, 24, 16); ctx.clearRect(dx + 24, dy + 2, 4, 4); ctx.clearRect(dx + 28, dy + 10, 16, 4); ctx.fillRect(dx + 10, dy + 16, 20, 20); ctx.fillRect(dx + 30, dy + 18, 8, 4); ctx.fillRect(dx + 34, dy + 22, 4, 4); ctx.fillRect(dx, dy + 20, 4, 12); ctx.fillRect(dx + 4, dy + 16, 6, 16); if (!dino.isJumping) { if (Math.floor(frame / 8) % 2 === 0) { ctx.fillRect(dx + 12, dy + 36, 6, 8); ctx.fillRect(dx + 22, dy + 36, 6, 4); } else { ctx.fillRect(dx + 12, dy + 36, 6, 4); ctx.fillRect(dx + 22, dy + 36, 6, 8); } } else { ctx.fillRect(dx + 12, dy + 36, 6, 4); ctx.fillRect(dx + 22, dy + 36, 6, 4); } frame++; requestAnimationFrame(drawDino); } initDino();
     </script>
-
-    <!-- ระบบเสียง Click Sound & Quest Clear Sound -->
     <script>
         let audioCtx = null;
-        function playRetroClick() {
-            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-            const oscillator = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
-            oscillator.type = 'square'; oscillator.frequency.setValueAtTime(800, audioCtx.currentTime); oscillator.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
-            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-            oscillator.connect(gainNode); gainNode.connect(audioCtx.destination); oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.05); 
-        }
-        
-        // 🗡️ เสียงติ๊งงงง! (Level up) ตอนเคลียร์เควส
-        function playLevelUpSound() {
-            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-            const oscillator = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
-            oscillator.type = 'sine'; 
-            oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime); 
-            oscillator.frequency.exponentialRampToValueAtTime(2000, audioCtx.currentTime + 0.1);
-            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); 
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-            oscillator.connect(gainNode); gainNode.connect(audioCtx.destination); oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.3); 
-        }
-
-        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-retro, .btn-delete-event').forEach(btn => {
-            btn.addEventListener('click', playRetroClick);
-        });
-    </script>
-
-    <script>
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') { if (event.target.classList.contains('editable-block')) { event.preventDefault(); document.execCommand('insertLineBreak'); } else if (event.target.classList.contains('editable')) { event.preventDefault(); event.target.blur(); } }
-        });
+        function playRetroClick() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const oscillator = audioCtx.createOscillator(); const gainNode = audioCtx.createGain(); oscillator.type = 'square'; oscillator.frequency.setValueAtTime(800, audioCtx.currentTime); oscillator.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05); gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); oscillator.connect(gainNode); gainNode.connect(audioCtx.destination); oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.05); }
+        function playLevelUpSound() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const oscillator = audioCtx.createOscillator(); const gainNode = audioCtx.createGain(); oscillator.type = 'sine'; oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime); oscillator.frequency.exponentialRampToValueAtTime(2000, audioCtx.currentTime + 0.1); gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); oscillator.connect(gainNode); gainNode.connect(audioCtx.destination); oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.3); }
+        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-retro, .btn-delete-event').forEach(btn => { btn.addEventListener('click', playRetroClick); });
+        document.addEventListener('keydown', function(event) { if (event.key === 'Enter') { if (event.target.classList.contains('editable-block')) { event.preventDefault(); document.execCommand('insertLineBreak'); } else if (event.target.classList.contains('editable')) { event.preventDefault(); event.target.blur(); } } });
         document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); });
         document.getElementById('password').addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
     </script>
@@ -548,6 +379,13 @@
         document.getElementById('save-btn').onclick = async () => {
             const newData = {}; document.querySelectorAll('.editable').forEach(el => { newData[el.getAttribute('data-field')] = el.innerHTML; });
             newData['schedule_list'] = JSON.stringify(scheduleData);
+            
+            // 🚨 อัปเดตตารางงานให้บอทจำไว้ด้วย
+            const syncData = new URLSearchParams();
+            syncData.append("action", "sync_data");
+            syncData.append("data", JSON.stringify(scheduleData));
+            fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: syncData, mode: 'no-cors' });
+
             try {
                 document.getElementById('save-btn').innerHTML = "SAVING..."; await docRef.set(newData, { merge: true }); document.getElementById('save-btn').innerHTML = "SAVE DATA"; 
             } catch (error) { alert("บันทึกข้อมูลล้มเหลว: " + error.message); }
