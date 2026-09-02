@@ -132,11 +132,20 @@
                         <div class="timeline-section">
                             <h2 class="editable timeline-title-main" id="timeline-main-title" data-field="timeline_main_title">MEMORIES TIMELINE</h2>
                             <div class="timeline">
+                                <!-- อัลบั้มที่ 1: First Meet -->
                                 <div class="timeline-item left">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'first_meet')">
                                         <img src="images/cover.jpg" alt="First Meet Cover">
                                         <p class="editable" id="album-name-1" data-field="album_name_1">FIRST MEET CN25</p>
+                                    </div>
+                                </div>
+                                <!-- อัลบั้มที่ 2: Class Memories (เพิ่มใหม่) -->
+                                <div class="timeline-item right">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content sound-trigger" onclick="openGallery(event, 'class_memories')">
+                                        <img src="images/S__22814752_0.jpg" alt="Class Memories Cover">
+                                        <p class="editable" id="album-name-2" data-field="album_name_2">CLASS MEMORIES</p>
                                     </div>
                                 </div>
                             </div>
@@ -213,13 +222,20 @@
         </main>
     </div>
 
+    <!-- Gallery Modal -->
     <div class="gallery-modal" id="galleryModal">
         <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
         <div class="gallery-content">
+            <!-- เนื้อหาอัลบั้ม First Meet -->
             <div id="album-first_meet" class="album-images-container" style="display: none;">
                 <div class="gallery-item"><img src="images/activity1.jpg" alt="Activity 1"><p class="editable" id="gal-desc1" data-field="gal_desc1">สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p></div>
                 <div class="gallery-item"><img src="images/activity2.jpg" alt="Activity 2"><p class="editable" id="gal-desc2" data-field="gal_desc2">ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p></div>
                 <div class="gallery-item"><img src="images/cover.jpg" alt="Activity 3"><p class="editable" id="gal-desc3" data-field="gal_desc3">ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p></div>
+            </div>
+            <!-- เนื้อหาอัลบั้ม Class Memories (เพิ่มใหม่) -->
+            <div id="album-class_memories" class="album-images-container" style="display: none;">
+                <div class="gallery-item"><img src="images/S__22814752_0.jpg" alt="Class Photo 1"><p class="editable" id="class-desc1" data-field="class_desc1">บรรยากาศความสนุกสนานรวมตัวกันในห้องบรรยาย</p></div>
+                <div class="gallery-item"><img src="images/S__22814753_0.jpg" alt="Class Photo 2"><p class="editable" id="class-desc2" data-field="class_desc2">ภาพหมู่สุดประทับใจเก็บไว้เป็นความทรงจำดีๆ</p></div>
             </div>
         </div>
     </div>
@@ -242,7 +258,6 @@
     </div>
 
     <script>
-        // 🚨 สคริปต์ URL ของคุณ
         const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTA1ZaJi3ieoEJt6mQD12Y-Ti5KY-uuyS3SdgmoFGL64jtgZM2xVdyg7GP1pSer46ZCQ/exec";
         
         let scheduleData = []; let today = new Date(); let currentMonth = today.getMonth(); let currentYear = today.getFullYear();
@@ -295,10 +310,9 @@
             if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); }
         }
 
-        // แจ้งเตือนเข้าไลน์ตอนแอดงาน
         function sendLineNotify(dateStr, title) {
             const formData = new URLSearchParams();
-            formData.append("action", "notify_now"); // บอกบอทว่าให้เตือนเลย
+            formData.append("action", "notify_now");
             formData.append("date", dateStr); 
             formData.append("title", title); 
             fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: formData, mode: 'no-cors' });
@@ -380,7 +394,6 @@
             const newData = {}; document.querySelectorAll('.editable').forEach(el => { newData[el.getAttribute('data-field')] = el.innerHTML; });
             newData['schedule_list'] = JSON.stringify(scheduleData);
             
-            // 🚨 อัปเดตตารางงานให้บอทจำไว้ด้วย
             const syncData = new URLSearchParams();
             syncData.append("action", "sync_data");
             syncData.append("data", JSON.stringify(scheduleData));
