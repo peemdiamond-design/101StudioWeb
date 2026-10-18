@@ -140,7 +140,7 @@
                                         <p class="editable" id="album-name-1" data-field="album_name_1">FIRST MEET CN25</p>
                                     </div>
                                 </div>
-                                <!-- อัลบั้มที่ 2: Class Memories (เพิ่มใหม่) -->
+                                <!-- อัลบั้มที่ 2: Class Memories -->
                                 <div class="timeline-item right">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'class_memories')">
@@ -232,7 +232,7 @@
                 <div class="gallery-item"><img src="images/activity2.jpg" alt="Activity 2"><p class="editable" id="gal-desc2" data-field="gal_desc2">ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p></div>
                 <div class="gallery-item"><img src="images/cover.jpg" alt="Activity 3"><p class="editable" id="gal-desc3" data-field="gal_desc3">ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p></div>
             </div>
-            <!-- เนื้อหาอัลบั้ม Class Memories (เพิ่มใหม่) -->
+            <!-- เนื้อหาอัลบั้ม Class Memories -->
             <div id="album-class_memories" class="album-images-container" style="display: none;">
                 <div class="gallery-item"><img src="images/S__22814752_0.jpg" alt="Class Photo 1"><p class="editable" id="class-desc1" data-field="class_desc1">บรรยากาศความสนุกสนานรวมตัวกันในห้องบรรยาย</p></div>
                 <div class="gallery-item"><img src="images/S__22814753_0.jpg" alt="Class Photo 2"><p class="editable" id="class-desc2" data-field="class_desc2">ภาพหมู่สุดประทับใจเก็บไว้เป็นความทรงจำดีๆ</p></div>
@@ -387,7 +387,10 @@
         });
 
         document.getElementById('login-show-btn').onclick = () => document.getElementById('login-modal').style.display = 'flex';
-        document.getElementById('login-submit-btn').onclick = async () => { try { await auth.signInWithEmailAndPassword(document.getElementById('email').value.trim(), document.getElementById('password').value); document.getElementById('login-modal').style.display = 'none'; alert("แอดมินพร้อมลุยเควส!"); } catch (error) { alert("ล็อกอินล้มเหลว"); } };
+        
+        // แก้ไขบรรทัดนี้แล้วเพื่อแสดง Error ออกมา
+        document.getElementById('login-submit-btn').onclick = async () => { try { await auth.signInWithEmailAndPassword(document.getElementById('email').value.trim(), document.getElementById('password').value); document.getElementById('login-modal').style.display = 'none'; alert("แอดมินพร้อมลุยเควส!"); } catch (error) { alert("ล็อกอินล้มเหลว: " + error.message); console.error("Firebase Auth Error:", error); } };
+        
         document.getElementById('logout-btn').onclick = () => auth.signOut();
 
         document.getElementById('save-btn').onclick = async () => {
