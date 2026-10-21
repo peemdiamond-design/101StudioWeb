@@ -49,7 +49,7 @@
         h1 { font-size: 3.5rem; color: var(--ibm-text); margin-bottom: 5px; text-transform: uppercase; text-align: center; border-bottom: 4px solid var(--ibm-accent-blue); display: inline-block; padding-bottom: 5px; }
         .subtitle { font-size: 1.4rem; color: #525252; margin-bottom: 20px; margin-top: 10px; text-align: center; }
         
-        /* Project Lists (แบบบีบอัด ไม่เทอะทะ) */
+        /* Project Lists */
         .project-list-container { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-bottom: 25px; padding: 5px; }
         .project-item { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); box-shadow: 4px 4px 0px var(--ibm-shadow); text-align: left; padding: 12px 15px; display: flex; flex-direction: column; gap: 6px; transition: 0.1s; }
         .project-item:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--ibm-shadow); background: #fff; }
@@ -66,10 +66,16 @@
         .url-label { font-family: 'VT323'; color: var(--ibm-accent-blue); font-size: 1.1rem; }
         .proj-url-edit { word-break: break-all; font-family: 'VT323', monospace; font-size: 1rem; outline: none; display: inline-block; min-width: 50px; border-bottom: 1px dashed var(--ibm-accent-blue); }
         
-        .drive-btn-container { display: flex; flex-direction: column; gap: 20px; align-items: center; margin: 30px 0; width: 100%; }
-        .btn-drive { width: 100%; max-width: 500px; padding: 15px 30px; font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0; background-color: var(--ibm-pearl); color: var(--ibm-text); text-align: left; border: 2px solid var(--ibm-text); box-shadow: 4px 4px 0 var(--ibm-shadow);}
-        .btn-server { border-left: 15px solid #24a148; } .btn-code { border-left: 15px solid #1192e8; } .btn-exam { border-left: 15px solid #f1c21b; } .btn-portfolio { border-left: 15px solid #da1e28; }
-        .btn-drive:hover { background-color: #fff; transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ibm-shadow); }
+        /* === สไตล์หน้า ARCHIVE (อัปเกรดเป็น File Explorer) === */
+        .archive-layout { display: flex; gap: 20px; width: 100%; text-align: left; height: 500px; background: var(--ibm-pearl); padding: 15px; border: 2px solid var(--ibm-text); box-shadow: inset 4px 4px 0 rgba(255,255,255,0.8), inset -4px -4px 0 var(--ibm-shadow); }
+        .archive-sidebar { flex: 0 0 250px; display: flex; flex-direction: column; gap: 10px; border-right: 2px dashed var(--ibm-key-dark); padding-right: 15px; overflow-y: auto;}
+        .archive-sidebar::-webkit-scrollbar { width: 8px; } .archive-sidebar::-webkit-scrollbar-thumb { background: var(--ibm-key-dark); }
+        .archive-viewer { flex: 1; border: 4px solid var(--ibm-text); background: var(--ibm-key-dark); position: relative; display: flex; flex-direction: column; box-shadow: 4px 4px 0 var(--ibm-shadow); }
+        .archive-viewer iframe { flex: 1; width: 100%; height: 100%; border: none; background: #fff; }
+        .archive-viewer-header { background: var(--ibm-text); color: #fff; padding: 5px 10px; font-family: 'VT323'; font-size: 1.3rem; display: flex; justify-content: space-between; align-items: center;}
+        .folder-btn { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-text); padding: 12px 10px; font-family: 'VT323'; font-size: 1.4rem; text-align: left; transition: 0.1s; box-shadow: 3px 3px 0 var(--ibm-shadow); display: flex; align-items: center; gap: 10px;}
+        .folder-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ibm-shadow); background: #fff;}
+        .folder-btn.active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-shadow); background: var(--ibm-accent-blue); color: #fff;}
         
         .social-container { display: flex; justify-content: center; gap: 20px; margin-top: 40px; flex-wrap: wrap; width: 100%; }
         .btn-social { display: inline-flex; align-items: center; background: var(--ibm-key-light); color: var(--ibm-text); font-size: 1.4rem; font-weight: 700; padding: 10px 25px; text-decoration: none; border: 2px solid var(--ibm-text); box-shadow: 4px 4px 0px var(--ibm-shadow); transition: 0.1s; font-family: 'VT323'; letter-spacing: 1px; }
@@ -138,6 +144,10 @@
             .timeline-dot { left: -10px; width: 16px; height: 16px; top: 18px; }
             .logo img { height: 35px; }
             .project-header { flex-direction: column; align-items: flex-start; }
+            /* Mobile Archive Layout */
+            .archive-layout { flex-direction: column; height: 80vh; padding: 10px; gap: 10px;}
+            .archive-sidebar { flex: none; border-right: none; border-bottom: 2px dashed var(--ibm-key-dark); padding-right: 0; padding-bottom: 10px; flex-direction: row; overflow-x: auto; height: auto; }
+            .folder-btn { font-size: 1.1rem; white-space: nowrap; padding: 8px; }
         }
         
         /* สไตล์ Edit Mode ทั่วไป */
@@ -196,7 +206,7 @@
                             <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
                         </div>
                         
-                        <!-- โซนโชว์โปรเจกต์ (Compact Version) -->
+                        <!-- โซนโชว์โปรเจกต์ -->
                         <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px;">
                             <h2 class="editable timeline-title-main" id="proj-sec-title" data-field="proj_sec_title">DIRECTORY: \PROJECTS</h2>
                             
@@ -206,7 +216,6 @@
 
                             <button id="add-project-btn" class="action-btn sound-trigger" style="display:none; margin: 0 auto 15px auto; background: #24a148;" onclick="addNewProject()">[+] ADD NEW PROJECT</button>
 
-                            <!-- คอนเทนเนอร์สำหรับกล่องโปรเจกต์แบบไดนามิก -->
                             <div id="dynamic-project-container" class="project-list-container">
                                 <!-- JS จะเสกโค้ดโปรเจกต์มาใส่ตรงนี้ -->
                             </div>
@@ -257,21 +266,35 @@
             </div>
         </main>
 
-        <!-- ARCHIVE -->
+        <!-- ARCHIVE (อัปเกรดเป็น File Explorer) -->
         <main id="archive" class="section">
             <div class="retro-window">
                 <div class="window-header">
                     <div class="dot"></div><div class="dot"></div><div class="dot"></div>
                     <span class="window-title">C:\101_STUDIO\archive.exe</span>
                 </div>
-                <div class="window-body">
-                    <h1 class="editable" id="archive-title" data-field="archive_title">SYSTEM ARCHIVE</h1>
-                    <div class="drive-btn-container">
-                        <a href="https://peemdiamond-design.github.io/101-cloud-web/" target="_blank" class="btn-drive btn-server sound-trigger">[ NET ] SERVER HOST</a>
-                        <a href="https://drive.google.com/drive/folders/17TUnUfOEEOAdxi050iieJe0YMPFbc0G4?usp=sharing" target="_blank" class="btn-drive btn-code sound-trigger">[ DIR ] SOURCE CODE</a>
-                        <a href="https://drive.google.com/drive/folders/1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3?usp=sharing" target="_blank" class="btn-drive btn-exam sound-trigger">[ DIR ] EXAM & WORK</a>
-                        <a href="https://drive.google.com/drive/folders/1JIzrSaA0m32kf85xLa54qO82fPVQYWPj?usp=sharing" target="_blank" class="btn-drive btn-portfolio sound-trigger">[ DIR ] PORTFOLIO</a>
+                <div class="window-body" style="padding: 20px;">
+                    <h1 class="editable" id="archive-title" data-field="archive_title" style="margin-bottom: 20px;">SYSTEM ARCHIVE</h1>
+                    
+                    <div class="archive-layout">
+                        <!-- โซนเมนูเลือกโฟลเดอร์ -->
+                        <div class="archive-sidebar">
+                            <button class="folder-btn sound-trigger active" onclick="loadArchive(this, 'server', 'https://peemdiamond-design.github.io/101-cloud-web/')">🌐 SERVER HOST</button>
+                            <button class="folder-btn sound-trigger" onclick="loadArchive(this, 'code', 'https://drive.google.com/embeddedfolderview?id=17TUnUfOEEOAdxi050iieJe0YMPFbc0G4#grid')">📁 SOURCE CODE</button>
+                            <button class="folder-btn sound-trigger" onclick="loadArchive(this, 'exam', 'https://drive.google.com/embeddedfolderview?id=1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3#grid')">📁 EXAM & WORK</button>
+                            <button class="folder-btn sound-trigger" onclick="loadArchive(this, 'portfolio', 'https://drive.google.com/embeddedfolderview?id=1JIzrSaA0m32kf85xLa54qO82fPVQYWPj#grid')">📁 PORTFOLIO</button>
+                        </div>
+                        
+                        <!-- โซนแสดงผล Google Drive Iframe -->
+                        <div class="archive-viewer">
+                            <div class="archive-viewer-header">
+                                <span id="archive-path">C:\ARCHIVE\SERVER_HOST\</span>
+                                <a id="archive-ext-link" href="https://peemdiamond-design.github.io/101-cloud-web/" target="_blank" class="sound-trigger" style="color:#0f62fe; background:#fff; padding:0 8px; text-decoration:none; border: 1px solid var(--ibm-text); font-size:1.1rem; display:flex; align-items:center;">[ OPEN TAB ]</a>
+                            </div>
+                            <iframe id="archive-iframe" src="https://peemdiamond-design.github.io/101-cloud-web/"></iframe>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </main>
@@ -373,7 +396,6 @@
                 const el = document.createElement('div');
                 el.className = 'project-item';
                 
-                // ปุ่มลบโปรเจกต์ถูกย่อให้เล็กลง
                 let deleteBtnHTML = isEdit ? `<button class="action-btn sound-trigger" style="background:#da1e28; margin-left:5px; padding:4px 10px;" onclick="deleteProject(${index})">X</button>` : '';
                 
                 el.innerHTML = `
@@ -421,6 +443,33 @@
                 if (!link.startsWith('http://') && !link.startsWith('https://')) { link = 'https://' + link; }
                 window.open(link, '_blank');
             }
+        }
+        
+        // ฟังก์ชันเปลี่ยนโฟลเดอร์ในหน้า Archive
+        function loadArchive(btnElement, pathName, url) {
+            // ลบแถบสีฟ้าจากปุ่มเก่า แล้วใส่ปุ่มใหม่
+            document.querySelectorAll('.folder-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+            
+            // เปลี่ยนลิงก์ให้ Iframe
+            document.getElementById('archive-iframe').src = url;
+            
+            // เปลี่ยนชื่อ Path บนหัว Iframe
+            const pathTitles = {
+                'server': 'C:\\ARCHIVE\\SERVER_HOST\\',
+                'code': 'C:\\ARCHIVE\\SOURCE_CODE\\',
+                'exam': 'C:\\ARCHIVE\\EXAM_AND_WORK\\',
+                'portfolio': 'C:\\ARCHIVE\\PORTFOLIO\\'
+            };
+            document.getElementById('archive-path').innerText = pathTitles[pathName];
+            
+            // เปลี่ยนลิงก์ของปุ่ม [ OPEN TAB ] มุมขวาบน (ลบคำว่า embed ออกเพื่อให้เปิดแบบปกติได้)
+            let extUrl = url;
+            if(url.includes('embeddedfolderview?id=')) {
+                let id = url.split('id=')[1].split('#')[0];
+                extUrl = 'https://drive.google.com/drive/folders/' + id;
+            }
+            document.getElementById('archive-ext-link').href = extUrl;
         }
 
         function renderCalendar() {
@@ -475,7 +524,7 @@
         let audioCtx = null;
         function playRetroClick() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05); gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05); }
         function playLevelUpSound() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
-        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-drive, .btn-social, .logo, .action-btn').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
+        document.querySelectorAll('.sound-trigger, .nav-btn, .folder-btn, .btn-social, .logo, .action-btn').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
         
         document.addEventListener('keydown', function(event) { if (event.key === 'Enter') { if (event.target.classList.contains('editable-block') || event.target.classList.contains('project-desc')) { event.preventDefault(); document.execCommand('insertLineBreak'); } else if (event.target.classList.contains('editable') || event.target.classList.contains('project-title') || event.target.classList.contains('proj-url-edit')) { event.preventDefault(); event.target.blur(); } } });
         document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); });
