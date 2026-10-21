@@ -3,104 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>101 STUDIO | Pixel Perfect</title>
+    <title>101 STUDIO | IBM Retro Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
     <style>
-        :root { --window-bg: rgba(11, 16, 30, 0.95); --orange-main: #ff6b00; --orange-dark: #b34a00; --text-light: #f8fafc; }
+        :root { 
+            /* IBM Model M Theme Colors */
+            --ibm-pearl: #e0e0e0;       /* ขาวไข่มุกตัวถังคีย์บอร์ด */
+            --ibm-key-light: #f4f4f4;   /* สีปุ่มตัวอักษรสีสว่าง */
+            --ibm-key-dark: #a8a8a8;    /* สีเทาปุ่มฟังก์ชัน (Industrial Grey) */
+            --ibm-text: #161616;        /* สีตัวอักษรบนปุ่ม (Raven Black) */
+            --ibm-accent-blue: #0f62fe; /* สีน้ำเงิน IBM โลโก้ */
+            --ibm-shadow: #8d8d8d;      /* สีเงาแป้นพิมพ์ */
+            --bg-color: #c6c6c6;        /* พื้นหลังโต๊ะทำงานสีเทาอ่อน */
+        }
+        
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; cursor: url('https://cur.cursors-4u.net/system/sys-1/sys46.png'), auto !important; }
         button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
-        body { background-color: #000; background-image: url('images/482bc578-6c0c-41c5-a91d-c1ea840b343f.jpg'); background-size: cover; background-position: center; background-attachment: fixed; image-rendering: -webkit-optimize-contrast; image-rendering: pixelated; color: var(--text-light); min-height: 100vh; overflow-x: hidden; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background-color: rgba(9, 12, 21, 0.95); border-bottom: 4px solid var(--orange-main); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 50; }
-        .logo { font-family: 'VT323', monospace; font-size: 2.5rem; color: var(--orange-main); text-shadow: 2px 2px 0px var(--orange-dark); letter-spacing: 2px; }
+        
+        /* พื้นหลังปรับใหม่ให้ดูคลีนขึ้น เข้ากับธีมอุปกรณ์สำนักงาน */
+        body { background-color: var(--bg-color); color: var(--ibm-text); min-height: 100vh; overflow-x: hidden; }
+        
+        /* Navbar สไตล์ขอบสันคีย์บอร์ด */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background-color: var(--ibm-pearl); border-bottom: 4px solid var(--ibm-key-dark); position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 0 var(--ibm-shadow); }
+        .logo { font-family: 'VT323', monospace; font-size: 2.8rem; color: var(--ibm-accent-blue); text-shadow: 2px 2px 0px var(--ibm-key-light); letter-spacing: 2px; }
         .nav-links { display: flex; gap: 15px; }
-        .nav-btn { background: transparent; color: var(--orange-main); border: none; font-size: 1.2rem; font-weight: 700; padding: 8px 16px; transition: 0.2s; }
-        .nav-btn:hover { background: rgba(255, 107, 0, 0.2); } .nav-btn.active { background-color: var(--orange-main); color: #000; border-radius: 4px; }
+        
+        /* ปุ่ม Navbar ทำเหมือนปุ่ม IBM (โค้งมนนิดๆ ยกตัวสูง) */
+        .nav-btn { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-key-dark); border-radius: 4px; font-size: 1.2rem; font-weight: 700; padding: 8px 20px; transition: 0.1s; box-shadow: 2px 4px 0 var(--ibm-shadow); }
+        .nav-btn:hover { background: #fff; transform: translateY(2px); box-shadow: 2px 2px 0 var(--ibm-shadow); } 
+        .nav-btn.active { background-color: var(--ibm-key-dark); color: #fff; transform: translateY(4px); box-shadow: 0 0 0 var(--ibm-shadow); border-color: var(--ibm-text); }
+        
         .container { max-width: 1000px; margin: 50px auto; padding: 0 20px; }
         .section { display: none; animation: fadeIn 0.4s ease-in-out; } .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-        .retro-window { background-color: var(--window-bg); border: 4px solid var(--orange-main); border-radius: 8px; box-shadow: 15px 15px 0px rgba(0,0,0,0.8); overflow: hidden; backdrop-filter: blur(5px); }
-        .window-header { background-color: var(--orange-main); padding: 10px 15px; display: flex; gap: 8px; align-items: center; }
-        .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.3); } .dot.red { background-color: #ff5f56; } .dot.yellow { background-color: #ffbd2e; } .dot.green { background-color: #27c93f; }
-        .window-body { padding: 50px 40px; text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; }
-        .home-content { position: relative; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; }
-        .hero-section { position: relative; width: 100%; padding-bottom: 20px; display: flex; flex-direction: column; align-items: center; }
-        .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.4; }
-        .dino-bg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.15; }
-        h1 { font-size: 3.5rem; color: var(--orange-main); margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 0px rgba(0,0,0,0.8); text-align: center; }
-        .subtitle { font-size: 1.4rem; color: #ddd; margin-bottom: 20px; margin-top: 10px; text-align: center; }
-        .hero-logo { max-width: 250px; width: 100%; height: auto; display: block; margin: 0 auto 30px auto; filter: invert(1) drop-shadow(4px 4px 0px var(--orange-dark)); }
-        .btn-retro { display: inline-block; background-color: var(--orange-main); color: #000; font-size: 1.8rem; font-weight: 700; padding: 15px 60px; text-decoration: none; border: 4px solid #000; box-shadow: 6px 6px 0px #000; transition: all 0.2s ease; font-family: 'VT323'; letter-spacing: 2px; margin-top: 10px; }
-        .btn-retro:not(.btn-drive):hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0px #000; } .btn-retro:active { transform: translate(6px, 6px) !important; box-shadow: 0px 0px 0px #000 !important; }
-        .drive-btn-container { display: flex; flex-direction: column; gap: 25px; align-items: center; margin: 40px 0; width: 100%; }
-        .btn-drive { width: 100%; max-width: 500px; padding: 20px 40px; font-size: 2rem; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0; }
-        .btn-server { background-color: #27c93f; color: #000; } .btn-code { background-color: #00e5ff; } .btn-exam { background-color: #ffde00; } .btn-portfolio { background-color: #ff3399; color: #fff; }
-        .btn-drive:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px #000; filter: brightness(1.1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* กรอบ Retro Window เปลี่ยนเป็นสไตล์ Terminal/Monitor ยุคเก่า แต่ขอบนอกเป็นสี Model M */
+        .retro-window { background-color: var(--ibm-key-light); border: 4px solid var(--ibm-text); border-radius: 8px; box-shadow: 10px 10px 0px var(--ibm-shadow); overflow: hidden; }
+        .window-header { background-color: var(--ibm-key-dark); padding: 10px 15px; display: flex; gap: 8px; align-items: center; border-bottom: 4px solid var(--ibm-text); }
+        .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ibm-text); background-color: var(--ibm-pearl); }
+        .window-title { margin-left: 10px; font-family: 'VT323'; color: #fff; font-size: 1.2rem; letter-spacing: 1px; }
+        
+        /* พื้นที่เนื้อหาใช้สีโทนสว่าง */
+        .window-body { padding: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFElEQVQIW2NkYGD4z8DAwMgAI0AMDA4BGbRFSEgAAAAASUVORK5CYII=') repeat; }
+        .home-content { position: relative; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; background-color: rgba(244,244,244,0.9); padding: 20px; border: 2px dashed var(--ibm-key-dark); }
+        
+        h1 { font-size: 3.5rem; color: var(--ibm-text); margin-bottom: 20px; text-transform: uppercase; text-align: center; border-bottom: 4px solid var(--ibm-accent-blue); display: inline-block; padding-bottom: 5px; }
+        .subtitle { font-size: 1.4rem; color: #525252; margin-bottom: 20px; margin-top: 10px; text-align: center; }
+        
+        /* โลโก้ในหน้าแรก */
+        .hero-logo { max-width: 250px; width: 100%; height: auto; display: block; margin: 0 auto 30px auto; filter: drop-shadow(4px 4px 0px var(--ibm-key-dark)); }
+        
+        /* ปุ่มหลักขนาดใหญ่ สไตล์ปุ่ม Enter ของ IBM */
+        .btn-retro { display: inline-block; background-color: var(--ibm-accent-blue); color: #fff; font-size: 1.8rem; font-weight: 700; padding: 15px 60px; text-decoration: none; border: 4px solid var(--ibm-text); box-shadow: 6px 6px 0px var(--ibm-text); transition: all 0.1s ease; font-family: 'VT323'; letter-spacing: 2px; margin-top: 10px; border-radius: 4px; }
+        .btn-retro:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0px var(--ibm-text); background-color: #4589ff; } 
+        .btn-retro:active { transform: translate(6px, 6px) !important; box-shadow: 0px 0px 0px var(--ibm-text) !important; }
+        
+        .drive-btn-container { display: flex; flex-direction: column; gap: 20px; align-items: center; margin: 30px 0; width: 100%; }
+        /* ปุ่มในหน้า Archive แบ่งสไตล์สีแบบปุ่มฟังก์ชันต่างๆ */
+        .btn-drive { width: 100%; max-width: 500px; padding: 15px 30px; font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0; background-color: var(--ibm-pearl); color: var(--ibm-text); text-align: left; }
+        .btn-server { border-left: 15px solid #24a148; } .btn-code { border-left: 15px solid #1192e8; } .btn-exam { border-left: 15px solid #f1c21b; } .btn-portfolio { border-left: 15px solid #da1e28; }
+        .btn-drive:hover { background-color: #fff; }
+        
         .social-container { display: flex; justify-content: center; gap: 20px; margin-top: 40px; flex-wrap: wrap; width: 100%; }
-        .btn-social { display: inline-flex; align-items: center; color: #fff; font-size: 1.4rem; font-weight: 700; padding: 12px 30px; text-decoration: none; border: 4px solid #000; box-shadow: 5px 5px 0px #000; transition: 0.1s; font-family: 'VT323'; letter-spacing: 1px; }
-        .btn-social:active { transform: translate(5px, 5px); box-shadow: 0px 0px 0px #000; }
-        .btn-fb { background-color: #1877F2; } .btn-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); } .btn-tt { background-color: #000; border-color: #25F4EE; box-shadow: 5px 5px 0px #FE2C55; }
-        .timeline-section { margin-top: 60px; padding-top: 40px; border-top: 2px dashed rgba(255, 107, 0, 0.3); width: 100%; }
-        .timeline-title-main { color: var(--orange-main); font-family: 'VT323', monospace; font-size: 2.8rem; margin-bottom: 40px; text-transform: uppercase; text-align: center; }
-        .timeline { position: relative; max-width: 800px; margin: 0 auto; padding: 20px 0; }
-        .timeline::after { content: ''; position: absolute; width: 4px; background-color: var(--orange-main); top: 0; bottom: 0; left: 50%; margin-left: -2px; border-radius: 2px; }
-        .timeline-item { padding: 10px 40px; position: relative; width: 50%; } .timeline-item.left { left: 0; } .timeline-item.right { left: 50%; }
-        .timeline-dot { position: absolute; width: 24px; height: 24px; background-color: #000; border: 4px solid var(--orange-main); top: 30px; border-radius: 50%; z-index: 1; box-shadow: 0 0 10px rgba(255, 107, 0, 0.5); }
-        .timeline-item.left .timeline-dot { right: -12px; } .timeline-item.right .timeline-dot { left: -12px; }
-        .timeline-content { background: rgba(0,0,0,0.6); border: 2px solid var(--orange-main); border-radius: 8px; padding: 15px; box-shadow: 5px 5px 0px rgba(0,0,0,0.8); transition: 0.2s; display: flex; flex-direction: column; align-items: center; }
-        .timeline-content:hover { transform: translateY(-5px); box-shadow: 8px 8px 0px rgba(255, 107, 0, 0.5); border-color: #fff; }
-        .timeline-content img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border: 2px solid #333; margin-bottom: 15px; border-radius: 4px; }
-        .timeline-content p { font-size: 1.6rem; color: var(--text-light); font-family: 'VT323', monospace; margin: 0; text-transform: uppercase; }
-        .gallery-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: flex-start; flex-direction: column; }
-        .gallery-modal.active { display: flex; animation: fadeIn 0.3s; }
-        .gallery-close { position: absolute; top: 20px; right: 30px; color: var(--orange-main); font-size: 4rem; z-index: 1001; font-family: 'VT323', monospace; transition: 0.2s; text-shadow: 2px 2px 0px #000; }
-        .gallery-close:hover { color: #fff; transform: scale(1.1); }
+        .btn-social { display: inline-flex; align-items: center; background: var(--ibm-key-light); color: var(--ibm-text); font-size: 1.4rem; font-weight: 700; padding: 10px 25px; text-decoration: none; border: 2px solid var(--ibm-text); box-shadow: 4px 4px 0px var(--ibm-shadow); transition: 0.1s; font-family: 'VT323'; letter-spacing: 1px; }
+        .btn-social:hover { background: #fff; }
+        .btn-social:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px var(--ibm-shadow); }
+        
+        /* Timeline ออกแบบใหม่เป็นเส้นตรงคลีนๆ เหมือนโครงสร้างไฟล์ต้นไม้ (Tree structure) */
+        .timeline-section { margin-top: 50px; padding-top: 30px; width: 100%; }
+        .timeline-title-main { color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.8rem; margin-bottom: 30px; text-transform: uppercase; text-align: center; }
+        .timeline { position: relative; max-width: 700px; margin: 0 auto; padding: 10px 0; border-left: 4px solid var(--ibm-key-dark); }
+        .timeline-item { padding: 10px 0 30px 40px; position: relative; width: 100%; text-align: left; } 
+        .timeline-dot { position: absolute; width: 20px; height: 20px; background-color: var(--ibm-accent-blue); border: 4px solid var(--ibm-key-light); top: 15px; left: -12px; border-radius: 50%; box-shadow: 0 0 0 2px var(--ibm-text); }
+        .timeline-content { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); padding: 15px; box-shadow: 6px 6px 0px var(--ibm-shadow); transition: 0.1s; display: inline-flex; flex-direction: column; width: 90%; }
+        .timeline-content:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0px var(--ibm-shadow); background: #fff; }
+        .timeline-content img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 2px solid var(--ibm-text); margin-bottom: 10px; filter: grayscale(20%); transition: 0.3s; }
+        .timeline-content:hover img { filter: grayscale(0%); }
+        .timeline-content p { font-size: 1.6rem; color: var(--ibm-text); font-family: 'VT323', monospace; margin: 0; text-transform: uppercase; font-weight: bold;}
+        
+        .gallery-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22,22,22,0.95); z-index: 1000; justify-content: center; align-items: flex-start; flex-direction: column; }
+        .gallery-modal.active { display: flex; animation: fadeIn 0.2s; }
+        .gallery-close { position: absolute; top: 20px; right: 30px; color: var(--ibm-key-light); font-size: 4rem; z-index: 1001; font-family: 'VT323', monospace; transition: 0.1s; }
+        .gallery-close:hover { color: var(--ibm-accent-blue); transform: scale(1.1); }
         .gallery-content { width: 100%; max-width: 900px; height: 100vh; overflow-y: auto; padding: 60px 20px; margin: 0 auto; }
-        .gallery-content::-webkit-scrollbar { width: 10px; } .gallery-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); border-radius: 5px;} .gallery-content::-webkit-scrollbar-thumb { background: var(--orange-main); border-radius: 5px;}
+        .gallery-content::-webkit-scrollbar { width: 12px; background: var(--ibm-key-dark); } .gallery-content::-webkit-scrollbar-thumb { background: var(--ibm-text); border: 2px solid var(--ibm-key-dark); }
         .album-images-container { display: flex; flex-direction: column; gap: 30px; }
-        .gallery-item { background: rgba(11, 16, 30, 0.9); border: 2px solid var(--orange-main); border-radius: 8px; padding: 20px; text-align: center; box-shadow: 5px 5px 0px #000; }
-        .gallery-item img { width: 100%; max-height: 70vh; object-fit: contain; border-radius: 4px; border: 2px solid #333; margin-bottom: 15px; background-color: #000; }
-        .gallery-item p { color: #ddd; font-size: 1.2rem; margin: 0; line-height: 1.6; text-align: left; }
-        .about-layout { display: flex; gap: 40px; align-items: flex-start; margin: 30px 0; text-align: left; width: 100%; }
-        .about-image-wrapper { flex: 0 0 280px; border: 4px solid var(--orange-main); background-color: #000; padding: 8px; box-shadow: 10px 10px 0px rgba(0,0,0,0.8); position: relative; }
-        .about-image-wrapper img { width: 100%; height: auto; display: block; border: 2px solid var(--orange-dark); object-fit: cover; }
-        .about-text-content { flex: 1; background: rgba(0,0,0,0.5); padding: 30px; border: 2px dashed #444; border-radius: 8px; width: 100%; }
-        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; width: 100%; }
-        .calendar-header button { background: #000; border: 2px solid var(--orange-main); color: var(--orange-main); padding: 5px 20px; font-family: 'VT323'; font-size: 2rem; box-shadow: 3px 3px 0 #000; transition: 0.1s; }
-        .calendar-header button:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #000; }
-        .calendar-header h2 { font-family: 'VT323'; color: #fff; font-size: 2.5rem; margin: 0; text-shadow: 2px 2px 0 #000; }
-        .calendar-wrapper { width: 100%; overflow-x: auto; padding-bottom: 10px; }
-        .calendar-wrapper::-webkit-scrollbar { height: 10px; } .calendar-wrapper::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); border-radius: 5px;} .calendar-wrapper::-webkit-scrollbar-thumb { background: var(--orange-main); border-radius: 5px;}
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; background: var(--orange-main); border: 2px solid var(--orange-main); min-width: 700px; }
-        .calendar-day-header { background: #111; color: var(--orange-main); text-align: center; padding: 10px; font-family: 'VT323'; font-size: 1.5rem; font-weight: bold; }
-        .calendar-day { background: rgba(11, 16, 30, 0.9); min-height: 100px; padding: 5px; display: flex; flex-direction: column; position: relative; transition: 0.2s; }
-        .calendar-day.empty { background: #05080f; }
-        .edit-mode .calendar-day:not(.empty):hover { background: #1a1a1a; box-shadow: inset 0 0 0 2px var(--orange-main); }
-        .day-number { text-align: right; font-family: 'VT323'; font-size: 1.2rem; color: #666; margin-bottom: 5px; }
-        .events-container { flex: 1; display: flex; flex-direction: column; gap: 3px; overflow-y: auto; }
+        .gallery-item { background: var(--ibm-pearl); border: 4px solid var(--ibm-text); padding: 15px; text-align: center; box-shadow: 8px 8px 0px #000; }
+        .gallery-item img { width: 100%; max-height: 70vh; object-fit: contain; border: 2px solid var(--ibm-text); margin-bottom: 15px; background-color: var(--ibm-key-dark); }
+        .gallery-item p { color: var(--ibm-text); font-size: 1.4rem; margin: 0; font-family: 'VT323'; text-align: left; background: #fff; padding: 10px; border: 1px dashed var(--ibm-text); }
+        
+        .about-layout { display: flex; gap: 40px; align-items: flex-start; margin: 20px 0; text-align: left; width: 100%; background: #fff; border: 2px solid var(--ibm-text); padding: 20px; box-shadow: 5px 5px 0px var(--ibm-shadow); }
+        .about-image-wrapper { flex: 0 0 250px; border: 4px solid var(--ibm-text); background-color: var(--ibm-key-light); padding: 8px; }
+        .about-image-wrapper img { width: 100%; height: auto; display: block; border: 2px solid var(--ibm-key-dark); filter: contrast(1.1); }
+        .about-text-content { flex: 1; padding: 10px; }
+        
+        /* ปฏิทินดีไซน์แบบตาราง Excel ยุคเก่า (Spreadsheet Style) */
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; width: 100%; background: var(--ibm-key-dark); padding: 10px; border: 2px solid var(--ibm-text); color: #fff;}
+        .calendar-header button { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); color: var(--ibm-text); padding: 5px 15px; font-family: 'VT323'; font-size: 1.8rem; transition: 0.1s; box-shadow: 2px 2px 0 #000;}
+        .calendar-header button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+        .calendar-header h2 { font-family: 'VT323'; font-size: 2.2rem; margin: 0; letter-spacing: 1px;}
+        
+        .calendar-wrapper { width: 100%; overflow-x: auto; border: 2px solid var(--ibm-text); background: var(--ibm-key-dark); }
+        .calendar-wrapper::-webkit-scrollbar { height: 12px; background: var(--ibm-key-dark); } .calendar-wrapper::-webkit-scrollbar-thumb { background: var(--ibm-text); border: 2px solid var(--ibm-key-dark);}
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--ibm-text); min-width: 700px; }
+        .calendar-day-header { background: var(--ibm-pearl); color: var(--ibm-text); text-align: center; padding: 10px 5px; font-family: 'VT323'; font-size: 1.4rem; font-weight: bold; border-bottom: 2px solid var(--ibm-text); }
+        .calendar-day { background: #fff; min-height: 110px; padding: 5px; display: flex; flex-direction: column; position: relative; }
+        .calendar-day.empty { background: var(--ibm-key-light); }
+        .edit-mode .calendar-day:not(.empty):hover { background: #f0f8ff; cursor: pointer; }
+        .day-number { text-align: right; font-family: 'VT323'; font-size: 1.3rem; color: #525252; margin-bottom: 5px; border-bottom: 1px dashed var(--ibm-key-dark); padding-bottom: 2px; }
+        
+        .events-container { flex: 1; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; padding-top: 5px;}
         .events-container::-webkit-scrollbar { display: none; }
-        .calendar-event { background: rgba(255, 107, 0, 0.2); border-left: 3px solid var(--orange-main); font-size: 0.9rem; padding: 4px 6px; line-height: 1.3; position: relative; padding-right: 20px; color: #fff; word-break: break-word; transition: 0.2s; }
-        .calendar-event.completed { background: rgba(255, 255, 255, 0.05); border-left-color: #555; color: #777; text-decoration: line-through; }
-        .delete-event-btn { position: absolute; right: 2px; top: 2px; background: #ff5f56; color: #fff; border: none; font-size: 0.8rem; width: 16px; height: 16px; display: none; line-height: 1; text-align: center; padding: 0; font-family: 'VT323'; }
+        /* สไตล์งาน (เควส) ในปฏิทิน */
+        .calendar-event { background: var(--ibm-pearl); border-left: 4px solid var(--ibm-accent-blue); font-size: 0.95rem; padding: 5px 6px; line-height: 1.2; position: relative; padding-right: 20px; color: var(--ibm-text); word-break: break-word; font-family: 'VT323'; }
+        .calendar-event.completed { background: var(--ibm-key-light); border-left-color: var(--ibm-key-dark); color: #8d8d8d; text-decoration: line-through; font-style: italic; }
+        
+        .delete-event-btn { position: absolute; right: 2px; top: 2px; background: #da1e28; color: #fff; border: 1px solid var(--ibm-text); font-size: 0.8rem; width: 16px; height: 16px; display: none; line-height: 1; text-align: center; padding: 0; font-family: 'VT323'; box-shadow: 1px 1px 0 #000; }
         .edit-mode .delete-event-btn { display: block; }
-        #admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #27c93f; margin-bottom: 15px; }
+        
+        #admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; width: 100%; text-align: left; }
         .edit-mode #admin-hint { display: block; }
-        @media screen and (max-width: 768px) { .navbar { flex-direction: column; padding: 15px 20px; gap: 15px; } .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; } .container { margin: 20px auto; padding: 0 15px; } .window-body { padding: 30px 20px; } h1 { font-size: 2.2rem; } .btn-retro { font-size: 1.3rem; padding: 12px 30px; } .hero-logo { max-width: 200px; } .about-layout { flex-direction: column; align-items: center; gap: 20px; } .about-image-wrapper { flex: none; width: 200px; } .timeline::after { left: 20px; } .timeline-item { width: 100%; padding-left: 50px; padding-right: 0; margin-bottom: 30px; } .timeline-item.left, .timeline-item.right { left: 0; } .timeline-item.left .timeline-dot, .timeline-item.right .timeline-dot { left: 8px; right: auto; } }
-        .editable { padding: 4px 8px; border-radius: 4px; transition: 0.3s; display: inline-block; min-width: 50px; }
-        .edit-mode .editable { background-color: rgba(255, 107, 0, 0.15); border: 1px dashed var(--orange-main); }
-        .edit-mode .editable:focus { outline: none; background-color: rgba(255, 107, 0, 0.3); }
-        h1.editable, h3.editable, h2.editable { display: block !important; width: 100% !important; text-align: center !important; white-space: normal !important; word-break: break-word !important; margin: 0 auto 20px auto !important; }
-        .editable-block { display: block; text-align: left; padding: 15px; min-height: 200px; white-space: pre-wrap; word-wrap: break-word; width: 100%; } 
-        .edit-mode .editable-block { background-color: rgba(255, 107, 0, 0.15); border: 1px dashed var(--orange-main); }
-        .edit-mode .editable:empty { display: inline-block; min-width: 50px; min-height: 1.5em; }
-        .edit-mode .editable:empty::before { content: "[สามารถพิมพ์ข้อความตรงนี้ได้]"; color: #888; font-size: 0.9em; }
-        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: #000; border: 2px solid var(--orange-main); padding: 15px; display: flex; gap: 10px; z-index: 100;}
-        #admin-panel button { background: #333; color: white; border: none; padding: 8px 16px; font-family: 'VT323'; font-size: 1.2rem;}
-        #save-btn { background-color: var(--orange-main) !important; color: #000 !important; font-weight: bold; display: none; }
-        #logout-btn { display: none; background-color: #ff5f56 !important; }
-        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 999;}
-        .login-box { background: #0b101e; border: 4px solid var(--orange-main); padding: 40px; text-align: center; max-width: 90%; }
-        .login-box input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 2px solid var(--orange-main); color: var(--orange-main); font-family: 'VT323'; font-size: 1.2rem;}
-        .login-box button { width: 100%; background: var(--orange-main); color: #000; border: none; padding: 12px; margin-top: 15px; font-weight: bold; font-family: 'VT323'; font-size: 1.5rem;}
+        
+        @media screen and (max-width: 768px) { 
+            .navbar { flex-direction: column; padding: 15px; gap: 15px; } 
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 8px; } 
+            .nav-btn { font-size: 1rem; padding: 6px 12px; }
+            .container { margin: 20px auto; padding: 0 10px; } 
+            .window-body { padding: 20px 15px; } 
+            h1 { font-size: 2.2rem; } 
+            .btn-retro { font-size: 1.3rem; padding: 12px 30px; } 
+            .about-layout { flex-direction: column; align-items: center; gap: 20px; } 
+            .timeline-item { padding-left: 20px; }
+            .timeline-dot { left: -10px; width: 16px; height: 16px; top: 18px; }
+        }
+        
+        /* สไตล์สำหรับแก้ไขข้อความ (Edit Mode) */
+        .editable { transition: 0.2s; outline: none; }
+        .edit-mode .editable { background-color: rgba(15, 98, 254, 0.1); border-bottom: 2px dashed var(--ibm-accent-blue); }
+        .edit-mode .editable:focus { background-color: rgba(15, 98, 254, 0.2); }
+        h1.editable, h3.editable, h2.editable { display: block !important; width: 100% !important; text-align: center !important; white-space: normal !important; word-break: break-word !important; }
+        .editable-block { display: block; text-align: left; padding: 10px; min-height: 150px; white-space: pre-wrap; word-wrap: break-word; width: 100%; } 
+        .edit-mode .editable-block { border: 2px dashed var(--ibm-accent-blue); background-color: #fff; }
+        .edit-mode .editable:empty::before { content: "[พิมพ์ข้อความ...หัวข้อ]"; color: #888; font-size: 0.9em; font-family:'VT323'; }
+        
+        /* Admin Panel / Login (เปลี่ยนสีให้เข้าธีม IBM) */
+        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; }
+        #admin-panel button { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-text); padding: 8px 15px; font-family: 'VT323'; font-size: 1.2rem; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); }
+        #admin-panel button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-text); }
+        #save-btn { background-color: #24a148 !important; color: #fff !important; display: none; }
+        #logout-btn { display: none; background-color: #da1e28 !important; color: #fff !important;}
+        
+        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22,22,22,0.9); justify-content: center; align-items: center; z-index: 999;}
+        .login-box { background: var(--ibm-pearl); border: 4px solid var(--ibm-text); padding: 30px; text-align: center; max-width: 400px; width: 90%; box-shadow: 10px 10px 0 var(--ibm-shadow); }
+        .login-box input { width: 100%; padding: 10px; margin: 10px 0; background: #fff; border: 2px solid var(--ibm-text); color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem;}
+        .login-box button { width: 100%; background: var(--ibm-accent-blue); color: #fff; border: 2px solid var(--ibm-text); padding: 12px; margin-top: 15px; font-weight: bold; font-family: 'VT323'; font-size: 1.5rem; box-shadow: 3px 3px 0 var(--ibm-text); }
+        .login-box button:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ibm-text); }
     </style>
 </head>
 <body>
@@ -108,11 +165,11 @@
     <nav class="navbar">
         <div class="logo">101 STUDIO</div>
         <div class="nav-links">
-            <button class="nav-btn active sound-trigger" onclick="switchTab(event, 'home')">HOME</button>
-            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'schedule')">SCHEDULE</button>
-            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'archive')">ARCHIVE</button>
-            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'about')">ABOUT</button>
-            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'contact')">CONTACT</button>
+            <button class="nav-btn active sound-trigger" onclick="switchTab(event, 'home')">SYS.HOME</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'schedule')">CALENDAR</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'archive')">DATABASE</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'about')">PROFILE</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'contact')">NETWORK</button>
         </div>
     </nav>
 
@@ -120,32 +177,33 @@
         <!-- HOME -->
         <main id="home" class="section active">
             <div class="retro-window">
-                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-header">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    <span class="window-title">C:\101_STUDIO\home.exe</span>
+                </div>
                 <div class="window-body">
-                    <canvas id="dinoCanvas" class="dino-bg"></canvas>
                     <div class="home-content">
                         <div class="hero-section">
-                            <canvas id="matrixCanvas" class="matrix-bg"></canvas>
                             <img src="images/Code_Generated_Image.png" alt="PEEM Logo" class="hero-logo">
-                            <a href="https://codecontrav2by101studio.netlify.app/" target="_blank" class="btn-retro sound-trigger">▶ START GAME</a>
+                            <a href="https://codecontrav2by101studio.netlify.app/" target="_blank" class="btn-retro sound-trigger">> RUN GAME.BAT</a>
                         </div>
                         <div class="timeline-section">
-                            <h2 class="editable timeline-title-main" id="timeline-main-title" data-field="timeline_main_title">MEMORIES TIMELINE</h2>
+                            <h2 class="editable timeline-title-main" id="timeline-main-title" data-field="timeline_main_title">DIRECTORY: \MEMORIES</h2>
                             <div class="timeline">
-                                <!-- อัลบั้มที่ 1: First Meet -->
-                                <div class="timeline-item left">
+                                <!-- อัลบั้มที่ 1 -->
+                                <div class="timeline-item">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'first_meet')">
                                         <img src="images/cover.jpg" alt="First Meet Cover">
-                                        <p class="editable" id="album-name-1" data-field="album_name_1">FIRST MEET CN25</p>
+                                        <p class="editable" id="album-name-1" data-field="album_name_1">FIRST MEET CN25.DAT</p>
                                     </div>
                                 </div>
-                                <!-- อัลบั้มที่ 2: Class Memories -->
-                                <div class="timeline-item right">
+                                <!-- อัลบั้มที่ 2 -->
+                                <div class="timeline-item">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'class_memories')">
                                         <img src="images/S__22814752_0.jpg" alt="Class Memories Cover">
-                                        <p class="editable" id="album-name-2" data-field="album_name_2">CLASS MEMORIES</p>
+                                        <p class="editable" id="album-name-2" data-field="album_name_2">CLASS MEMORIES.SYS</p>
                                     </div>
                                 </div>
                             </div>
@@ -158,10 +216,13 @@
         <!-- SCHEDULE -->
         <main id="schedule" class="section">
             <div class="retro-window">
-                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-header">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    <span class="window-title">C:\101_STUDIO\calendar.exe</span>
+                </div>
                 <div class="window-body">
-                    <h1 class="editable" id="schedule-title" data-field="schedule_title" style="margin-bottom: 20px;">QUEST CALENDAR</h1>
-                    <div id="admin-hint">[!] แอดมิน: คลิกช่องว่างเพื่อเพิ่มเควส | คลิกที่ชื่องานเพื่อเคลียร์เควส (ขีดฆ่า)</div>
+                    <h1 class="editable" id="schedule-title" data-field="schedule_title" style="margin-bottom: 20px;">TASK SCHEDULER</h1>
+                    <div id="admin-hint">[ ROOT_ACCESS_GRANTED ] > CLICK EMPTY BLOCK TO ADD QUEST | CLICK QUEST TEXT TO MARK COMPLETE</div>
                     <div class="calendar-header">
                         <button class="sound-trigger" onclick="changeMonth(-1)">&#9664;</button>
                         <h2 id="month-year-label">MONTH YEAR</h2>
@@ -175,14 +236,17 @@
         <!-- ARCHIVE -->
         <main id="archive" class="section">
             <div class="retro-window">
-                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-header">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    <span class="window-title">C:\101_STUDIO\archive.exe</span>
+                </div>
                 <div class="window-body">
-                    <h1 class="editable" id="archive-title" data-field="archive_title">DATA ARCHIVE</h1>
+                    <h1 class="editable" id="archive-title" data-field="archive_title">SYSTEM ARCHIVE</h1>
                     <div class="drive-btn-container">
-                        <a href="https://peemdiamond-design.github.io/101-cloud-web/" target="_blank" class="btn-retro btn-drive btn-server sound-trigger"><span>🖥️</span> SERVER</a>
-                        <a href="https://drive.google.com/drive/folders/17TUnUfOEEOAdxi050iieJe0YMPFbc0G4?usp=sharing" target="_blank" class="btn-retro btn-drive btn-code sound-trigger"><span>📁</span> CODE</a>
-                        <a href="https://drive.google.com/drive/folders/1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3?usp=sharing" target="_blank" class="btn-retro btn-drive btn-exam sound-trigger"><span>📁</span> WORK AND EXAM</a>
-                        <a href="https://drive.google.com/drive/folders/1JIzrSaA0m32kf85xLa54qO82fPVQYWPj?usp=sharing" target="_blank" class="btn-retro btn-drive btn-portfolio sound-trigger"><span>📁</span> PORTFOLIO</a>
+                        <a href="https://peemdiamond-design.github.io/101-cloud-web/" target="_blank" class="btn-drive btn-server sound-trigger">[ NET ] SERVER HOST</a>
+                        <a href="https://drive.google.com/drive/folders/17TUnUfOEEOAdxi050iieJe0YMPFbc0G4?usp=sharing" target="_blank" class="btn-drive btn-code sound-trigger">[ DIR ] SOURCE CODE</a>
+                        <a href="https://drive.google.com/drive/folders/1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3?usp=sharing" target="_blank" class="btn-drive btn-exam sound-trigger">[ DIR ] EXAM & WORK</a>
+                        <a href="https://drive.google.com/drive/folders/1JIzrSaA0m32kf85xLa54qO82fPVQYWPj?usp=sharing" target="_blank" class="btn-drive btn-portfolio sound-trigger">[ DIR ] PORTFOLIO</a>
                     </div>
                 </div>
             </div>
@@ -191,13 +255,16 @@
         <!-- ABOUT -->
         <main id="about" class="section">
             <div class="retro-window">
-                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-header">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    <span class="window-title">C:\101_STUDIO\profile.exe</span>
+                </div>
                 <div class="window-body">
                     <div class="about-layout">
                         <div class="about-image-wrapper"><img src="images/S__5734407.jpg" alt="Profile Picture"></div>
                         <div class="about-text-content">
-                            <h2 style="color: var(--orange-main); font-family: 'VT323', monospace; font-size: 2.5rem; margin-bottom: 15px;">PLAYER PROFILE</h2>
-                            <p class="editable editable-block" id="about-details" data-field="about_details" style="font-size: 1.2rem; color: #ddd; line-height: 1.8;">เพิ่มประวัติที่นี่...</p>
+                            <h2 style="color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.5rem; margin-bottom: 10px; border-bottom: 2px solid var(--ibm-key-dark);">USER PROFILE</h2>
+                            <p class="editable editable-block" id="about-details" data-field="about_details" style="font-size: 1.3rem; color: #333; line-height: 1.6; font-family: 'VT323';">> STATUS: ONLINE<br>> LOCATION: BANGKOK<br>> SKILLS: HTML, CSS, JS, FIREBASE<br><br>[ กรุณากรอกประวัติเพิ่มเติม... ]</p>
                         </div>
                     </div>
                 </div>
@@ -207,15 +274,18 @@
         <!-- CONTACT -->
         <main id="contact" class="section">
             <div class="retro-window">
-                <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
-                <div class="window-body">
-                    <h1 class="editable" id="contact-title" data-field="contact_title">CONTACT</h1>
-                    <p class="subtitle" style="margin-bottom: 5px;">Email: <span class="editable" id="contact-email" data-field="contact_email">hello@101studio.com</span></p>
-                    <p class="subtitle">Tel: <span class="editable" id="contact-tel" data-field="contact_tel">08X-XXX-XXXX</span></p>
+                <div class="window-header">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    <span class="window-title">C:\101_STUDIO\network.exe</span>
+                </div>
+                <div class="window-body" style="background: var(--ibm-pearl);">
+                    <h1 class="editable" id="contact-title" data-field="contact_title">NETWORK PING</h1>
+                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">IP Address / Email: <br><span class="editable" id="contact-email" data-field="contact_email" style="color: var(--ibm-accent-blue); font-weight: bold;">admin@101studio.com</span></p>
+                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">Comlink / Tel: <br><span class="editable" id="contact-tel" data-field="contact_tel" style="color: var(--ibm-accent-blue); font-weight: bold;">08X-XXX-XXXX</span></p>
                     <div class="social-container">
-                        <a href="https://www.facebook.com/peem.pongpetch" target="_blank" class="btn-social btn-fb sound-trigger">[f] FACEBOOK</a>
-                        <a href="https://www.instagram.com/peem_pongpetch?igsh=MTVjZjVmNzVibXQ0NA==" target="_blank" class="btn-social btn-ig sound-trigger">[ig] INSTAGRAM</a>
-                        <a href="https://www.tiktok.com/@yaknoom101?is_from_webapp=1&sender_device=pc" target="_blank" class="btn-social btn-tt sound-trigger">[t] TIKTOK</a>
+                        <a href="https://www.facebook.com/peem.pongpetch" target="_blank" class="btn-social sound-trigger">FACEBOOK</a>
+                        <a href="https://www.instagram.com/peem_pongpetch?igsh=MTVjZjVmNzVibXQ0NA==" target="_blank" class="btn-social sound-trigger">INSTAGRAM</a>
+                        <a href="https://www.tiktok.com/@yaknoom101?is_from_webapp=1&sender_device=pc" target="_blank" class="btn-social sound-trigger">TIKTOK</a>
                     </div>
                 </div>
             </div>
@@ -226,37 +296,38 @@
     <div class="gallery-modal" id="galleryModal">
         <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
         <div class="gallery-content">
-            <!-- เนื้อหาอัลบั้ม First Meet -->
+            <!-- อัลบั้ม First Meet -->
             <div id="album-first_meet" class="album-images-container" style="display: none;">
-                <div class="gallery-item"><img src="images/activity1.jpg" alt="Activity 1"><p class="editable" id="gal-desc1" data-field="gal_desc1">สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p></div>
-                <div class="gallery-item"><img src="images/activity2.jpg" alt="Activity 2"><p class="editable" id="gal-desc2" data-field="gal_desc2">ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p></div>
-                <div class="gallery-item"><img src="images/cover.jpg" alt="Activity 3"><p class="editable" id="gal-desc3" data-field="gal_desc3">ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p></div>
+                <div class="gallery-item"><img src="images/activity1.jpg" alt="Activity 1"><p class="editable" id="gal-desc1" data-field="gal_desc1">> LOG 01: สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p></div>
+                <div class="gallery-item"><img src="images/activity2.jpg" alt="Activity 2"><p class="editable" id="gal-desc2" data-field="gal_desc2">> LOG 02: ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p></div>
+                <div class="gallery-item"><img src="images/cover.jpg" alt="Activity 3"><p class="editable" id="gal-desc3" data-field="gal_desc3">> LOG 03: ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p></div>
             </div>
-            <!-- เนื้อหาอัลบั้ม Class Memories -->
+            <!-- อัลบั้ม Class Memories -->
             <div id="album-class_memories" class="album-images-container" style="display: none;">
-                <div class="gallery-item"><img src="images/S__22814752_0.jpg" alt="Class Photo 1"><p class="editable" id="class-desc1" data-field="class_desc1">บรรยากาศความสนุกสนานรวมตัวกันในห้องบรรยาย</p></div>
-                <div class="gallery-item"><img src="images/S__22814753_0.jpg" alt="Class Photo 2"><p class="editable" id="class-desc2" data-field="class_desc2">ภาพหมู่สุดประทับใจเก็บไว้เป็นความทรงจำดีๆ</p></div>
+                <div class="gallery-item"><img src="images/S__22814752_0.jpg" alt="Class Photo 1"><p class="editable" id="class-desc1" data-field="class_desc1">> LOG 01: บรรยากาศความสนุกสนานรวมตัวกันในห้องบรรยาย</p></div>
+                <div class="gallery-item"><img src="images/S__22814753_0.jpg" alt="Class Photo 2"><p class="editable" id="class-desc2" data-field="class_desc2">> LOG 02: ภาพหมู่สุดประทับใจเก็บไว้เป็นความทรงจำดีๆ</p></div>
             </div>
         </div>
     </div>
 
     <!-- Admin Panel -->
     <div id="admin-panel">
-        <button id="login-show-btn" class="sound-trigger">ADMIN LOGIN</button>
-        <button id="save-btn" class="sound-trigger">SAVE DATA</button>
+        <button id="login-show-btn" class="sound-trigger">ROOT LOGIN</button>
+        <button id="save-btn" class="sound-trigger">SAVE CONFIG</button>
         <button id="logout-btn" class="sound-trigger">LOGOUT</button>
     </div>
 
     <div id="login-modal">
         <div class="login-box">
-            <h2 style="color: var(--orange-main); margin-bottom: 20px; font-family: 'VT323'; font-size: 2.5rem;">SYSTEM LOGIN</h2>
-            <input type="email" id="email" placeholder="ADMIN EMAIL">
-            <input type="password" id="password" placeholder="PASSWORD">
-            <button id="login-submit-btn" class="sound-trigger">ENTER</button>
-            <button onclick="document.getElementById('login-modal').style.display='none'" class="sound-trigger" style="background: transparent; color: #fff; border: 2px solid #555;">CANCEL</button>
+            <h2 style="color: var(--ibm-text); margin-bottom: 20px; font-family: 'VT323'; font-size: 2rem;">AUTHENTICATION REQUIRED</h2>
+            <input type="email" id="email" placeholder="USER ID (EMAIL)">
+            <input type="password" id="password" placeholder="ACCESS CODE">
+            <button id="login-submit-btn" class="sound-trigger">ENTER SYSTEM</button>
+            <button onclick="document.getElementById('login-modal').style.display='none'" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">CANCEL</button>
         </div>
     </div>
 
+    <!-- Scripts for Logic & Firebase -->
     <script>
         const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTA1ZaJi3ieoEJt6mQD12Y-Ti5KY-uuyS3SdgmoFGL64jtgZM2xVdyg7GP1pSer46ZCQ/exec";
         
@@ -286,7 +357,7 @@
                     const evEl = document.createElement('div');
                     evEl.className = 'calendar-event' + (ev.completed ? ' completed' : '');
                     
-                    const textSpan = document.createElement('span'); textSpan.innerHTML = `▪️ ${ev.title}`;
+                    const textSpan = document.createElement('span'); textSpan.innerHTML = `> ${ev.title}`;
                     textSpan.onclick = (e) => { if(document.body.classList.contains('edit-mode')) { e.stopPropagation(); toggleQuest(globalIndex); } };
                     evEl.appendChild(textSpan);
                     
@@ -319,20 +390,19 @@
         }
 
         function promptAddEvent(dateStr) {
-            let title = prompt(`เพิ่มเควสสำหรับวันที่ ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`);
+            let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`);
             if(title && title.trim() !== '') {
                 title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); 
                 scheduleData.push({ date: dateStr, title: title.trim(), completed: false });
                 renderCalendar();
                 sendLineNotify(dateStr, title.trim());
-                const saveBtn = document.getElementById('save-btn'); saveBtn.style.boxShadow = '0 0 15px #27c93f'; setTimeout(() => saveBtn.style.boxShadow = 'none', 1500);
+                document.getElementById('save-btn').click(); // Auto save when add
             }
         }
 
         function deleteScheduleEvent(index) {
-            if(confirm("ลบเควสนี้ออกจากระบบใช่ไหม?")) {
+            if(confirm("DELETE THIS TASK? (Y/N)")) {
                 scheduleData.splice(index, 1); renderCalendar();
-                const saveBtn = document.getElementById('save-btn'); saveBtn.style.boxShadow = '0 0 15px #ff5f56'; setTimeout(() => saveBtn.style.boxShadow = 'none', 1500);
                 if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); }
             }
         }
@@ -343,19 +413,32 @@
         function switchTab(e, tabId) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(tabId).classList.add('active'); if (e && e.currentTarget) e.currentTarget.classList.add('active'); }
     </script>
     <script>
-        const mCanvas = document.getElementById('matrixCanvas'); const mCtx = mCanvas.getContext('2d'); let mWidth, mHeight, columns, drops = []; const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</>{}[]~#'.split(''); const fontSize = 14;
-        function initMatrix() { const resizeMatrix = () => { mWidth = mCanvas.parentElement.clientWidth; mHeight = mCanvas.parentElement.clientHeight; mCanvas.width = mWidth; mCanvas.height = mHeight; columns = Math.floor(mWidth / fontSize); drops = []; for(let i = 0; i < columns; i++) drops[i] = Math.random() * -100; }; window.addEventListener('resize', resizeMatrix); resizeMatrix(); setInterval(drawMatrix, 50); }
-        function drawMatrix() { mCtx.fillStyle = 'rgba(11, 16, 30, 0.3)'; mCtx.fillRect(0, 0, mWidth, mHeight); mCtx.fillStyle = '#ff6b00'; mCtx.font = fontSize + 'px "VT323", monospace'; for(let i = 0; i < drops.length; i++) { const text = chars[Math.floor(Math.random() * chars.length)]; mCtx.fillText(text, i * fontSize, drops[i] * fontSize); if(drops[i] * fontSize > mHeight && Math.random() > 0.95) drops[i] = 0; drops[i]++; } } initMatrix();
-        const canvas = document.getElementById('dinoCanvas'); const ctx = canvas.getContext('2d'); let width, height, frame = 0, cactusList = [], dino = { x: 80, y: 0, vY: 0, isJumping: false };
-        function initDino() { const resize = () => { width = canvas.parentElement.clientWidth; height = canvas.parentElement.clientHeight; canvas.width = width; canvas.height = height; }; window.addEventListener('resize', resize); resize(); requestAnimationFrame(drawDino); }
-        function drawDino() { ctx.clearRect(0, 0, width, height); const groundY = height - 50; ctx.strokeStyle = '#ff6b00'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(width, groundY); ctx.stroke(); if (frame % 150 === 0) cactusList.push({ x: width + 50, type: Math.floor(Math.random() * 3) }); for (let i = 0; i < cactusList.length; i++) { let c = cactusList[i]; c.x -= 4; ctx.fillStyle = '#ff6b00'; ctx.fillRect(c.x, groundY - 30, 8, 30); if(c.type > 0) { ctx.fillRect(c.x - 8, groundY - 20, 6, 15); ctx.fillRect(c.x - 8, groundY - 10, 12, 4); } if(c.type > 1) { ctx.fillRect(c.x + 10, groundY - 25, 6, 15); ctx.fillRect(c.x + 4, groundY - 15, 12, 4); } if (c.x > dino.x && c.x < dino.x + 100 && !dino.isJumping) { dino.isJumping = true; dino.vY = -10; } } cactusList = cactusList.filter(c => c.x > -50); if (dino.isJumping) { dino.y += dino.vY; dino.vY += 0.5; if (dino.y >= 0) { dino.y = 0; dino.isJumping = false; } } ctx.fillStyle = '#ff6b00'; let dy = groundY - 40 + dino.y; let dx = dino.x; ctx.fillRect(dx + 20, dy, 24, 16); ctx.clearRect(dx + 24, dy + 2, 4, 4); ctx.clearRect(dx + 28, dy + 10, 16, 4); ctx.fillRect(dx + 10, dy + 16, 20, 20); ctx.fillRect(dx + 30, dy + 18, 8, 4); ctx.fillRect(dx + 34, dy + 22, 4, 4); ctx.fillRect(dx, dy + 20, 4, 12); ctx.fillRect(dx + 4, dy + 16, 6, 16); if (!dino.isJumping) { if (Math.floor(frame / 8) % 2 === 0) { ctx.fillRect(dx + 12, dy + 36, 6, 8); ctx.fillRect(dx + 22, dy + 36, 6, 4); } else { ctx.fillRect(dx + 12, dy + 36, 6, 4); ctx.fillRect(dx + 22, dy + 36, 6, 8); } } else { ctx.fillRect(dx + 12, dy + 36, 6, 4); ctx.fillRect(dx + 22, dy + 36, 6, 4); } frame++; requestAnimationFrame(drawDino); } initDino();
-    </script>
-    <script>
+        // Retro Sound Effects (Mechanical Click)
         let audioCtx = null;
-        function playRetroClick() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const oscillator = audioCtx.createOscillator(); const gainNode = audioCtx.createGain(); oscillator.type = 'square'; oscillator.frequency.setValueAtTime(800, audioCtx.currentTime); oscillator.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05); gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); oscillator.connect(gainNode); gainNode.connect(audioCtx.destination); oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.05); }
-        function playLevelUpSound() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const oscillator = audioCtx.createOscillator(); const gainNode = audioCtx.createGain(); oscillator.type = 'sine'; oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime); oscillator.frequency.exponentialRampToValueAtTime(2000, audioCtx.currentTime + 0.1); gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); oscillator.connect(gainNode); gainNode.connect(audioCtx.destination); oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.3); }
-        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-retro, .btn-delete-event').forEach(btn => { btn.addEventListener('click', playRetroClick); });
-        document.addEventListener('keydown', function(event) { if (event.key === 'Enter') { if (event.target.classList.contains('editable-block')) { event.preventDefault(); document.execCommand('insertLineBreak'); } else if (event.target.classList.contains('editable')) { event.preventDefault(); event.target.blur(); } } });
+        function playRetroClick() { 
+            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } 
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); } 
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); 
+            osc.type = 'square'; osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05); 
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); 
+            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05); 
+        }
+        function playLevelUpSound() { 
+            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } 
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); } 
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); 
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); 
+            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); 
+        }
+        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-retro, .btn-drive, .btn-social').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
+        
+        document.addEventListener('keydown', function(event) { 
+            if (event.key === 'Enter') { 
+                if (event.target.classList.contains('editable-block')) { event.preventDefault(); document.execCommand('insertLineBreak'); } 
+                else if (event.target.classList.contains('editable')) { event.preventDefault(); event.target.blur(); } 
+            } 
+        });
         document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); });
         document.getElementById('password').addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
     </script>
@@ -388,8 +471,16 @@
 
         document.getElementById('login-show-btn').onclick = () => document.getElementById('login-modal').style.display = 'flex';
         
-        // แก้ไขบรรทัดนี้แล้วเพื่อแสดง Error ออกมา
-        document.getElementById('login-submit-btn').onclick = async () => { try { await auth.signInWithEmailAndPassword(document.getElementById('email').value.trim(), document.getElementById('password').value); document.getElementById('login-modal').style.display = 'none'; alert("แอดมินพร้อมลุยเควส!"); } catch (error) { alert("ล็อกอินล้มเหลว: " + error.message); console.error("Firebase Auth Error:", error); } };
+        document.getElementById('login-submit-btn').onclick = async () => { 
+            try { 
+                await auth.signInWithEmailAndPassword(document.getElementById('email').value.trim(), document.getElementById('password').value); 
+                document.getElementById('login-modal').style.display = 'none'; 
+                alert("SYSTEM ACCESS GRANTED"); 
+            } catch (error) { 
+                alert("ACCESS DENIED: " + error.message); 
+                console.error("Firebase Auth Error:", error); 
+            } 
+        };
         
         document.getElementById('logout-btn').onclick = () => auth.signOut();
 
@@ -403,8 +494,13 @@
             fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: syncData, mode: 'no-cors' });
 
             try {
-                document.getElementById('save-btn').innerHTML = "SAVING..."; await docRef.set(newData, { merge: true }); document.getElementById('save-btn').innerHTML = "SAVE DATA"; 
-            } catch (error) { alert("บันทึกข้อมูลล้มเหลว: " + error.message); }
+                const btn = document.getElementById('save-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = "SAVING..."; 
+                await docRef.set(newData, { merge: true }); 
+                btn.innerHTML = "SAVED!";
+                setTimeout(() => btn.innerHTML = originalText, 2000);
+            } catch (error) { alert("SAVE FAILED: " + error.message); }
         };
         loadData();
     </script>
