@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PEEMCN25 | IBM Retro Edition</title>
+    
+    <!-- เซนเซอร์ดักจับบั๊กหน้าเว็บอัตโนมัติ -->
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            if (source && source.includes('chrome-extension')) return false;
+            const bugData = { message: message, source: source, lineno: lineno, colno: colno };
+            // แก้บั๊ก: เปลี่ยนให้ส่งรายงานบั๊กไปที่เซิร์ฟเวอร์ ngrok ล่าสุดของคุณ
+            fetch('https://jogging-flagstick-wrongly.ngrok-free.dev/report-bug', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bugData)
+            }).catch(err => console.log('ไม่สามารถส่งรายงานบั๊กได้', err));
+            return false; 
+        };
+    </script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -384,10 +399,9 @@
         const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTA1ZaJi3ieoEJt6mQD12Y-Ti5KY-uuyS3SdgmoFGL64jtgZM2xVdyg7GP1pSer46ZCQ/exec";
         
         // ----------------------------------------------------
-        // ตรงนี้คือจุดเชื่อมโยงกับเซิร์ฟเวอร์หลังบ้านของคุณ! 
-        // เมื่อคุณตั้ง Server Node.js เสร็จ ให้นำ URL มาเปลี่ยนตรงนี้นะครับ
+        // ใช้ลิงก์จาก ngrok เพื่อคุยกับ Server ได้อย่างปลอดภัย (HTTPS)
         // ----------------------------------------------------
-        const SERVER_URL = 'http://100.112.145.98:6910'; // เปลี่ยนเป็นลิงก์ Server เช่น 'https://my-own-backend.onrender.com'
+        const SERVER_URL = 'https://jogging-flagstick-wrongly.ngrok-free.dev'; 
         // ----------------------------------------------------
 
         let scheduleData = []; let today = new Date(); let currentMonth = today.getMonth(); let currentYear = today.getFullYear();
