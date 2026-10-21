@@ -8,27 +8,29 @@
     <style>
         :root { 
             /* IBM Model M Theme Colors */
-            --ibm-pearl: #e0e0e0;       /* ขาวไข่มุกตัวถังคีย์บอร์ด */
-            --ibm-key-light: #f4f4f4;   /* สีปุ่มตัวอักษรสีสว่าง */
-            --ibm-key-dark: #a8a8a8;    /* สีเทาปุ่มฟังก์ชัน (Industrial Grey) */
-            --ibm-text: #161616;        /* สีตัวอักษรบนปุ่ม (Raven Black) */
-            --ibm-accent-blue: #0f62fe; /* สีน้ำเงิน IBM โลโก้ */
-            --ibm-shadow: #8d8d8d;      /* สีเงาแป้นพิมพ์ */
-            --bg-color: #c6c6c6;        /* พื้นหลังโต๊ะทำงานสีเทาอ่อน */
+            --ibm-pearl: #e0e0e0;       
+            --ibm-key-light: #f4f4f4;   
+            --ibm-key-dark: #a8a8a8;    
+            --ibm-text: #161616;        
+            --ibm-accent-blue: #0f62fe; 
+            --ibm-shadow: #8d8d8d;      
+            --bg-color: #c6c6c6;        
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; cursor: url('https://cur.cursors-4u.net/system/sys-1/sys46.png'), auto !important; }
-        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
+        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span, .logo { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
         
-        /* พื้นหลังปรับใหม่ให้ดูคลีนขึ้น เข้ากับธีมอุปกรณ์สำนักงาน */
         body { background-color: var(--bg-color); color: var(--ibm-text); min-height: 100vh; overflow-x: hidden; }
         
-        /* Navbar สไตล์ขอบสันคีย์บอร์ด */
+        /* Navbar */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background-color: var(--ibm-pearl); border-bottom: 4px solid var(--ibm-key-dark); position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 0 var(--ibm-shadow); }
-        .logo { font-family: 'VT323', monospace; font-size: 2.8rem; color: var(--ibm-accent-blue); text-shadow: 2px 2px 0px var(--ibm-key-light); letter-spacing: 2px; }
-        .nav-links { display: flex; gap: 15px; }
         
-        /* ปุ่ม Navbar ทำเหมือนปุ่ม IBM (โค้งมนนิดๆ ยกตัวสูง) */
+        /* แก้ไขโลโก้เป็นรูปภาพ */
+        .logo { display: flex; align-items: center; transition: 0.1s; padding: 5px; border-radius: 4px; border: 2px solid transparent; }
+        .logo:hover { transform: scale(1.05); background: rgba(0,0,0,0.05); border-color: var(--ibm-key-dark); }
+        .logo img { height: 45px; width: auto; filter: drop-shadow(2px 2px 0px var(--ibm-shadow)); }
+        
+        .nav-links { display: flex; gap: 15px; }
         .nav-btn { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-key-dark); border-radius: 4px; font-size: 1.2rem; font-weight: 700; padding: 8px 20px; transition: 0.1s; box-shadow: 2px 4px 0 var(--ibm-shadow); }
         .nav-btn:hover { background: #fff; transform: translateY(2px); box-shadow: 2px 2px 0 var(--ibm-shadow); } 
         .nav-btn.active { background-color: var(--ibm-key-dark); color: #fff; transform: translateY(4px); box-shadow: 0 0 0 var(--ibm-shadow); border-color: var(--ibm-text); }
@@ -37,29 +39,33 @@
         .section { display: none; animation: fadeIn 0.4s ease-in-out; } .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* กรอบ Retro Window เปลี่ยนเป็นสไตล์ Terminal/Monitor ยุคเก่า แต่ขอบนอกเป็นสี Model M */
+        /* Retro Window */
         .retro-window { background-color: var(--ibm-key-light); border: 4px solid var(--ibm-text); border-radius: 8px; box-shadow: 10px 10px 0px var(--ibm-shadow); overflow: hidden; }
         .window-header { background-color: var(--ibm-key-dark); padding: 10px 15px; display: flex; gap: 8px; align-items: center; border-bottom: 4px solid var(--ibm-text); }
         .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ibm-text); background-color: var(--ibm-pearl); }
         .window-title { margin-left: 10px; font-family: 'VT323'; color: #fff; font-size: 1.2rem; letter-spacing: 1px; }
         
-        /* พื้นที่เนื้อหาใช้สีโทนสว่าง */
         .window-body { padding: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFElEQVQIW2NkYGD4z8DAwMgAI0AMDA4BGbRFSEgAAAAASUVORK5CYII=') repeat; }
-        .home-content { position: relative; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; background-color: rgba(244,244,244,0.9); padding: 20px; border: 2px dashed var(--ibm-key-dark); }
+        .home-content { position: relative; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; background-color: rgba(244,244,244,0.95); padding: 20px; border: 2px dashed var(--ibm-key-dark); }
         
         h1 { font-size: 3.5rem; color: var(--ibm-text); margin-bottom: 20px; text-transform: uppercase; text-align: center; border-bottom: 4px solid var(--ibm-accent-blue); display: inline-block; padding-bottom: 5px; }
         .subtitle { font-size: 1.4rem; color: #525252; margin-bottom: 20px; margin-top: 10px; text-align: center; }
         
-        /* โลโก้ในหน้าแรก */
         .hero-logo { max-width: 250px; width: 100%; height: auto; display: block; margin: 0 auto 30px auto; filter: drop-shadow(4px 4px 0px var(--ibm-key-dark)); }
         
-        /* ปุ่มหลักขนาดใหญ่ สไตล์ปุ่ม Enter ของ IBM */
         .btn-retro { display: inline-block; background-color: var(--ibm-accent-blue); color: #fff; font-size: 1.8rem; font-weight: 700; padding: 15px 60px; text-decoration: none; border: 4px solid var(--ibm-text); box-shadow: 6px 6px 0px var(--ibm-text); transition: all 0.1s ease; font-family: 'VT323'; letter-spacing: 2px; margin-top: 10px; border-radius: 4px; }
         .btn-retro:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0px var(--ibm-text); background-color: #4589ff; } 
         .btn-retro:active { transform: translate(6px, 6px) !important; box-shadow: 0px 0px 0px var(--ibm-text) !important; }
         
+        /* สไตล์โซนโชว์โปรเจกต์ (เพิ่มใหม่) */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; margin-bottom: 40px; padding: 10px; }
+        .project-card { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); padding: 15px; box-shadow: 6px 6px 0px var(--ibm-shadow); text-align: left; transition: 0.1s; display: flex; flex-direction: column; }
+        .project-card:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0px var(--ibm-shadow); background: #fff; }
+        .project-card img { width: 100%; height: 180px; object-fit: cover; border: 2px solid var(--ibm-text); margin-bottom: 15px; filter: grayscale(15%); transition: 0.3s; background: var(--ibm-key-dark); }
+        .project-card:hover img { filter: grayscale(0%); }
+        .project-title { font-family: 'VT323'; font-size: 1.8rem; color: var(--ibm-accent-blue); margin-bottom: 8px; border-bottom: 1px dashed var(--ibm-key-dark); padding-bottom: 5px;}
+        
         .drive-btn-container { display: flex; flex-direction: column; gap: 20px; align-items: center; margin: 30px 0; width: 100%; }
-        /* ปุ่มในหน้า Archive แบ่งสไตล์สีแบบปุ่มฟังก์ชันต่างๆ */
         .btn-drive { width: 100%; max-width: 500px; padding: 15px 30px; font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0; background-color: var(--ibm-pearl); color: var(--ibm-text); text-align: left; }
         .btn-server { border-left: 15px solid #24a148; } .btn-code { border-left: 15px solid #1192e8; } .btn-exam { border-left: 15px solid #f1c21b; } .btn-portfolio { border-left: 15px solid #da1e28; }
         .btn-drive:hover { background-color: #fff; }
@@ -69,8 +75,7 @@
         .btn-social:hover { background: #fff; }
         .btn-social:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px var(--ibm-shadow); }
         
-        /* Timeline ออกแบบใหม่เป็นเส้นตรงคลีนๆ เหมือนโครงสร้างไฟล์ต้นไม้ (Tree structure) */
-        .timeline-section { margin-top: 50px; padding-top: 30px; width: 100%; }
+        .timeline-section { margin-top: 20px; padding-top: 20px; width: 100%; }
         .timeline-title-main { color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.8rem; margin-bottom: 30px; text-transform: uppercase; text-align: center; }
         .timeline { position: relative; max-width: 700px; margin: 0 auto; padding: 10px 0; border-left: 4px solid var(--ibm-key-dark); }
         .timeline-item { padding: 10px 0 30px 40px; position: relative; width: 100%; text-align: left; } 
@@ -97,7 +102,7 @@
         .about-image-wrapper img { width: 100%; height: auto; display: block; border: 2px solid var(--ibm-key-dark); filter: contrast(1.1); }
         .about-text-content { flex: 1; padding: 10px; }
         
-        /* ปฏิทินดีไซน์แบบตาราง Excel ยุคเก่า (Spreadsheet Style) */
+        /* Calendar */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; width: 100%; background: var(--ibm-key-dark); padding: 10px; border: 2px solid var(--ibm-text); color: #fff;}
         .calendar-header button { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); color: var(--ibm-text); padding: 5px 15px; font-family: 'VT323'; font-size: 1.8rem; transition: 0.1s; box-shadow: 2px 2px 0 #000;}
         .calendar-header button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
@@ -114,7 +119,6 @@
         
         .events-container { flex: 1; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; padding-top: 5px;}
         .events-container::-webkit-scrollbar { display: none; }
-        /* สไตล์งาน (เควส) ในปฏิทิน */
         .calendar-event { background: var(--ibm-pearl); border-left: 4px solid var(--ibm-accent-blue); font-size: 0.95rem; padding: 5px 6px; line-height: 1.2; position: relative; padding-right: 20px; color: var(--ibm-text); word-break: break-word; font-family: 'VT323'; }
         .calendar-event.completed { background: var(--ibm-key-light); border-left-color: var(--ibm-key-dark); color: #8d8d8d; text-decoration: line-through; font-style: italic; }
         
@@ -146,7 +150,7 @@
         .edit-mode .editable-block { border: 2px dashed var(--ibm-accent-blue); background-color: #fff; }
         .edit-mode .editable:empty::before { content: "[พิมพ์ข้อความ...หัวข้อ]"; color: #888; font-size: 0.9em; font-family:'VT323'; }
         
-        /* Admin Panel / Login (เปลี่ยนสีให้เข้าธีม IBM) */
+        /* Admin Panel / Login */
         #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; }
         #admin-panel button { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-text); padding: 8px 15px; font-family: 'VT323'; font-size: 1.2rem; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); }
         #admin-panel button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-text); }
@@ -163,7 +167,10 @@
 <body>
 
     <nav class="navbar">
-        <div class="logo">101 STUDIO</div>
+        <!-- เปลี่ยนโลโก้เป็นรูปภาพ และทำให้กดเพื่อกลับหน้าแรกได้ -->
+        <div class="logo sound-trigger" onclick="switchTab(event, 'home')">
+            <img src="images/Code_Generated_Image.png" alt="101 STUDIO Logo">
+        </div>
         <div class="nav-links">
             <button class="nav-btn active sound-trigger" onclick="switchTab(event, 'home')">SYS.HOME</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'schedule')">CALENDAR</button>
@@ -187,10 +194,31 @@
                             <img src="images/Code_Generated_Image.png" alt="PEEM Logo" class="hero-logo">
                             <a href="https://codecontrav2by101studio.netlify.app/" target="_blank" class="btn-retro sound-trigger">> RUN GAME.BAT</a>
                         </div>
-                        <div class="timeline-section">
+                        
+                        <!-- โซนเพิ่มใหม่: โชว์ผลงาน (PROJECTS) -->
+                        <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 40px;">
+                            <h2 class="editable timeline-title-main" id="proj-sec-title" data-field="proj_sec_title">DIRECTORY: \PROJECTS</h2>
+                            <div class="project-grid">
+                                <!-- โปรเจกต์ 1: ตู้จ่ายยา -->
+                                <div class="project-card sound-trigger">
+                                    <img src="images/project1.jpg" alt="Medicine Dispenser App">
+                                    <h3 class="editable project-title" id="proj1-name" data-field="proj1_name">MEDICINE DISPENSER.EXE</h3>
+                                    <p class="editable" id="proj1-desc" data-field="proj1_desc" style="font-size: 1.1rem; line-height: 1.5;">> Web App สำหรับควบคุมตู้จ่ายยาอัตโนมัติ ใช้งานง่าย รองรับระบบฐานข้อมูลเพื่อตรวจสอบความถูกต้องแม่นยำ</p>
+                                </div>
+                                
+                                <!-- โปรเจกต์ 2: เว็บหน่วยงาน -->
+                                <div class="project-card sound-trigger">
+                                    <img src="images/project2.jpg" alt="Government Portal">
+                                    <h3 class="editable project-title" id="proj2-name" data-field="proj2_name">GOV_PORTAL.EXE</h3>
+                                    <p class="editable" id="proj2-desc" data-field="proj2_desc" style="font-size: 1.1rem; line-height: 1.5;">> ระบบเว็บไซต์หน่วยงาน ออกแบบ UI/UX ให้ใช้งานคล่องตัว จัดการข้อมูลภายในได้อย่างรวดเร็วและปลอดภัย</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- โซนความทรงจำ (TIMELINE เดิม) -->
+                        <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 40px;">
                             <h2 class="editable timeline-title-main" id="timeline-main-title" data-field="timeline_main_title">DIRECTORY: \MEMORIES</h2>
                             <div class="timeline">
-                                <!-- อัลบั้มที่ 1 -->
                                 <div class="timeline-item">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'first_meet')">
@@ -198,7 +226,6 @@
                                         <p class="editable" id="album-name-1" data-field="album_name_1">FIRST MEET CN25.DAT</p>
                                     </div>
                                 </div>
-                                <!-- อัลบั้มที่ 2 -->
                                 <div class="timeline-item">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'class_memories')">
@@ -396,7 +423,7 @@
                 scheduleData.push({ date: dateStr, title: title.trim(), completed: false });
                 renderCalendar();
                 sendLineNotify(dateStr, title.trim());
-                document.getElementById('save-btn').click(); // Auto save when add
+                document.getElementById('save-btn').click(); 
             }
         }
 
@@ -431,7 +458,7 @@
             gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); 
             osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); 
         }
-        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-retro, .btn-drive, .btn-social').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
+        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-retro, .btn-drive, .btn-social, .logo').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
         
         document.addEventListener('keydown', function(event) { 
             if (event.key === 'Enter') { 
