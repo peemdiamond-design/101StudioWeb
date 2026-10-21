@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PEEMCN25 | IBM Retro Edition</title>
     
-    <!-- เซนเซอร์ดักจับบั๊กหน้าเว็บอัตโนมัติ -->
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
             if (source && source.includes('chrome-extension')) return false;
             const bugData = { message: message, source: source, lineno: lineno, colno: colno };
-            // แก้บั๊ก: เปลี่ยนให้ส่งรายงานบั๊กไปที่เซิร์ฟเวอร์ ngrok ล่าสุดของคุณ
             fetch('https://jogging-flagstick-wrongly.ngrok-free.dev/report-bug', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                method: 'POST', 
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true'
+                },
                 body: JSON.stringify(bugData)
             }).catch(err => console.log('ไม่สามารถส่งรายงานบั๊กได้', err));
             return false; 
@@ -79,7 +81,7 @@
         .url-label { font-family: 'VT323'; color: var(--ibm-accent-blue); font-size: 1.1rem; }
         .proj-url-edit { word-break: break-all; font-family: 'VT323', monospace; font-size: 1rem; outline: none; display: inline-block; min-width: 50px; border-bottom: 1px dashed var(--ibm-accent-blue); }
         
-        /* === สไตล์หน้า ARCHIVE (Hybrid: Iframe + File Explorer) === */
+        /* === สไตล์หน้า ARCHIVE === */
         .archive-layout { display: flex; gap: 20px; width: 100%; text-align: left; height: 500px; background: var(--ibm-pearl); padding: 15px; border: 2px solid var(--ibm-text); box-shadow: inset 4px 4px 0 rgba(255,255,255,0.8), inset -4px -4px 0 var(--ibm-shadow); }
         .archive-sidebar { flex: 0 0 220px; display: flex; flex-direction: column; gap: 10px; border-right: 2px dashed var(--ibm-key-dark); padding-right: 15px; overflow-y: auto;}
         .archive-sidebar::-webkit-scrollbar { width: 8px; } .archive-sidebar::-webkit-scrollbar-thumb { background: var(--ibm-key-dark); }
@@ -397,12 +399,7 @@
     <!-- Scripts -->
     <script>
         const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTA1ZaJi3ieoEJt6mQD12Y-Ti5KY-uuyS3SdgmoFGL64jtgZM2xVdyg7GP1pSer46ZCQ/exec";
-        
-        // ----------------------------------------------------
-        // ใช้ลิงก์จาก ngrok เพื่อคุยกับ Server ได้อย่างปลอดภัย (HTTPS)
-        // ----------------------------------------------------
         const SERVER_URL = 'https://jogging-flagstick-wrongly.ngrok-free.dev'; 
-        // ----------------------------------------------------
 
         let scheduleData = []; let today = new Date(); let currentMonth = today.getMonth(); let currentYear = today.getFullYear();
         const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
@@ -442,54 +439,49 @@
         let folderHistory = []; 
         let currentFolderId = 'root';
 
-        // 1. กดปุ่มโชว์หน้าเว็บไซต์ SERVER HOST (ใช้ Iframe)
         function loadServerHost(btnElement) {
             document.querySelectorAll('.folder-btn').forEach(b => b.classList.remove('active'));
             btnElement.classList.add('active');
-            
             document.getElementById('archive-path').innerText = "C:\\ARCHIVE\\SERVER_HOST\\";
             document.getElementById('btn-back-folder').style.display = 'none';
             document.getElementById('archive-ext-link').href = "https://peemdiamond-design.github.io/101-cloud-web/";
-            
-            // สลับโชว์ Iframe ซ่อน File Explorer
             document.getElementById('archive-iframe').style.display = 'block';
             document.getElementById('native-explorer').style.display = 'none';
         }
 
-        // 2. กดปุ่มโชว์โฟลเดอร์ Google Drive (ใช้ Native File Explorer)
         function loadDriveFolder(btnElement, folderName, baseFolderId) {
             document.querySelectorAll('.folder-btn').forEach(b => b.classList.remove('active'));
             btnElement.classList.add('active');
-            
             document.getElementById('archive-ext-link').href = `https://drive.google.com/drive/folders/${baseFolderId}`;
-            
-            // สลับโชว์ File Explorer ซ่อน Iframe
             document.getElementById('archive-iframe').style.display = 'none';
             document.getElementById('native-explorer').style.display = 'flex';
-            
             folderHistory = [{ id: baseFolderId, name: folderName }];
             currentFolderId = baseFolderId;
-            
             updatePathDisplay();
             fetchFiles(currentFolderId);
         }
 
-        // 3. ดึงข้อมูลไฟล์จาก Backend API
+        // --- แก้ไขตัวบล็อกการโหลดไฟล์ออกทั้งหมด ---
         async function fetchFiles(folderId) {
             const fileListDiv = document.getElementById('file-list');
-            const currentUser = firebase.auth().currentUser;
-            if(!currentUser) {
-                fileListDiv.innerHTML = '<span style="color:#da1e28; font-family: \'VT323\'; font-size:1.4rem;">> ACCESS DENIED. PLEASE LOGIN FIRST.</span>';
-                return;
-            }
-
             fileListDiv.innerHTML = '<span style="color:var(--ibm-accent-blue); font-family: \'VT323\'; font-size:1.4rem;">> FETCHING DATA FROM CLOUD...</span>';
             
             try {
-                const token = await currentUser.getIdToken(); 
+                // เตรียม Headers ข้าม ngrok เสมอ
+                const headers = {
+                    'ngrok-skip-browser-warning': 'true'
+                };
+
+                // ถ้ามี User ล็อกอินอยู่ ถึงจะส่ง Token ไปด้วย
+                const currentUser = firebase.auth().currentUser;
+                if (currentUser) {
+                    const token = await currentUser.getIdToken(); 
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
                 const fetchUrl = `${SERVER_URL}/list-files?folderId=${folderId}`;
+                const response = await fetch(fetchUrl, { headers: headers });
                 
-                const response = await fetch(fetchUrl, { headers: { 'Authorization': `Bearer ${token}` }});
                 if (!response.ok) throw new Error(`HTTP ERROR: ${response.status}`);
                 
                 allFiles = await response.json(); 
@@ -501,7 +493,6 @@
             }
         }
 
-        // 4. วาดลิสต์ไฟล์
         function renderFilesList(filesToDisplay) {
             const fileListDiv = document.getElementById('file-list');
             fileListDiv.innerHTML = ''; 
@@ -537,6 +528,21 @@
             document.getElementById('btn-back-folder').style.display = folderHistory.length > 1 ? 'inline-block' : 'none';
         }
         function filterFiles() { const keyword = document.getElementById('search-input').value.toLowerCase(); renderFilesList(allFiles.filter(file => file.name.toLowerCase().includes(keyword))); }
+
+        async function notifyServerOnCall(fileName) {
+            try {
+                const headers = { 
+                    'Content-Type': 'application/json', 
+                    'ngrok-skip-browser-warning': 'true'
+                };
+                const currentUser = firebase.auth().currentUser; 
+                if(currentUser) {
+                    const token = await currentUser.getIdToken();
+                    headers['Authorization'] = 'Bearer ' + token;
+                }
+                fetch(`${SERVER_URL}/notify-click`, { method: 'POST', headers: headers, body: JSON.stringify({ fileName: fileName }) });
+            } catch (error) { console.error('Failed to notify:', error); }
+        }
 
         /* =========================================
            Calendar & Basic UI
@@ -629,11 +635,6 @@
                 document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
                 document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
                 renderProjects(); 
-                
-                // ถ้าระบบโชว์ File explorer อยู่ ให้โหลดไฟล์ทันทีที่ล็อกอินเสร็จ
-                if(document.getElementById('native-explorer').style.display !== 'none') {
-                    fetchFiles(currentFolderId);
-                }
             } else { 
                 document.body.classList.remove('edit-mode'); 
                 document.getElementById('login-show-btn').style.display = 'block'; 
@@ -642,8 +643,11 @@
                 document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'none');
                 document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
                 renderProjects(); 
-                
-                document.getElementById('file-list').innerHTML = '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem;">> PLEASE LOGIN TO ACCESS CLOUD FILES...</span>';
+            }
+
+            // --- แก้ไข: ให้โหลดไฟล์เสมอ ไม่ว่าจะล็อกอินหรือไม่ก็ตาม ---
+            if(document.getElementById('native-explorer').style.display !== 'none') {
+                fetchFiles(currentFolderId);
             }
         });
 
