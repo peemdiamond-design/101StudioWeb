@@ -23,11 +23,9 @@
         
         /* Navbar */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background-color: var(--ibm-pearl); border-bottom: 4px solid var(--ibm-key-dark); position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 0 var(--ibm-shadow); }
-        
         .logo { font-family: 'VT323', monospace; font-size: 2.8rem; color: var(--ibm-accent-blue); text-shadow: 2px 2px 0px var(--ibm-key-light); letter-spacing: 2px; display: flex; align-items: center; transition: 0.1s; padding: 5px 10px; border-radius: 4px; border: 2px solid transparent; }
         .logo:hover { transform: scale(1.02); background: rgba(0,0,0,0.05); border-color: var(--ibm-key-dark); }
         .logo img { height: 40px; width: auto; filter: drop-shadow(2px 2px 0px var(--ibm-shadow)); margin-left: 15px; border-radius: 4px; }
-        
         .nav-links { display: flex; gap: 15px; }
         .nav-btn { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-key-dark); border-radius: 4px; font-size: 1.2rem; font-weight: 700; padding: 8px 20px; transition: 0.1s; box-shadow: 2px 4px 0 var(--ibm-shadow); }
         .nav-btn:hover { background: #fff; transform: translateY(2px); box-shadow: 2px 2px 0 var(--ibm-shadow); } 
@@ -42,7 +40,6 @@
         .window-header { background-color: var(--ibm-key-dark); padding: 10px 15px; display: flex; gap: 8px; align-items: center; border-bottom: 4px solid var(--ibm-text); }
         .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ibm-text); background-color: var(--ibm-pearl); }
         .window-title { margin-left: 10px; font-family: 'VT323'; color: #fff; font-size: 1.2rem; letter-spacing: 1px; }
-        
         .window-body { padding: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFElEQVQIW2NkYGD4z8DAwMgAI0AMDA4BGbRFSEgAAAAASUVORK5CYII=') repeat; }
         .home-content { position: relative; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; background-color: rgba(244,244,244,0.95); padding: 20px; border: 2px dashed var(--ibm-key-dark); }
         
@@ -52,24 +49,22 @@
         h1 { font-size: 3.5rem; color: var(--ibm-text); margin-bottom: 5px; text-transform: uppercase; text-align: center; border-bottom: 4px solid var(--ibm-accent-blue); display: inline-block; padding-bottom: 5px; }
         .subtitle { font-size: 1.4rem; color: #525252; margin-bottom: 20px; margin-top: 10px; text-align: center; }
         
-        /* Project Lists (แบบไม่มีรูป) */
-        .project-list-container { display: flex; flex-direction: column; gap: 15px; width: 100%; margin-bottom: 40px; padding: 10px; }
-        .project-item { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); box-shadow: 5px 5px 0px var(--ibm-shadow); text-align: left; padding: 20px; display: flex; flex-direction: column; gap: 10px; transition: 0.1s; }
-        .project-item:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0px var(--ibm-shadow); background: #fff; }
+        /* Project Lists (แบบบีบอัด ไม่เทอะทะ) */
+        .project-list-container { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-bottom: 25px; padding: 5px; }
+        .project-item { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); box-shadow: 4px 4px 0px var(--ibm-shadow); text-align: left; padding: 12px 15px; display: flex; flex-direction: column; gap: 6px; transition: 0.1s; }
+        .project-item:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--ibm-shadow); background: #fff; }
+        .project-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--ibm-key-dark); padding-bottom: 6px; flex-wrap: wrap; gap: 8px; }
+        .project-title { font-family: 'VT323'; font-size: 1.6rem; color: var(--ibm-accent-blue); margin: 0; outline: none; border-bottom: 2px solid transparent;}
+        .project-desc { font-size: 1.1rem; color: #333; line-height: 1.4; margin: 0; outline: none; border: 1px dashed transparent; min-height: auto; padding: 2px 5px;}
         
-        .project-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--ibm-key-dark); padding-bottom: 10px; flex-wrap: wrap; gap: 10px; }
-        .project-title { font-family: 'VT323'; font-size: 2rem; color: var(--ibm-accent-blue); margin: 0; }
-        .project-desc { font-size: 1.2rem; color: #333; line-height: 1.6; margin: 0; }
+        .action-btn { background: var(--ibm-accent-blue); color: #fff; font-family: 'VT323'; font-size: 1.2rem; border: 2px solid var(--ibm-text); padding: 4px 12px; box-shadow: 2px 2px 0px var(--ibm-text); transition: 0.1s; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; height: fit-content; }
+        .action-btn:hover { background: #4589ff; transform: translate(-1px, -1px); box-shadow: 3px 3px 0px var(--ibm-text); }
+        .action-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-text); }
         
-        /* ปุ่มเข้าเว็บโปรเจกต์ */
-        .action-btn { background: var(--ibm-accent-blue); color: #fff; font-family: 'VT323'; font-size: 1.5rem; border: 2px solid var(--ibm-text); padding: 8px 25px; box-shadow: 3px 3px 0px var(--ibm-text); transition: 0.1s; text-decoration: none; display: inline-block; white-space: nowrap; }
-        .action-btn:hover { background: #4589ff; transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--ibm-text); }
-        .action-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ibm-text); }
-        
-        /* ช่องใส่ URL สำหรับแอดมิน */
-        .admin-url-box { display: none; margin-top: 10px; background: rgba(15, 98, 254, 0.05); padding: 10px; border: 1px dashed var(--ibm-accent-blue); }
+        .admin-url-box { display: none; margin-top: 5px; background: rgba(15, 98, 254, 0.05); padding: 6px 10px; border: 1px dashed var(--ibm-accent-blue); }
         .edit-mode .admin-url-box { display: block; }
-        .url-label { font-family: 'VT323'; color: var(--ibm-accent-blue); font-size: 1.2rem; }
+        .url-label { font-family: 'VT323'; color: var(--ibm-accent-blue); font-size: 1.1rem; }
+        .proj-url-edit { word-break: break-all; font-family: 'VT323', monospace; font-size: 1rem; outline: none; display: inline-block; min-width: 50px; border-bottom: 1px dashed var(--ibm-accent-blue); }
         
         .drive-btn-container { display: flex; flex-direction: column; gap: 20px; align-items: center; margin: 30px 0; width: 100%; }
         .btn-drive { width: 100%; max-width: 500px; padding: 15px 30px; font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0; background-color: var(--ibm-pearl); color: var(--ibm-text); text-align: left; border: 2px solid var(--ibm-text); box-shadow: 4px 4px 0 var(--ibm-shadow);}
@@ -82,7 +77,7 @@
         .btn-social:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px var(--ibm-shadow); }
         
         .timeline-section { margin-top: 20px; padding-top: 20px; width: 100%; }
-        .timeline-title-main { color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.8rem; margin-bottom: 30px; text-transform: uppercase; text-align: center; }
+        .timeline-title-main { color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.8rem; margin-bottom: 20px; text-transform: uppercase; text-align: center; }
         .timeline { position: relative; max-width: 700px; margin: 0 auto; padding: 10px 0; border-left: 4px solid var(--ibm-key-dark); }
         .timeline-item { padding: 10px 0 30px 40px; position: relative; width: 100%; text-align: left; } 
         .timeline-dot { position: absolute; width: 20px; height: 20px; background-color: var(--ibm-accent-blue); border: 4px solid var(--ibm-key-light); top: 15px; left: -12px; border-radius: 50%; box-shadow: 0 0 0 2px var(--ibm-text); }
@@ -113,7 +108,6 @@
         .calendar-header button { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); color: var(--ibm-text); padding: 5px 15px; font-family: 'VT323'; font-size: 1.8rem; transition: 0.1s; box-shadow: 2px 2px 0 #000;}
         .calendar-header button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
         .calendar-header h2 { font-family: 'VT323'; font-size: 2.2rem; margin: 0; letter-spacing: 1px;}
-        
         .calendar-wrapper { width: 100%; overflow-x: auto; border: 2px solid var(--ibm-text); background: var(--ibm-key-dark); }
         .calendar-wrapper::-webkit-scrollbar { height: 12px; background: var(--ibm-key-dark); } .calendar-wrapper::-webkit-scrollbar-thumb { background: var(--ibm-text); border: 2px solid var(--ibm-key-dark);}
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--ibm-text); min-width: 700px; }
@@ -122,12 +116,10 @@
         .calendar-day.empty { background: var(--ibm-key-light); }
         .edit-mode .calendar-day:not(.empty):hover { background: #f0f8ff; cursor: pointer; }
         .day-number { text-align: right; font-family: 'VT323'; font-size: 1.3rem; color: #525252; margin-bottom: 5px; border-bottom: 1px dashed var(--ibm-key-dark); padding-bottom: 2px; }
-        
         .events-container { flex: 1; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; padding-top: 5px;}
         .events-container::-webkit-scrollbar { display: none; }
         .calendar-event { background: var(--ibm-pearl); border-left: 4px solid var(--ibm-accent-blue); font-size: 0.95rem; padding: 5px 6px; line-height: 1.2; position: relative; padding-right: 20px; color: var(--ibm-text); word-break: break-word; font-family: 'VT323'; }
         .calendar-event.completed { background: var(--ibm-key-light); border-left-color: var(--ibm-key-dark); color: #8d8d8d; text-decoration: line-through; font-style: italic; }
-        
         .delete-event-btn { position: absolute; right: 2px; top: 2px; background: #da1e28; color: #fff; border: 1px solid var(--ibm-text); font-size: 0.8rem; width: 16px; height: 16px; display: none; line-height: 1; text-align: center; padding: 0; font-family: 'VT323'; box-shadow: 1px 1px 0 #000; }
         .edit-mode .delete-event-btn { display: block; }
         
@@ -145,21 +137,20 @@
             .timeline-item { padding-left: 20px; }
             .timeline-dot { left: -10px; width: 16px; height: 16px; top: 18px; }
             .logo img { height: 35px; }
-            .project-header { flex-direction: column; align-items: stretch; }
-            .action-btn { text-align: center; }
+            .project-header { flex-direction: column; align-items: flex-start; }
         }
         
-        /* สไตล์สำหรับแก้ไขข้อความ (Edit Mode) */
+        /* สไตล์ Edit Mode ทั่วไป */
         .editable { transition: 0.2s; outline: none; }
         .edit-mode .editable { background-color: rgba(15, 98, 254, 0.1); border-bottom: 2px dashed var(--ibm-accent-blue); }
         .edit-mode .editable:focus { background-color: rgba(15, 98, 254, 0.2); }
         h1.editable, h3.editable, h2.editable { display: block !important; width: 100% !important; text-align: center !important; white-space: normal !important; word-break: break-word !important; }
         .editable-block { display: block; text-align: left; padding: 10px; min-height: 50px; white-space: pre-wrap; word-wrap: break-word; width: 100%; } 
         .edit-mode .editable-block { border: 2px dashed var(--ibm-accent-blue); background-color: #fff; }
-        .edit-mode .editable:empty::before { content: "[พิมพ์ข้อความ...หัวข้อ]"; color: #888; font-size: 0.9em; font-family:'VT323'; }
+        .edit-mode .editable:empty::before { content: "[พิมพ์ข้อความ...]"; color: #888; font-size: 0.9em; font-family:'VT323'; }
         
         /* Admin Panel / Login */
-        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; }
+        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; flex-wrap: wrap; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; max-width: 90vw; justify-content: flex-end;}
         #admin-panel button { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-text); padding: 8px 15px; font-family: 'VT323'; font-size: 1.2rem; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); }
         #admin-panel button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-text); }
         #save-btn { background-color: #24a148 !important; color: #fff !important; display: none; }
@@ -205,75 +196,37 @@
                             <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
                         </div>
                         
-                        <!-- โซนโชว์โปรเจกต์ (แบบ List ไม่มีรูป แยกปุ่มกดชัดเจน) -->
-                        <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 40px;">
+                        <!-- โซนโชว์โปรเจกต์ (Compact Version) -->
+                        <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px;">
                             <h2 class="editable timeline-title-main" id="proj-sec-title" data-field="proj_sec_title">DIRECTORY: \PROJECTS</h2>
                             
-                            <div class="project-list-container">
-                                
-                                <!-- 1. เกม Contra -->
-                                <div class="project-item">
-                                    <div class="project-header">
-                                        <h3 class="editable project-title" id="proj-game-name" data-field="proj_game_name">CODE CONTRA V.2.EXE</h3>
-                                        <button class="action-btn sound-trigger" onclick="openTargetLink('proj-game-url')">▶ PLAY GAME</button>
-                                    </div>
-                                    <p class="editable editable-block project-desc" id="proj-game-desc" data-field="proj_game_desc">> ฝ่าด่านสุดมันส์ไปกับเกมยิงสไตล์ Retro 8-bit ที่สร้างสรรค์ขึ้นมาใหม่!</p>
-                                    
-                                    <!-- ช่องใส่ URL ของเกม (โชว์เฉพาะตอนแอดมินล็อกอิน) -->
-                                    <div class="admin-url-box">
-                                        <span class="url-label">TARGET URL: </span>
-                                        <span class="editable" id="proj-game-url" data-field="proj_game_url">https://codecontrav2by101studio.netlify.app/</span>
-                                    </div>
-                                </div>
+                            <div id="admin-hint" class="edit-hint-proj" style="display:none; font-family: 'VT323'; font-size: 1.2rem; color: #0f62fe; background: #edf5ff; padding: 8px; border: 1px dashed #0f62fe; text-align: left; margin-bottom:15px;">
+                                [!] แอดมิน: แก้ข้อความได้โดยตรงในกล่อง | กด "ADD NEW PROJECT" ด้านล่างเพื่อเพิ่มกล่องใหม่ได้
+                            </div>
 
-                                <!-- 2. ตู้จ่ายยา -->
-                                <div class="project-item">
-                                    <div class="project-header">
-                                        <h3 class="editable project-title" id="proj1-name" data-field="proj1_name">MEDICINE DISPENSER SYS.</h3>
-                                        <button class="action-btn sound-trigger" onclick="openTargetLink('proj1-url')">🔗 OPEN WEB</button>
-                                    </div>
-                                    <p class="editable editable-block project-desc" id="proj1-desc" data-field="proj1_desc">> Web App สำหรับควบคุมตู้จ่ายยาอัตโนมัติ ใช้งานง่าย รองรับระบบฐานข้อมูลเพื่อตรวจสอบความถูกต้อง</p>
-                                    
-                                    <!-- ช่องใส่ URL ของตู้จ่ายยา -->
-                                    <div class="admin-url-box">
-                                        <span class="url-label">TARGET URL: </span>
-                                        <span class="editable" id="proj1-url" data-field="proj1_url">https://example.com/medicine</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- 3. เว็บหน่วยงาน -->
-                                <div class="project-item">
-                                    <div class="project-header">
-                                        <h3 class="editable project-title" id="proj2-name" data-field="proj2_name">GOV_PORTAL NETWORK</h3>
-                                        <button class="action-btn sound-trigger" onclick="openTargetLink('proj2-url')">🔗 OPEN WEB</button>
-                                    </div>
-                                    <p class="editable editable-block project-desc" id="proj2-desc" data-field="proj2_desc">> ระบบเว็บไซต์หน่วยงาน ออกแบบ UI/UX ให้ใช้งานคล่องตัว จัดการข้อมูลภายในได้อย่างปลอดภัย</p>
-                                    
-                                    <!-- ช่องใส่ URL ของเว็บหน่วยงาน -->
-                                    <div class="admin-url-box">
-                                        <span class="url-label">TARGET URL: </span>
-                                        <span class="editable" id="proj2-url" data-field="proj2_url">https://example.com/gov</span>
-                                    </div>
-                                </div>
+                            <button id="add-project-btn" class="action-btn sound-trigger" style="display:none; margin: 0 auto 15px auto; background: #24a148;" onclick="addNewProject()">[+] ADD NEW PROJECT</button>
 
+                            <!-- คอนเทนเนอร์สำหรับกล่องโปรเจกต์แบบไดนามิก -->
+                            <div id="dynamic-project-container" class="project-list-container">
+                                <!-- JS จะเสกโค้ดโปรเจกต์มาใส่ตรงนี้ -->
                             </div>
                         </div>
 
                         <!-- โซนความทรงจำ -->
-                        <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 40px;">
+                        <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px;">
                             <h2 class="editable timeline-title-main" id="memories-main-title" data-field="memories_main_title">DIRECTORY: \MEMORIES</h2>
                             <div class="timeline">
                                 <div class="timeline-item">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'first_meet')">
-                                        <img src="images/cover.jpg" alt="First Meet Cover">
+                                        <img src="images/cover.jpg" id="mem-img-1" alt="First Meet Cover">
                                         <p class="editable" id="album-name-1" data-field="album_name_1">FIRST MEET CN25.DAT</p>
                                     </div>
                                 </div>
                                 <div class="timeline-item">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'class_memories')">
-                                        <img src="images/S__22814752_0.jpg" alt="Class Memories Cover">
+                                        <img src="images/S__22814752_0.jpg" id="mem-img-2" alt="Class Memories Cover">
                                         <p class="editable" id="album-name-2" data-field="album_name_2">CLASS MEMORIES.SYS</p>
                                     </div>
                                 </div>
@@ -293,7 +246,7 @@
                 </div>
                 <div class="window-body">
                     <h1 class="editable" id="schedule-title" data-field="schedule_title" style="margin-bottom: 20px;">TASK SCHEDULER</h1>
-                    <div id="admin-hint">[ ROOT_ACCESS_GRANTED ] > CLICK EMPTY BLOCK TO ADD QUEST | CLICK QUEST TEXT TO MARK COMPLETE</div>
+                    <div id="admin-hint" class="edit-hint-cal">[ ROOT_ACCESS_GRANTED ] > CLICK EMPTY BLOCK TO ADD QUEST | CLICK QUEST TEXT TO MARK COMPLETE</div>
                     <div class="calendar-header">
                         <button class="sound-trigger" onclick="changeMonth(-1)">&#9664;</button>
                         <h2 id="month-year-label">MONTH YEAR</h2>
@@ -332,7 +285,7 @@
                 </div>
                 <div class="window-body">
                     <div class="about-layout">
-                        <div class="about-image-wrapper"><img src="images/S__5734407.jpg" alt="Profile Picture"></div>
+                        <div class="about-image-wrapper"><img src="images/S__5734407.jpg" id="profile-pic" alt="Profile Picture"></div>
                         <div class="about-text-content">
                             <h2 style="color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.5rem; margin-bottom: 10px; border-bottom: 2px solid var(--ibm-key-dark);">USER PROFILE</h2>
                             <p class="editable editable-block" id="about-details" data-field="about_details" style="font-size: 1.3rem; color: #333; line-height: 1.6; font-family: 'VT323';">> STATUS: ONLINE<br>> LOCATION: BANGKOK<br>> SKILLS: HTML, CSS, JS, FIREBASE<br><br>[ กรุณากรอกประวัติเพิ่มเติม... ]</p>
@@ -403,6 +356,73 @@
         let scheduleData = []; let today = new Date(); let currentMonth = today.getMonth(); let currentYear = today.getFullYear();
         const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
+        // ข้อมูลโปรเจกต์ (ค่าเริ่มต้น)
+        let projectData = [
+            { name: "CODE CONTRA V.2.EXE", desc: "> ฝ่าด่านสุดมันส์ไปกับเกมยิงสไตล์ Retro 8-bit ที่สร้างสรรค์ขึ้นมาใหม่!", url: "https://codecontrav2by101studio.netlify.app/", icon: "▶ PLAY GAME" },
+            { name: "MEDICINE DISPENSER SYS.", desc: "> Web App สำหรับควบคุมตู้จ่ายยาอัตโนมัติ ใช้งานง่าย", url: "https://example.com/medicine", icon: "🔗 OPEN WEB" },
+            { name: "GOV_PORTAL NETWORK", desc: "> ระบบเว็บไซต์หน่วยงาน ออกแบบ UI/UX ให้ใช้งานคล่องตัว", url: "https://example.com/gov", icon: "🔗 OPEN WEB" }
+        ];
+
+        // เรนเดอร์กล่องโปรเจกต์
+        function renderProjects() {
+            const container = document.getElementById('dynamic-project-container');
+            container.innerHTML = '';
+            const isEdit = document.body.classList.contains('edit-mode');
+
+            projectData.forEach((proj, index) => {
+                const el = document.createElement('div');
+                el.className = 'project-item';
+                
+                // ปุ่มลบโปรเจกต์ถูกย่อให้เล็กลง
+                let deleteBtnHTML = isEdit ? `<button class="action-btn sound-trigger" style="background:#da1e28; margin-left:5px; padding:4px 10px;" onclick="deleteProject(${index})">X</button>` : '';
+                
+                el.innerHTML = `
+                    <div class="project-header">
+                        <h3 class="project-title ${isEdit ? 'editable' : ''}" ${isEdit ? 'contenteditable="true"' : ''} onblur="projectData[${index}].name = this.innerText">${proj.name}</h3>
+                        <div>
+                            <button class="action-btn sound-trigger" onclick="openTargetLinkStr('${proj.url}')">${proj.icon || '🔗 OPEN WEB'}</button>
+                            ${deleteBtnHTML}
+                        </div>
+                    </div>
+                    <p class="project-desc ${isEdit ? 'editable' : ''}" ${isEdit ? 'contenteditable="true"' : ''} onblur="projectData[${index}].desc = this.innerText">${proj.desc}</p>
+                    
+                    <div class="admin-url-box">
+                        <span class="url-label">TARGET URL: </span>
+                        <span class="proj-url-edit ${isEdit ? 'editable' : ''}" ${isEdit ? 'contenteditable="true"' : ''} onblur="projectData[${index}].url = this.innerText">${proj.url}</span>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        function addNewProject() {
+            projectData.push({
+                name: "NEW_PROJECT.EXE",
+                desc: "> พิมพ์คำอธิบายโปรเจกต์ของคุณที่นี่...",
+                url: "https://",
+                icon: "🔗 OPEN WEB"
+            });
+            renderProjects();
+            document.getElementById('save-btn').click(); 
+        }
+
+        function deleteProject(index) {
+            if(confirm("DELETE THIS PROJECT? (Y/N)")) {
+                projectData.splice(index, 1);
+                renderProjects();
+                document.getElementById('save-btn').click(); 
+            }
+        }
+
+        function openTargetLinkStr(url) {
+            if (document.body.classList.contains('edit-mode')) return; 
+            if (url && url.trim() !== '') {
+                let link = url.trim();
+                if (!link.startsWith('http://') && !link.startsWith('https://')) { link = 'https://' + link; }
+                window.open(link, '_blank');
+            }
+        }
+
         function renderCalendar() {
             const grid = document.getElementById('calendar-grid'); const monthYearLabel = document.getElementById('month-year-label');
             grid.innerHTML = ''; monthYearLabel.textContent = `${monthNames[currentMonth]} ${currentYear}`;
@@ -425,7 +445,6 @@
                     const globalIndex = scheduleData.indexOf(ev);
                     const evEl = document.createElement('div');
                     evEl.className = 'calendar-event' + (ev.completed ? ' completed' : '');
-                    
                     const textSpan = document.createElement('span'); textSpan.innerHTML = `> ${ev.title}`;
                     textSpan.onclick = (e) => { if(document.body.classList.contains('edit-mode')) { e.stopPropagation(); toggleQuest(globalIndex); } };
                     evEl.appendChild(textSpan);
@@ -442,85 +461,23 @@
         }
 
         function changeMonth(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
-        
-        function toggleQuest(index) {
-            scheduleData[index].completed = !scheduleData[index].completed;
-            if(scheduleData[index].completed) playLevelUpSound();
-            renderCalendar();
-            if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); }
-        }
-
-        function sendLineNotify(dateStr, title) {
-            const formData = new URLSearchParams();
-            formData.append("action", "notify_now");
-            formData.append("date", dateStr); 
-            formData.append("title", title); 
-            fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: formData, mode: 'no-cors' });
-        }
-
-        function promptAddEvent(dateStr) {
-            let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`);
-            if(title && title.trim() !== '') {
-                title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); 
-                scheduleData.push({ date: dateStr, title: title.trim(), completed: false });
-                renderCalendar();
-                sendLineNotify(dateStr, title.trim());
-                document.getElementById('save-btn').click(); 
-            }
-        }
-
-        function deleteScheduleEvent(index) {
-            if(confirm("DELETE THIS TASK? (Y/N)")) {
-                scheduleData.splice(index, 1); renderCalendar();
-                if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); }
-            }
-        }
+        function toggleQuest(index) { scheduleData[index].completed = !scheduleData[index].completed; if(scheduleData[index].completed) playLevelUpSound(); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } }
+        function sendLineNotify(dateStr, title) { const formData = new URLSearchParams(); formData.append("action", "notify_now"); formData.append("date", dateStr); formData.append("title", title); fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: formData, mode: 'no-cors' }); }
+        function promptAddEvent(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
+        function deleteScheduleEvent(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
     </script>
     <script>
-        // เปิดหน้าเว็บตาม URL ที่ตั้งค่าไว้ในช่อง
-        function openTargetLink(urlFieldId) {
-            const urlElement = document.getElementById(urlFieldId);
-            if (urlElement && urlElement.innerText.trim() !== '') {
-                let url = urlElement.innerText.trim();
-                // ป้องกันแอดมินลืมใส่ http://
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    url = 'https://' + url;
-                }
-                window.open(url, '_blank');
-            }
-        }
-
         function openGallery(event, albumId) { if (event.target.classList.contains('editable')) return; document.getElementById('galleryModal').classList.add('active'); document.querySelectorAll('.gallery-content > div').forEach(el => el.style.display = 'none'); const targetAlbum = document.getElementById('album-' + albumId); if (targetAlbum) targetAlbum.style.display = 'flex'; }
         function closeGallery() { document.getElementById('galleryModal').classList.remove('active'); }
         function switchTab(e, tabId) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(tabId).classList.add('active'); if (e && e.currentTarget) e.currentTarget.classList.add('active'); }
     </script>
     <script>
-        // Retro Sound Effects 
         let audioCtx = null;
-        function playRetroClick() { 
-            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } 
-            if (audioCtx.state === 'suspended') { audioCtx.resume(); } 
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); 
-            osc.type = 'square'; osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05); 
-            gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); 
-            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05); 
-        }
-        function playLevelUpSound() { 
-            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } 
-            if (audioCtx.state === 'suspended') { audioCtx.resume(); } 
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); 
-            osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); 
-            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); 
-        }
-        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-drive, .btn-social, .logo').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
+        function playRetroClick() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05); gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05); }
+        function playLevelUpSound() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
+        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-drive, .btn-social, .logo, .action-btn').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
         
-        document.addEventListener('keydown', function(event) { 
-            if (event.key === 'Enter') { 
-                if (event.target.classList.contains('editable-block')) { event.preventDefault(); document.execCommand('insertLineBreak'); } 
-                else if (event.target.classList.contains('editable')) { event.preventDefault(); event.target.blur(); } 
-            } 
-        });
+        document.addEventListener('keydown', function(event) { if (event.key === 'Enter') { if (event.target.classList.contains('editable-block') || event.target.classList.contains('project-desc')) { event.preventDefault(); document.execCommand('insertLineBreak'); } else if (event.target.classList.contains('editable') || event.target.classList.contains('project-title') || event.target.classList.contains('proj-url-edit')) { event.preventDefault(); event.target.blur(); } } });
         document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); });
         document.getElementById('password').addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
         
@@ -536,7 +493,10 @@
     
     <script>
         const firebaseConfig = { apiKey: "AIzaSyAME4-lEvIycQnsWHPbi7CaBlwNiu7_qFk", authDomain: "website101-1f97f.firebaseapp.com", projectId: "website101-1f97f", storageBucket: "website101-1f97f.firebasestorage.app", messagingSenderId: "1001758477689", appId: "1:1001758477689:web:80bc85fb1a2e8af90873a8", measurementId: "G-JB4XSPMCLS" };
-        const app = firebase.initializeApp(firebaseConfig); const db = firebase.firestore(); const auth = firebase.auth(); const docRef = db.collection("website").doc("pixel_portfolio");
+        const app = firebase.initializeApp(firebaseConfig); 
+        const db = firebase.firestore(); 
+        const auth = firebase.auth(); 
+        const docRef = db.collection("website").doc("pixel_portfolio");
 
         async function loadData() {
             try {
@@ -545,14 +505,31 @@
                     const data = docSnap.data();
                     document.querySelectorAll('.editable').forEach(el => { const fieldName = el.getAttribute('data-field'); if (data[fieldName] !== undefined) { el.innerHTML = data[fieldName]; } });
                     if (data.schedule_list) { try { scheduleData = JSON.parse(data.schedule_list); } catch(e) { scheduleData = []; } }
+                    if (data.project_list) { try { projectData = JSON.parse(data.project_list); } catch(e) {} }
                     renderCalendar(); 
-                } else { renderCalendar(); }
-            } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); renderCalendar(); }
+                    renderProjects();
+                } else { renderCalendar(); renderProjects(); }
+            } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); renderCalendar(); renderProjects(); }
         }
 
         auth.onAuthStateChanged((user) => {
-            if (user) { document.body.classList.add('edit-mode'); document.getElementById('login-show-btn').style.display = 'none'; document.getElementById('save-btn').style.display = 'block'; document.getElementById('logout-btn').style.display = 'block'; document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); } 
-            else { document.body.classList.remove('edit-mode'); document.getElementById('login-show-btn').style.display = 'block'; document.getElementById('save-btn').style.display = 'none'; document.getElementById('logout-btn').style.display = 'none'; document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); }
+            if (user) { 
+                document.body.classList.add('edit-mode'); 
+                document.getElementById('login-show-btn').style.display = 'none'; 
+                document.getElementById('save-btn').style.display = 'block'; 
+                document.getElementById('logout-btn').style.display = 'block'; 
+                document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
+                document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
+                renderProjects(); 
+            } else { 
+                document.body.classList.remove('edit-mode'); 
+                document.getElementById('login-show-btn').style.display = 'block'; 
+                document.getElementById('save-btn').style.display = 'none'; 
+                document.getElementById('logout-btn').style.display = 'none'; 
+                document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
+                renderProjects(); 
+            }
         });
 
         document.getElementById('login-show-btn').onclick = () => document.getElementById('login-modal').style.display = 'flex';
@@ -571,23 +548,21 @@
         document.getElementById('logout-btn').onclick = () => auth.signOut();
 
         document.getElementById('save-btn').onclick = async () => {
-            const newData = {}; document.querySelectorAll('.editable').forEach(el => { newData[el.getAttribute('data-field')] = el.innerHTML; });
+            const newData = {}; 
+            document.querySelectorAll('.editable').forEach(el => { newData[el.getAttribute('data-field')] = el.innerHTML; });
             newData['schedule_list'] = JSON.stringify(scheduleData);
+            newData['project_list'] = JSON.stringify(projectData);
             
-            const syncData = new URLSearchParams();
-            syncData.append("action", "sync_data");
-            syncData.append("data", JSON.stringify(scheduleData));
+            const syncData = new URLSearchParams(); syncData.append("action", "sync_data"); syncData.append("data", JSON.stringify(scheduleData));
             fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: syncData, mode: 'no-cors' });
 
             try {
-                const btn = document.getElementById('save-btn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = "SAVING..."; 
-                await docRef.set(newData, { merge: true }); 
-                btn.innerHTML = "SAVED!";
-                setTimeout(() => btn.innerHTML = originalText, 2000);
+                const btn = document.getElementById('save-btn'); const originalText = btn.innerHTML;
+                btn.innerHTML = "SAVING..."; await docRef.set(newData, { merge: true }); 
+                btn.innerHTML = "SAVED!"; setTimeout(() => btn.innerHTML = originalText, 2000);
             } catch (error) { alert("SAVE FAILED: " + error.message); }
         };
+
         loadData();
     </script>
 </body>
