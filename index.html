@@ -17,14 +17,13 @@
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; cursor: url('https://cur.cursors-4u.net/system/sys-1/sys46.png'), auto !important; }
-        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span, .logo, .project-link-card { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
+        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span, .logo, .action-btn { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
         
         body { background-color: var(--bg-color); color: var(--ibm-text); min-height: 100vh; overflow-x: hidden; }
         
         /* Navbar */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background-color: var(--ibm-pearl); border-bottom: 4px solid var(--ibm-key-dark); position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 0 var(--ibm-shadow); }
         
-        /* โลโก้แบบมี Text และ รูป */
         .logo { font-family: 'VT323', monospace; font-size: 2.8rem; color: var(--ibm-accent-blue); text-shadow: 2px 2px 0px var(--ibm-key-light); letter-spacing: 2px; display: flex; align-items: center; transition: 0.1s; padding: 5px 10px; border-radius: 4px; border: 2px solid transparent; }
         .logo:hover { transform: scale(1.02); background: rgba(0,0,0,0.05); border-color: var(--ibm-key-dark); }
         .logo img { height: 40px; width: auto; filter: drop-shadow(2px 2px 0px var(--ibm-shadow)); margin-left: 15px; border-radius: 4px; }
@@ -47,35 +46,35 @@
         .window-body { padding: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFElEQVQIW2NkYGD4z8DAwMgAI0AMDA4BGbRFSEgAAAAASUVORK5CYII=') repeat; }
         .home-content { position: relative; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; background-color: rgba(244,244,244,0.95); padding: 20px; border: 2px dashed var(--ibm-key-dark); }
         
-        /* Hero Section ใหม่ (เอาโลโก้เก่าออก) */
+        /* Hero Section */
         .hero-section { position: relative; width: 100%; padding: 40px 0; display: flex; flex-direction: column; align-items: center; }
         .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.4; }
-        .dino-bg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.15; }
         h1 { font-size: 3.5rem; color: var(--ibm-text); margin-bottom: 5px; text-transform: uppercase; text-align: center; border-bottom: 4px solid var(--ibm-accent-blue); display: inline-block; padding-bottom: 5px; }
         .subtitle { font-size: 1.4rem; color: #525252; margin-bottom: 20px; margin-top: 10px; text-align: center; }
         
-        /* การ์ดโปรเจกต์สไตล์ Link Preview */
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; margin-bottom: 40px; padding: 10px; }
-        .project-link-card { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); box-shadow: 6px 6px 0px var(--ibm-shadow); text-align: left; transition: 0.1s; display: flex; flex-direction: column; overflow: hidden; }
-        .project-link-card:not(.edit-mode-active):hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0px var(--ibm-shadow); background: #fff; cursor: pointer; }
-        .project-link-card img { width: 100%; height: 180px; object-fit: cover; border-bottom: 2px solid var(--ibm-text); filter: grayscale(15%); transition: 0.3s; background: var(--ibm-key-dark); }
-        .project-link-card:hover img { filter: grayscale(0%); }
-        .project-link-info { padding: 15px; display: flex; flex-direction: column; flex: 1;}
-        .project-link-info h3 { font-family: 'VT323'; font-size: 1.8rem; color: var(--ibm-text); margin-bottom: 8px; border-bottom: 1px dashed var(--ibm-key-dark); padding-bottom: 5px; }
-        .project-link-info p { font-size: 1.1rem; color: #525252; line-height: 1.5; flex: 1; }
+        /* Project Lists (แบบไม่มีรูป) */
+        .project-list-container { display: flex; flex-direction: column; gap: 15px; width: 100%; margin-bottom: 40px; padding: 10px; }
+        .project-item { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); box-shadow: 5px 5px 0px var(--ibm-shadow); text-align: left; padding: 20px; display: flex; flex-direction: column; gap: 10px; transition: 0.1s; }
+        .project-item:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0px var(--ibm-shadow); background: #fff; }
         
-        /* แถบโชว์ URL */
-        .link-url-container { margin-top: 15px; font-size: 0.9rem; color: var(--ibm-accent-blue); background: rgba(15, 98, 254, 0.05); padding: 8px; border: 1px dashed var(--ibm-accent-blue); display: flex; align-items: center; gap: 5px; }
-        .link-url { word-break: break-all; font-family: 'VT323', monospace; font-size: 1.1rem; outline: none; }
-
-        /* ป้องกันปุ่มขยับในโหมดแอดมิน เพื่อให้กดแก้ข้อความได้ง่าย */
-        .edit-mode .project-link-card { cursor: default !important; }
-        .edit-mode .project-link-card:hover { transform: none; box-shadow: 6px 6px 0px var(--ibm-shadow); background: var(--ibm-key-light); }
+        .project-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--ibm-key-dark); padding-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .project-title { font-family: 'VT323'; font-size: 2rem; color: var(--ibm-accent-blue); margin: 0; }
+        .project-desc { font-size: 1.2rem; color: #333; line-height: 1.6; margin: 0; }
+        
+        /* ปุ่มเข้าเว็บโปรเจกต์ */
+        .action-btn { background: var(--ibm-accent-blue); color: #fff; font-family: 'VT323'; font-size: 1.5rem; border: 2px solid var(--ibm-text); padding: 8px 25px; box-shadow: 3px 3px 0px var(--ibm-text); transition: 0.1s; text-decoration: none; display: inline-block; white-space: nowrap; }
+        .action-btn:hover { background: #4589ff; transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--ibm-text); }
+        .action-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ibm-text); }
+        
+        /* ช่องใส่ URL สำหรับแอดมิน */
+        .admin-url-box { display: none; margin-top: 10px; background: rgba(15, 98, 254, 0.05); padding: 10px; border: 1px dashed var(--ibm-accent-blue); }
+        .edit-mode .admin-url-box { display: block; }
+        .url-label { font-family: 'VT323'; color: var(--ibm-accent-blue); font-size: 1.2rem; }
         
         .drive-btn-container { display: flex; flex-direction: column; gap: 20px; align-items: center; margin: 30px 0; width: 100%; }
-        .btn-drive { width: 100%; max-width: 500px; padding: 15px 30px; font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0; background-color: var(--ibm-pearl); color: var(--ibm-text); text-align: left; }
+        .btn-drive { width: 100%; max-width: 500px; padding: 15px 30px; font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0; background-color: var(--ibm-pearl); color: var(--ibm-text); text-align: left; border: 2px solid var(--ibm-text); box-shadow: 4px 4px 0 var(--ibm-shadow);}
         .btn-server { border-left: 15px solid #24a148; } .btn-code { border-left: 15px solid #1192e8; } .btn-exam { border-left: 15px solid #f1c21b; } .btn-portfolio { border-left: 15px solid #da1e28; }
-        .btn-drive:hover { background-color: #fff; }
+        .btn-drive:hover { background-color: #fff; transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ibm-shadow); }
         
         .social-container { display: flex; justify-content: center; gap: 20px; margin-top: 40px; flex-wrap: wrap; width: 100%; }
         .btn-social { display: inline-flex; align-items: center; background: var(--ibm-key-light); color: var(--ibm-text); font-size: 1.4rem; font-weight: 700; padding: 10px 25px; text-decoration: none; border: 2px solid var(--ibm-text); box-shadow: 4px 4px 0px var(--ibm-shadow); transition: 0.1s; font-family: 'VT323'; letter-spacing: 1px; }
@@ -134,7 +133,6 @@
         
         #admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; width: 100%; text-align: left; }
         .edit-mode #admin-hint { display: block; }
-        .edit-mode #admin-proj-hint { display: block !important; }
         
         @media screen and (max-width: 768px) { 
             .navbar { flex-direction: column; padding: 15px; gap: 15px; } 
@@ -147,6 +145,8 @@
             .timeline-item { padding-left: 20px; }
             .timeline-dot { left: -10px; width: 16px; height: 16px; top: 18px; }
             .logo img { height: 35px; }
+            .project-header { flex-direction: column; align-items: stretch; }
+            .action-btn { text-align: center; }
         }
         
         /* สไตล์สำหรับแก้ไขข้อความ (Edit Mode) */
@@ -154,7 +154,7 @@
         .edit-mode .editable { background-color: rgba(15, 98, 254, 0.1); border-bottom: 2px dashed var(--ibm-accent-blue); }
         .edit-mode .editable:focus { background-color: rgba(15, 98, 254, 0.2); }
         h1.editable, h3.editable, h2.editable { display: block !important; width: 100% !important; text-align: center !important; white-space: normal !important; word-break: break-word !important; }
-        .editable-block { display: block; text-align: left; padding: 10px; min-height: 150px; white-space: pre-wrap; word-wrap: break-word; width: 100%; } 
+        .editable-block { display: block; text-align: left; padding: 10px; min-height: 50px; white-space: pre-wrap; word-wrap: break-word; width: 100%; } 
         .edit-mode .editable-block { border: 2px dashed var(--ibm-accent-blue); background-color: #fff; }
         .edit-mode .editable:empty::before { content: "[พิมพ์ข้อความ...หัวข้อ]"; color: #888; font-size: 0.9em; font-family:'VT323'; }
         
@@ -175,7 +175,6 @@
 <body>
 
     <nav class="navbar">
-        <!-- 1. โลโก้แบบใหม่ กดเพื่อกลับหน้าแรกได้ -->
         <div class="logo sound-trigger" onclick="switchTab(event, 'home')">
             PEEMCN25
             <img src="images/Code_Generated_Image.png" alt="PEEMCN25 Logo">
@@ -200,57 +199,63 @@
                 <div class="window-body">
                     <div class="home-content">
                         
-                        <!-- 2. เอาโลโก้เก่าออกเหลือแค่หัวข้อเท่ๆ -->
                         <div class="hero-section">
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
                             <h1 style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none;">SYSTEM TERMINAL</h1>
                             <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
                         </div>
                         
-                        <!-- 3. โซนโชว์โปรเจกต์สไตล์ Link Preview (และปุ่มเกม) -->
+                        <!-- โซนโชว์โปรเจกต์ (แบบ List ไม่มีรูป แยกปุ่มกดชัดเจน) -->
                         <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 40px;">
                             <h2 class="editable timeline-title-main" id="proj-sec-title" data-field="proj_sec_title">DIRECTORY: \PROJECTS</h2>
                             
-                            <div id="admin-proj-hint" style="display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; text-align: left;">
-                                [!] แอดมิน: คลิกลิงก์เพื่อแก้ไข URL ได้เลย พอกดเซฟแล้วคนเข้าดูเว็บกดปุ่มนี้ก็จะเด้งไปเว็บนั้นทันที (รูปหน้าปกเอาไฟล์มาทับในโฟลเดอร์ images)
-                            </div>
-
-                            <div class="project-grid">
-                                <!-- โปรเจกต์เกม (ย้ายมาจากข้างบน) -->
-                                <div class="project-link-card sound-trigger" onclick="openProjectLink(event, 'proj-game-url')">
-                                    <img src="images/Code_Generated_Image.png" alt="Game Cover">
-                                    <div class="project-link-info">
-                                        <h3 class="editable" id="proj-game-name" data-field="proj_game_name">CODE CONTRA V.2</h3>
-                                        <p class="editable" id="proj-game-desc" data-field="proj_game_desc">> ฝ่าด่านสุดมันส์ไปกับเกมยิงสไตล์ Retro 8-bit กดเพื่อเล่นเลย!</p>
-                                        <div class="link-url-container">
-                                            🔗 <span class="editable link-url" id="proj-game-url" data-field="proj_game_url">https://codecontrav2by101studio.netlify.app/</span>
-                                        </div>
+                            <div class="project-list-container">
+                                
+                                <!-- 1. เกม Contra -->
+                                <div class="project-item">
+                                    <div class="project-header">
+                                        <h3 class="editable project-title" id="proj-game-name" data-field="proj_game_name">CODE CONTRA V.2.EXE</h3>
+                                        <button class="action-btn sound-trigger" onclick="openTargetLink('proj-game-url')">▶ PLAY GAME</button>
+                                    </div>
+                                    <p class="editable editable-block project-desc" id="proj-game-desc" data-field="proj_game_desc">> ฝ่าด่านสุดมันส์ไปกับเกมยิงสไตล์ Retro 8-bit ที่สร้างสรรค์ขึ้นมาใหม่!</p>
+                                    
+                                    <!-- ช่องใส่ URL ของเกม (โชว์เฉพาะตอนแอดมินล็อกอิน) -->
+                                    <div class="admin-url-box">
+                                        <span class="url-label">TARGET URL: </span>
+                                        <span class="editable" id="proj-game-url" data-field="proj_game_url">https://codecontrav2by101studio.netlify.app/</span>
                                     </div>
                                 </div>
 
-                                <!-- โปรเจกต์ตู้จ่ายยา -->
-                                <div class="project-link-card sound-trigger" onclick="openProjectLink(event, 'proj1_url')">
-                                    <img src="images/project1.jpg" alt="Medicine Dispenser App">
-                                    <div class="project-link-info">
-                                        <h3 class="editable" id="proj1-name" data-field="proj1_name">MEDICINE DISPENSER.EXE</h3>
-                                        <p class="editable" id="proj1-desc" data-field="proj1_desc">> Web App สำหรับควบคุมตู้จ่ายยาอัตโนมัติ ใช้งานง่าย รองรับระบบฐานข้อมูล</p>
-                                        <div class="link-url-container">
-                                            🔗 <span class="editable link-url" id="proj1-url" data-field="proj1_url">https://example.com/medicine</span>
-                                        </div>
+                                <!-- 2. ตู้จ่ายยา -->
+                                <div class="project-item">
+                                    <div class="project-header">
+                                        <h3 class="editable project-title" id="proj1-name" data-field="proj1_name">MEDICINE DISPENSER SYS.</h3>
+                                        <button class="action-btn sound-trigger" onclick="openTargetLink('proj1-url')">🔗 OPEN WEB</button>
+                                    </div>
+                                    <p class="editable editable-block project-desc" id="proj1-desc" data-field="proj1_desc">> Web App สำหรับควบคุมตู้จ่ายยาอัตโนมัติ ใช้งานง่าย รองรับระบบฐานข้อมูลเพื่อตรวจสอบความถูกต้อง</p>
+                                    
+                                    <!-- ช่องใส่ URL ของตู้จ่ายยา -->
+                                    <div class="admin-url-box">
+                                        <span class="url-label">TARGET URL: </span>
+                                        <span class="editable" id="proj1-url" data-field="proj1_url">https://example.com/medicine</span>
                                     </div>
                                 </div>
                                 
-                                <!-- โปรเจกต์เว็บหน่วยงาน -->
-                                <div class="project-link-card sound-trigger" onclick="openProjectLink(event, 'proj2_url')">
-                                    <img src="images/project2.jpg" alt="Government Portal">
-                                    <div class="project-link-info">
-                                        <h3 class="editable" id="proj2-name" data-field="proj2_name">GOV_PORTAL.EXE</h3>
-                                        <p class="editable" id="proj2-desc" data-field="proj2_desc">> ระบบเว็บไซต์หน่วยงาน ออกแบบ UI/UX ให้ใช้งานคล่องตัวและปลอดภัย</p>
-                                        <div class="link-url-container">
-                                            🔗 <span class="editable link-url" id="proj2-url" data-field="proj2_url">https://example.com/gov</span>
-                                        </div>
+                                <!-- 3. เว็บหน่วยงาน -->
+                                <div class="project-item">
+                                    <div class="project-header">
+                                        <h3 class="editable project-title" id="proj2-name" data-field="proj2_name">GOV_PORTAL NETWORK</h3>
+                                        <button class="action-btn sound-trigger" onclick="openTargetLink('proj2-url')">🔗 OPEN WEB</button>
+                                    </div>
+                                    <p class="editable editable-block project-desc" id="proj2-desc" data-field="proj2_desc">> ระบบเว็บไซต์หน่วยงาน ออกแบบ UI/UX ให้ใช้งานคล่องตัว จัดการข้อมูลภายในได้อย่างปลอดภัย</p>
+                                    
+                                    <!-- ช่องใส่ URL ของเว็บหน่วยงาน -->
+                                    <div class="admin-url-box">
+                                        <span class="url-label">TARGET URL: </span>
+                                        <span class="editable" id="proj2-url" data-field="proj2_url">https://example.com/gov</span>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
 
@@ -362,13 +367,11 @@
     <div class="gallery-modal" id="galleryModal">
         <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
         <div class="gallery-content">
-            <!-- อัลบั้ม First Meet -->
             <div id="album-first_meet" class="album-images-container" style="display: none;">
                 <div class="gallery-item"><img src="images/activity1.jpg" alt="Activity 1"><p class="editable" id="gal-desc1" data-field="gal_desc1">> LOG 01: สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p></div>
                 <div class="gallery-item"><img src="images/activity2.jpg" alt="Activity 2"><p class="editable" id="gal-desc2" data-field="gal_desc2">> LOG 02: ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p></div>
                 <div class="gallery-item"><img src="images/cover.jpg" alt="Activity 3"><p class="editable" id="gal-desc3" data-field="gal_desc3">> LOG 03: ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p></div>
             </div>
-            <!-- อัลบั้ม Class Memories -->
             <div id="album-class_memories" class="album-images-container" style="display: none;">
                 <div class="gallery-item"><img src="images/S__22814752_0.jpg" alt="Class Photo 1"><p class="editable" id="class-desc1" data-field="class_desc1">> LOG 01: บรรยากาศความสนุกสนานรวมตัวกันในห้องบรรยาย</p></div>
                 <div class="gallery-item"><img src="images/S__22814753_0.jpg" alt="Class Photo 2"><p class="editable" id="class-desc2" data-field="class_desc2">> LOG 02: ภาพหมู่สุดประทับใจเก็บไว้เป็นความทรงจำดีๆ</p></div>
@@ -474,15 +477,12 @@
         }
     </script>
     <script>
-        // เปิดหน้าโปรเจกต์เว็บ
-        function openProjectLink(event, urlFieldId) {
-            // ถ้าอยู่ในโหมดแอดมิน ให้หยุดการกดลิงก์ (เพื่อให้ผู้ใช้กดแก้ไขตัวหนังสือได้)
-            if (document.body.classList.contains('edit-mode')) {
-                return;
-            }
+        // เปิดหน้าเว็บตาม URL ที่ตั้งค่าไว้ในช่อง
+        function openTargetLink(urlFieldId) {
             const urlElement = document.getElementById(urlFieldId);
-            if (urlElement && urlElement.innerText.trim() !== '' && urlElement.innerText.trim() !== '[พิมพ์ข้อความ...หัวข้อ]') {
+            if (urlElement && urlElement.innerText.trim() !== '') {
                 let url = urlElement.innerText.trim();
+                // ป้องกันแอดมินลืมใส่ http://
                 if (!url.startsWith('http://') && !url.startsWith('https://')) {
                     url = 'https://' + url;
                 }
@@ -495,7 +495,7 @@
         function switchTab(e, tabId) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(tabId).classList.add('active'); if (e && e.currentTarget) e.currentTarget.classList.add('active'); }
     </script>
     <script>
-        // Retro Sound Effects (Mechanical Click)
+        // Retro Sound Effects 
         let audioCtx = null;
         function playRetroClick() { 
             if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } 
