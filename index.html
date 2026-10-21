@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>101 STUDIO | IBM Retro Edition</title>
+    <title>PEEMCN25 | IBM Retro Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root { 
-            /* IBM Model M Theme Colors */
             --ibm-pearl: #e0e0e0;       
             --ibm-key-light: #f4f4f4;   
             --ibm-key-dark: #a8a8a8;    
@@ -18,17 +17,17 @@
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; cursor: url('https://cur.cursors-4u.net/system/sys-1/sys46.png'), auto !important; }
-        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span, .logo { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
+        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span, .logo, .project-link-card { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
         
         body { background-color: var(--bg-color); color: var(--ibm-text); min-height: 100vh; overflow-x: hidden; }
         
         /* Navbar */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background-color: var(--ibm-pearl); border-bottom: 4px solid var(--ibm-key-dark); position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 0 var(--ibm-shadow); }
         
-        /* แก้ไขโลโก้เป็นรูปภาพ */
-        .logo { display: flex; align-items: center; transition: 0.1s; padding: 5px; border-radius: 4px; border: 2px solid transparent; }
-        .logo:hover { transform: scale(1.05); background: rgba(0,0,0,0.05); border-color: var(--ibm-key-dark); }
-        .logo img { height: 45px; width: auto; filter: drop-shadow(2px 2px 0px var(--ibm-shadow)); }
+        /* โลโก้แบบมี Text และ รูป */
+        .logo { font-family: 'VT323', monospace; font-size: 2.8rem; color: var(--ibm-accent-blue); text-shadow: 2px 2px 0px var(--ibm-key-light); letter-spacing: 2px; display: flex; align-items: center; transition: 0.1s; padding: 5px 10px; border-radius: 4px; border: 2px solid transparent; }
+        .logo:hover { transform: scale(1.02); background: rgba(0,0,0,0.05); border-color: var(--ibm-key-dark); }
+        .logo img { height: 40px; width: auto; filter: drop-shadow(2px 2px 0px var(--ibm-shadow)); margin-left: 15px; border-radius: 4px; }
         
         .nav-links { display: flex; gap: 15px; }
         .nav-btn { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-key-dark); border-radius: 4px; font-size: 1.2rem; font-weight: 700; padding: 8px 20px; transition: 0.1s; box-shadow: 2px 4px 0 var(--ibm-shadow); }
@@ -48,22 +47,30 @@
         .window-body { padding: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFElEQVQIW2NkYGD4z8DAwMgAI0AMDA4BGbRFSEgAAAAASUVORK5CYII=') repeat; }
         .home-content { position: relative; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; background-color: rgba(244,244,244,0.95); padding: 20px; border: 2px dashed var(--ibm-key-dark); }
         
-        h1 { font-size: 3.5rem; color: var(--ibm-text); margin-bottom: 20px; text-transform: uppercase; text-align: center; border-bottom: 4px solid var(--ibm-accent-blue); display: inline-block; padding-bottom: 5px; }
+        /* Hero Section ใหม่ (เอาโลโก้เก่าออก) */
+        .hero-section { position: relative; width: 100%; padding: 40px 0; display: flex; flex-direction: column; align-items: center; }
+        .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.4; }
+        .dino-bg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.15; }
+        h1 { font-size: 3.5rem; color: var(--ibm-text); margin-bottom: 5px; text-transform: uppercase; text-align: center; border-bottom: 4px solid var(--ibm-accent-blue); display: inline-block; padding-bottom: 5px; }
         .subtitle { font-size: 1.4rem; color: #525252; margin-bottom: 20px; margin-top: 10px; text-align: center; }
         
-        .hero-logo { max-width: 250px; width: 100%; height: auto; display: block; margin: 0 auto 30px auto; filter: drop-shadow(4px 4px 0px var(--ibm-key-dark)); }
-        
-        .btn-retro { display: inline-block; background-color: var(--ibm-accent-blue); color: #fff; font-size: 1.8rem; font-weight: 700; padding: 15px 60px; text-decoration: none; border: 4px solid var(--ibm-text); box-shadow: 6px 6px 0px var(--ibm-text); transition: all 0.1s ease; font-family: 'VT323'; letter-spacing: 2px; margin-top: 10px; border-radius: 4px; }
-        .btn-retro:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0px var(--ibm-text); background-color: #4589ff; } 
-        .btn-retro:active { transform: translate(6px, 6px) !important; box-shadow: 0px 0px 0px var(--ibm-text) !important; }
-        
-        /* สไตล์โซนโชว์โปรเจกต์ (เพิ่มใหม่) */
+        /* การ์ดโปรเจกต์สไตล์ Link Preview */
         .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; margin-bottom: 40px; padding: 10px; }
-        .project-card { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); padding: 15px; box-shadow: 6px 6px 0px var(--ibm-shadow); text-align: left; transition: 0.1s; display: flex; flex-direction: column; }
-        .project-card:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0px var(--ibm-shadow); background: #fff; }
-        .project-card img { width: 100%; height: 180px; object-fit: cover; border: 2px solid var(--ibm-text); margin-bottom: 15px; filter: grayscale(15%); transition: 0.3s; background: var(--ibm-key-dark); }
-        .project-card:hover img { filter: grayscale(0%); }
-        .project-title { font-family: 'VT323'; font-size: 1.8rem; color: var(--ibm-accent-blue); margin-bottom: 8px; border-bottom: 1px dashed var(--ibm-key-dark); padding-bottom: 5px;}
+        .project-link-card { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); box-shadow: 6px 6px 0px var(--ibm-shadow); text-align: left; transition: 0.1s; display: flex; flex-direction: column; overflow: hidden; }
+        .project-link-card:not(.edit-mode-active):hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0px var(--ibm-shadow); background: #fff; cursor: pointer; }
+        .project-link-card img { width: 100%; height: 180px; object-fit: cover; border-bottom: 2px solid var(--ibm-text); filter: grayscale(15%); transition: 0.3s; background: var(--ibm-key-dark); }
+        .project-link-card:hover img { filter: grayscale(0%); }
+        .project-link-info { padding: 15px; display: flex; flex-direction: column; flex: 1;}
+        .project-link-info h3 { font-family: 'VT323'; font-size: 1.8rem; color: var(--ibm-text); margin-bottom: 8px; border-bottom: 1px dashed var(--ibm-key-dark); padding-bottom: 5px; }
+        .project-link-info p { font-size: 1.1rem; color: #525252; line-height: 1.5; flex: 1; }
+        
+        /* แถบโชว์ URL */
+        .link-url-container { margin-top: 15px; font-size: 0.9rem; color: var(--ibm-accent-blue); background: rgba(15, 98, 254, 0.05); padding: 8px; border: 1px dashed var(--ibm-accent-blue); display: flex; align-items: center; gap: 5px; }
+        .link-url { word-break: break-all; font-family: 'VT323', monospace; font-size: 1.1rem; outline: none; }
+
+        /* ป้องกันปุ่มขยับในโหมดแอดมิน เพื่อให้กดแก้ข้อความได้ง่าย */
+        .edit-mode .project-link-card { cursor: default !important; }
+        .edit-mode .project-link-card:hover { transform: none; box-shadow: 6px 6px 0px var(--ibm-shadow); background: var(--ibm-key-light); }
         
         .drive-btn-container { display: flex; flex-direction: column; gap: 20px; align-items: center; margin: 30px 0; width: 100%; }
         .btn-drive { width: 100%; max-width: 500px; padding: 15px 30px; font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0; background-color: var(--ibm-pearl); color: var(--ibm-text); text-align: left; }
@@ -127,6 +134,7 @@
         
         #admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; width: 100%; text-align: left; }
         .edit-mode #admin-hint { display: block; }
+        .edit-mode #admin-proj-hint { display: block !important; }
         
         @media screen and (max-width: 768px) { 
             .navbar { flex-direction: column; padding: 15px; gap: 15px; } 
@@ -135,10 +143,10 @@
             .container { margin: 20px auto; padding: 0 10px; } 
             .window-body { padding: 20px 15px; } 
             h1 { font-size: 2.2rem; } 
-            .btn-retro { font-size: 1.3rem; padding: 12px 30px; } 
             .about-layout { flex-direction: column; align-items: center; gap: 20px; } 
             .timeline-item { padding-left: 20px; }
             .timeline-dot { left: -10px; width: 16px; height: 16px; top: 18px; }
+            .logo img { height: 35px; }
         }
         
         /* สไตล์สำหรับแก้ไขข้อความ (Edit Mode) */
@@ -167,9 +175,10 @@
 <body>
 
     <nav class="navbar">
-        <!-- เปลี่ยนโลโก้เป็นรูปภาพ และทำให้กดเพื่อกลับหน้าแรกได้ -->
+        <!-- 1. โลโก้แบบใหม่ กดเพื่อกลับหน้าแรกได้ -->
         <div class="logo sound-trigger" onclick="switchTab(event, 'home')">
-            <img src="images/Code_Generated_Image.png" alt="101 STUDIO Logo">
+            PEEMCN25
+            <img src="images/Code_Generated_Image.png" alt="PEEMCN25 Logo">
         </div>
         <div class="nav-links">
             <button class="nav-btn active sound-trigger" onclick="switchTab(event, 'home')">SYS.HOME</button>
@@ -190,34 +199,64 @@
                 </div>
                 <div class="window-body">
                     <div class="home-content">
+                        
+                        <!-- 2. เอาโลโก้เก่าออกเหลือแค่หัวข้อเท่ๆ -->
                         <div class="hero-section">
-                            <img src="images/Code_Generated_Image.png" alt="PEEM Logo" class="hero-logo">
-                            <a href="https://codecontrav2by101studio.netlify.app/" target="_blank" class="btn-retro sound-trigger">> RUN GAME.BAT</a>
+                            <canvas id="matrixCanvas" class="matrix-bg"></canvas>
+                            <h1 style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none;">SYSTEM TERMINAL</h1>
+                            <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
                         </div>
                         
-                        <!-- โซนเพิ่มใหม่: โชว์ผลงาน (PROJECTS) -->
+                        <!-- 3. โซนโชว์โปรเจกต์สไตล์ Link Preview (และปุ่มเกม) -->
                         <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 40px;">
                             <h2 class="editable timeline-title-main" id="proj-sec-title" data-field="proj_sec_title">DIRECTORY: \PROJECTS</h2>
+                            
+                            <div id="admin-proj-hint" style="display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; text-align: left;">
+                                [!] แอดมิน: คลิกลิงก์เพื่อแก้ไข URL ได้เลย พอกดเซฟแล้วคนเข้าดูเว็บกดปุ่มนี้ก็จะเด้งไปเว็บนั้นทันที (รูปหน้าปกเอาไฟล์มาทับในโฟลเดอร์ images)
+                            </div>
+
                             <div class="project-grid">
-                                <!-- โปรเจกต์ 1: ตู้จ่ายยา -->
-                                <div class="project-card sound-trigger">
+                                <!-- โปรเจกต์เกม (ย้ายมาจากข้างบน) -->
+                                <div class="project-link-card sound-trigger" onclick="openProjectLink(event, 'proj-game-url')">
+                                    <img src="images/Code_Generated_Image.png" alt="Game Cover">
+                                    <div class="project-link-info">
+                                        <h3 class="editable" id="proj-game-name" data-field="proj_game_name">CODE CONTRA V.2</h3>
+                                        <p class="editable" id="proj-game-desc" data-field="proj_game_desc">> ฝ่าด่านสุดมันส์ไปกับเกมยิงสไตล์ Retro 8-bit กดเพื่อเล่นเลย!</p>
+                                        <div class="link-url-container">
+                                            🔗 <span class="editable link-url" id="proj-game-url" data-field="proj_game_url">https://codecontrav2by101studio.netlify.app/</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- โปรเจกต์ตู้จ่ายยา -->
+                                <div class="project-link-card sound-trigger" onclick="openProjectLink(event, 'proj1_url')">
                                     <img src="images/project1.jpg" alt="Medicine Dispenser App">
-                                    <h3 class="editable project-title" id="proj1-name" data-field="proj1_name">MEDICINE DISPENSER.EXE</h3>
-                                    <p class="editable" id="proj1-desc" data-field="proj1_desc" style="font-size: 1.1rem; line-height: 1.5;">> Web App สำหรับควบคุมตู้จ่ายยาอัตโนมัติ ใช้งานง่าย รองรับระบบฐานข้อมูลเพื่อตรวจสอบความถูกต้องแม่นยำ</p>
+                                    <div class="project-link-info">
+                                        <h3 class="editable" id="proj1-name" data-field="proj1_name">MEDICINE DISPENSER.EXE</h3>
+                                        <p class="editable" id="proj1-desc" data-field="proj1_desc">> Web App สำหรับควบคุมตู้จ่ายยาอัตโนมัติ ใช้งานง่าย รองรับระบบฐานข้อมูล</p>
+                                        <div class="link-url-container">
+                                            🔗 <span class="editable link-url" id="proj1-url" data-field="proj1_url">https://example.com/medicine</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 
-                                <!-- โปรเจกต์ 2: เว็บหน่วยงาน -->
-                                <div class="project-card sound-trigger">
+                                <!-- โปรเจกต์เว็บหน่วยงาน -->
+                                <div class="project-link-card sound-trigger" onclick="openProjectLink(event, 'proj2_url')">
                                     <img src="images/project2.jpg" alt="Government Portal">
-                                    <h3 class="editable project-title" id="proj2-name" data-field="proj2_name">GOV_PORTAL.EXE</h3>
-                                    <p class="editable" id="proj2-desc" data-field="proj2_desc" style="font-size: 1.1rem; line-height: 1.5;">> ระบบเว็บไซต์หน่วยงาน ออกแบบ UI/UX ให้ใช้งานคล่องตัว จัดการข้อมูลภายในได้อย่างรวดเร็วและปลอดภัย</p>
+                                    <div class="project-link-info">
+                                        <h3 class="editable" id="proj2-name" data-field="proj2_name">GOV_PORTAL.EXE</h3>
+                                        <p class="editable" id="proj2-desc" data-field="proj2_desc">> ระบบเว็บไซต์หน่วยงาน ออกแบบ UI/UX ให้ใช้งานคล่องตัวและปลอดภัย</p>
+                                        <div class="link-url-container">
+                                            🔗 <span class="editable link-url" id="proj2-url" data-field="proj2_url">https://example.com/gov</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- โซนความทรงจำ (TIMELINE เดิม) -->
+                        <!-- โซนความทรงจำ -->
                         <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 40px;">
-                            <h2 class="editable timeline-title-main" id="timeline-main-title" data-field="timeline_main_title">DIRECTORY: \MEMORIES</h2>
+                            <h2 class="editable timeline-title-main" id="memories-main-title" data-field="memories_main_title">DIRECTORY: \MEMORIES</h2>
                             <div class="timeline">
                                 <div class="timeline-item">
                                     <div class="timeline-dot"></div>
@@ -354,7 +393,7 @@
         </div>
     </div>
 
-    <!-- Scripts for Logic & Firebase -->
+    <!-- Scripts -->
     <script>
         const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTA1ZaJi3ieoEJt6mQD12Y-Ti5KY-uuyS3SdgmoFGL64jtgZM2xVdyg7GP1pSer46ZCQ/exec";
         
@@ -435,6 +474,22 @@
         }
     </script>
     <script>
+        // เปิดหน้าโปรเจกต์เว็บ
+        function openProjectLink(event, urlFieldId) {
+            // ถ้าอยู่ในโหมดแอดมิน ให้หยุดการกดลิงก์ (เพื่อให้ผู้ใช้กดแก้ไขตัวหนังสือได้)
+            if (document.body.classList.contains('edit-mode')) {
+                return;
+            }
+            const urlElement = document.getElementById(urlFieldId);
+            if (urlElement && urlElement.innerText.trim() !== '' && urlElement.innerText.trim() !== '[พิมพ์ข้อความ...หัวข้อ]') {
+                let url = urlElement.innerText.trim();
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+                window.open(url, '_blank');
+            }
+        }
+
         function openGallery(event, albumId) { if (event.target.classList.contains('editable')) return; document.getElementById('galleryModal').classList.add('active'); document.querySelectorAll('.gallery-content > div').forEach(el => el.style.display = 'none'); const targetAlbum = document.getElementById('album-' + albumId); if (targetAlbum) targetAlbum.style.display = 'flex'; }
         function closeGallery() { document.getElementById('galleryModal').classList.remove('active'); }
         function switchTab(e, tabId) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(tabId).classList.add('active'); if (e && e.currentTarget) e.currentTarget.classList.add('active'); }
@@ -458,7 +513,7 @@
             gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); 
             osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); 
         }
-        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-retro, .btn-drive, .btn-social, .logo').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
+        document.querySelectorAll('.sound-trigger, .nav-btn, .btn-drive, .btn-social, .logo').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
         
         document.addEventListener('keydown', function(event) { 
             if (event.key === 'Enter') { 
@@ -468,6 +523,10 @@
         });
         document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); });
         document.getElementById('password').addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
+        
+        const mCanvas = document.getElementById('matrixCanvas'); const mCtx = mCanvas.getContext('2d'); let mWidth, mHeight, columns, drops = []; const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</>{}[]~#'.split(''); const fontSize = 14;
+        function initMatrix() { const resizeMatrix = () => { mWidth = mCanvas.parentElement.clientWidth; mHeight = mCanvas.parentElement.clientHeight; mCanvas.width = mWidth; mCanvas.height = mHeight; columns = Math.floor(mWidth / fontSize); drops = []; for(let i = 0; i < columns; i++) drops[i] = Math.random() * -100; }; window.addEventListener('resize', resizeMatrix); resizeMatrix(); setInterval(drawMatrix, 50); }
+        function drawMatrix() { mCtx.fillStyle = 'rgba(244, 244, 244, 0.3)'; mCtx.fillRect(0, 0, mWidth, mHeight); mCtx.fillStyle = '#a8a8a8'; mCtx.font = fontSize + 'px "VT323", monospace'; for(let i = 0; i < drops.length; i++) { const text = chars[Math.floor(Math.random() * chars.length)]; mCtx.fillText(text, i * fontSize, drops[i] * fontSize); if(drops[i] * fontSize > mHeight && Math.random() > 0.95) drops[i] = 0; drops[i]++; } } initMatrix();
     </script>
     
     <!-- FIREBASE -->
