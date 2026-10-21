@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PEEMCN25 | IBM Retro Edition</title>
     
-    <!-- เซนเซอร์ดักจับบั๊กหน้าเว็บอัตโนมัติ -->
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
             if (source && source.includes('chrome-extension')) return false;
@@ -63,7 +62,7 @@
         h1 { font-size: 3.5rem; color: var(--ibm-text); margin-bottom: 5px; text-transform: uppercase; text-align: center; border-bottom: 4px solid var(--ibm-accent-blue); display: inline-block; padding-bottom: 5px; }
         .subtitle { font-size: 1.4rem; color: #525252; margin-bottom: 20px; margin-top: 10px; text-align: center; }
         
-        /* Project Lists (Compact) */
+        /* Project Lists */
         .project-list-container { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-bottom: 25px; padding: 5px; }
         .project-item { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); box-shadow: 4px 4px 0px var(--ibm-shadow); text-align: left; padding: 12px 15px; display: flex; flex-direction: column; gap: 6px; transition: 0.1s; }
         .project-item:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--ibm-shadow); background: #fff; }
@@ -80,7 +79,7 @@
         .url-label { font-family: 'VT323'; color: var(--ibm-accent-blue); font-size: 1.1rem; }
         .proj-url-edit { word-break: break-all; font-family: 'VT323', monospace; font-size: 1rem; outline: none; display: inline-block; min-width: 50px; border-bottom: 1px dashed var(--ibm-accent-blue); }
         
-        /* === สไตล์หน้า ARCHIVE (Native File Explorer ธีม IBM) === */
+        /* === สไตล์หน้า ARCHIVE (Hybrid: Iframe + File Explorer) === */
         .archive-layout { display: flex; gap: 20px; width: 100%; text-align: left; height: 500px; background: var(--ibm-pearl); padding: 15px; border: 2px solid var(--ibm-text); box-shadow: inset 4px 4px 0 rgba(255,255,255,0.8), inset -4px -4px 0 var(--ibm-shadow); }
         .archive-sidebar { flex: 0 0 220px; display: flex; flex-direction: column; gap: 10px; border-right: 2px dashed var(--ibm-key-dark); padding-right: 15px; overflow-y: auto;}
         .archive-sidebar::-webkit-scrollbar { width: 8px; } .archive-sidebar::-webkit-scrollbar-thumb { background: var(--ibm-key-dark); }
@@ -88,7 +87,6 @@
         .folder-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ibm-shadow); background: #fff;}
         .folder-btn.active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-shadow); background: var(--ibm-accent-blue); color: #fff;}
         
-        /* พื้นที่แสดงไฟล์ */
         .archive-viewer { flex: 1; border: 4px solid var(--ibm-text); background: #fff; position: relative; display: flex; flex-direction: column; box-shadow: 4px 4px 0 var(--ibm-shadow); overflow: hidden; }
         .archive-viewer-header { background: var(--ibm-text); color: #fff; padding: 8px 12px; font-family: 'VT323'; font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--ibm-key-dark);}
         
@@ -107,7 +105,6 @@
         .file-link { color: var(--ibm-text); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; flex: 1; }
         .file-link:hover { color: var(--ibm-accent-blue); text-decoration: underline; }
         
-        /* สไตล์สำหรับปุ่มถอยกลับโฟลเดอร์ */
         .back-btn { background: var(--ibm-accent-blue); color: #fff; font-family: 'VT323'; font-size: 1.1rem; border: 1px solid #fff; padding: 2px 8px; text-decoration: none; display: none; }
         .back-btn:hover { background: #fff; color: var(--ibm-accent-blue); }
 
@@ -215,7 +212,6 @@
                 </div>
                 <div class="window-body">
                     <div class="home-content">
-                        
                         <div class="hero-section">
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
                             <h1 style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none;">SYSTEM TERMINAL</h1>
@@ -225,15 +221,11 @@
                         <!-- โซนโชว์โปรเจกต์ -->
                         <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px;">
                             <h2 class="editable timeline-title-main" id="proj-sec-title" data-field="proj_sec_title">DIRECTORY: \PROJECTS</h2>
-                            
                             <div id="admin-hint" class="edit-hint-proj" style="display:none; font-family: 'VT323'; font-size: 1.2rem; color: #0f62fe; background: #edf5ff; padding: 8px; border: 1px dashed #0f62fe; text-align: left; margin-bottom:15px;">
                                 [!] แอดมิน: แก้ข้อความได้โดยตรงในกล่อง | กด "ADD NEW PROJECT" ด้านล่างเพื่อเพิ่มกล่องใหม่ได้
                             </div>
                             <button id="add-project-btn" class="action-btn sound-trigger" style="display:none; margin: 0 auto 15px auto; background: #24a148;" onclick="addNewProject()">[+] ADD NEW PROJECT</button>
-
-                            <div id="dynamic-project-container" class="project-list-container">
-                                <!-- JS จะเสกโค้ดโปรเจกต์มาใส่ตรงนี้ -->
-                            </div>
+                            <div id="dynamic-project-container" class="project-list-container"></div>
                         </div>
 
                         <!-- โซนความทรงจำ -->
@@ -281,7 +273,7 @@
             </div>
         </main>
 
-        <!-- ARCHIVE (NATIVE FILE EXPLORER) -->
+        <!-- ARCHIVE (HYBRID) -->
         <main id="archive" class="section">
             <div class="retro-window">
                 <div class="window-header">
@@ -294,12 +286,10 @@
                     <div class="archive-layout">
                         <!-- เมนูด้านซ้าย (หมวดหมู่หลัก) -->
                         <div class="archive-sidebar">
-                            <!-- ปุ่มเหล่านี้จะส่ง ID ของโฟลเดอร์หลักไปให้ API -->
-                            <!-- หมายเหตุ: แอดมินต้องไปนำ Folder ID จริงของแต่ละหมวดมาใส่ตรง 'root' นะครับ ถ้ามี -->
-                            <button class="folder-btn sound-trigger active" onclick="loadBaseFolder(this, 'SERVER_HOST', 'root')">🌐 SERVER HOST</button>
-                            <button class="folder-btn sound-trigger" onclick="loadBaseFolder(this, 'SOURCE_CODE', '17TUnUfOEEOAdxi050iieJe0YMPFbc0G4')">📁 SOURCE CODE</button>
-                            <button class="folder-btn sound-trigger" onclick="loadBaseFolder(this, 'EXAM_AND_WORK', '1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3')">📁 EXAM & WORK</button>
-                            <button class="folder-btn sound-trigger" onclick="loadBaseFolder(this, 'PORTFOLIO', '1JIzrSaA0m32kf85xLa54qO82fPVQYWPj')">📁 PORTFOLIO</button>
+                            <button class="folder-btn sound-trigger active" onclick="loadServerHost(this)">🌐 SERVER HOST</button>
+                            <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'SOURCE_CODE', '17TUnUfOEEOAdxi050iieJe0YMPFbc0G4')">📁 SOURCE CODE</button>
+                            <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'EXAM_AND_WORK', '1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3')">📁 EXAM & WORK</button>
+                            <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'PORTFOLIO', '1JIzrSaA0m32kf85xLa54qO82fPVQYWPj')">📁 PORTFOLIO</button>
                         </div>
                         
                         <!-- พื้นที่แสดงไฟล์ด้านขวา -->
@@ -307,17 +297,21 @@
                             <div class="archive-viewer-header">
                                 <span id="archive-path">C:\ARCHIVE\SERVER_HOST\</span>
                                 <button id="btn-back-folder" class="back-btn sound-trigger" onclick="goBackFolder()">[ ^ UP LEVEL ]</button>
+                                <a id="archive-ext-link" href="https://peemdiamond-design.github.io/101-cloud-web/" target="_blank" class="sound-trigger" style="color:#0f62fe; background:#fff; padding:0 8px; text-decoration:none; border: 1px solid var(--ibm-text); font-size:1.1rem; display:flex; align-items:center; margin-left: auto;">[ OPEN TAB ]</a>
                             </div>
                             
-                            <!-- ช่องค้นหาไฟล์ -->
-                            <div class="search-row">
-                                <input type="text" id="search-input" placeholder="> SEARCH FILE..." onkeyup="filterFiles()">
-                                <button class="btn-sync sound-trigger" onclick="fetchFiles(currentFolderId, true)">[ SYNC ]</button>
-                            </div>
+                            <!-- 1. Iframe สำหรับ SERVER HOST (กลับมาแล้ว!) -->
+                            <iframe id="archive-iframe" src="https://peemdiamond-design.github.io/101-cloud-web/" style="display:block; width:100%; height:100%; border:none; background:#fff;"></iframe>
                             
-                            <!-- ลิสต์ไฟล์ที่จะถูกวาดโดย JavaScript -->
-                            <div class="file-list-container" id="file-list">
-                                <span style="color:var(--ibm-shadow); font-family: 'VT323'; font-size:1.4rem;">> PLEASE LOGIN TO ACCESS CLOUD FILES...</span>
+                            <!-- 2. Native Explorer สำหรับโฟลเดอร์ Google Drive (โชว์เมื่อคลิกปุ่มอื่น) -->
+                            <div id="native-explorer" style="display:none; flex-direction:column; height:100%; flex: 1;">
+                                <div class="search-row">
+                                    <input type="text" id="search-input" placeholder="> SEARCH FILE..." onkeyup="filterFiles()">
+                                    <button class="btn-sync sound-trigger" onclick="fetchFiles(currentFolderId)">[ SYNC ]</button>
+                                </div>
+                                <div class="file-list-container" id="file-list">
+                                    <span style="color:var(--ibm-shadow); font-family: 'VT323'; font-size:1.4rem;">> SELECT FOLDER FROM MENU...</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -366,7 +360,7 @@
         </main>
     </div>
 
-    <!-- Gallery Modal (ซ่อนไว้สำหรับกดดูรูป) -->
+    <!-- Gallery Modal -->
     <div class="gallery-modal" id="galleryModal">
         <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
         <div class="gallery-content">
@@ -417,7 +411,6 @@
         function renderProjects() {
             const container = document.getElementById('dynamic-project-container'); container.innerHTML = '';
             const isEdit = document.body.classList.contains('edit-mode');
-
             projectData.forEach((proj, index) => {
                 const el = document.createElement('div'); el.className = 'project-item';
                 let deleteBtnHTML = isEdit ? `<button class="action-btn sound-trigger" style="background:#da1e28; margin-left:5px; padding:4px 10px;" onclick="deleteProject(${index})">X</button>` : '';
@@ -437,53 +430,72 @@
         function openTargetLinkStr(url) { if (document.body.classList.contains('edit-mode')) return; if (url && url.trim() !== '') { let link = url.trim(); if (!link.startsWith('http')) { link = 'https://' + link; } window.open(link, '_blank'); } }
 
         /* =========================================
-           ระบบ NATIVE FILE EXPLORER (Archive)
+           ระบบ HYBRID ARCHIVE
            ========================================= */
         let allFiles = []; 
-        let folderHistory = []; // เก็บประวัติว่ามุดเข้าไปโฟลเดอร์ไหนบ้าง [{id: 'root', name: 'SERVER_HOST'}]
+        let folderHistory = []; 
         let currentFolderId = 'root';
 
-        // 1. กดเปลี่ยนหมวดหมู่หลัก (ซ้ายมือ)
-        function loadBaseFolder(btnElement, folderName, baseFolderId) {
+        // 1. กดปุ่มโชว์หน้าเว็บไซต์ SERVER HOST (ใช้ Iframe)
+        function loadServerHost(btnElement) {
             document.querySelectorAll('.folder-btn').forEach(b => b.classList.remove('active'));
             btnElement.classList.add('active');
             
-            // รีเซ็ตประวัติการเข้าโฟลเดอร์
+            document.getElementById('archive-path').innerText = "C:\\ARCHIVE\\SERVER_HOST\\";
+            document.getElementById('btn-back-folder').style.display = 'none';
+            document.getElementById('archive-ext-link').href = "https://peemdiamond-design.github.io/101-cloud-web/";
+            
+            // สลับโชว์ Iframe ซ่อน File Explorer
+            document.getElementById('archive-iframe').style.display = 'block';
+            document.getElementById('native-explorer').style.display = 'none';
+        }
+
+        // 2. กดปุ่มโชว์โฟลเดอร์ Google Drive (ใช้ Native File Explorer)
+        function loadDriveFolder(btnElement, folderName, baseFolderId) {
+            document.querySelectorAll('.folder-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+            
+            document.getElementById('archive-ext-link').href = `https://drive.google.com/drive/folders/${baseFolderId}`;
+            
+            // สลับโชว์ File Explorer ซ่อน Iframe
+            document.getElementById('archive-iframe').style.display = 'none';
+            document.getElementById('native-explorer').style.display = 'flex';
+            
             folderHistory = [{ id: baseFolderId, name: folderName }];
             currentFolderId = baseFolderId;
             
             updatePathDisplay();
-            fetchFiles(currentFolderId, false);
+            fetchFiles(currentFolderId);
         }
 
-        // 2. ดึงข้อมูลไฟล์จาก Backend API
-        async function fetchFiles(folderId, isSilent = false) {
+        // 3. ดึงข้อมูลไฟล์จาก Backend API
+        async function fetchFiles(folderId) {
             const fileListDiv = document.getElementById('file-list');
-            // ตรวจสอบว่าล็อกอินหรือยัง (ถ้าใช้ token จาก Firebase)
             const currentUser = firebase.auth().currentUser;
             if(!currentUser) {
-                fileListDiv.innerHTML = '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem;">> ACCESS DENIED. PLEASE LOGIN FIRST.</span>';
+                fileListDiv.innerHTML = '<span style="color:#da1e28; font-family: \'VT323\'; font-size:1.4rem;">> ACCESS DENIED. PLEASE LOGIN FIRST.</span>';
                 return;
             }
 
-            if (!isSilent) fileListDiv.innerHTML = '<span style="color:var(--ibm-accent-blue); font-family: \'VT323\'; font-size:1.4rem;">> FETCHING DATA FROM CLOUD...</span>';
+            fileListDiv.innerHTML = '<span style="color:var(--ibm-accent-blue); font-family: \'VT323\'; font-size:1.4rem;">> FETCHING DATA FROM CLOUD...</span>';
             
             try {
                 const token = await currentUser.getIdToken(); 
-                // *** หมายเหตุสำหรับแอดมิน: โค้ดหลังบ้านของคุณต้องรับค่า ?folderId= ได้ด้วย เพื่อให้มันรู้ว่าต้องดึงโฟลเดอร์ไหน ***
-                const fetchUrl = folderId !== 'root' ? `${SERVER_URL}/list-files?folderId=${folderId}` : `${SERVER_URL}/list-files`;
+                const fetchUrl = `${SERVER_URL}/list-files?folderId=${folderId}`;
                 
                 const response = await fetch(fetchUrl, { headers: { 'Authorization': `Bearer ${token}` }});
-                if (!response.ok) throw new Error("SERVER BLOCKED ACCESS");
+                if (!response.ok) throw new Error(`HTTP ERROR: ${response.status}`);
                 
                 allFiles = await response.json(); 
+                if (!Array.isArray(allFiles)) throw new Error("Server did not return a valid array of files.");
+                
                 filterFiles(); 
             } catch (error) { 
-                if (!isSilent) fileListDiv.innerHTML = `<span style="color:#da1e28; font-family: 'VT323'; font-size:1.4rem;">> ERROR: ${error.message}</span>`; 
+                fileListDiv.innerHTML = `<span style="color:#da1e28; font-family: 'VT323'; font-size:1.4rem;">> ERROR: ${error.message}</span>`; 
             }
         }
 
-        // 3. แสดงผลไฟล์และโฟลเดอร์
+        // 4. วาดลิสต์ไฟล์
         function renderFilesList(filesToDisplay) {
             const fileListDiv = document.getElementById('file-list');
             fileListDiv.innerHTML = ''; 
@@ -494,84 +506,42 @@
 
             filesToDisplay.forEach(file => {
                 const safeName = file.name.replace(/'/g, "\\'");
-                
-                // ตรวจสอบว่าเป็นโฟลเดอร์หรือไฟล์ (อิงจาก mimeType หรือโครงสร้างที่ backend ส่งมา)
-                // ถ้า Backend ส่ง isFolder หรือ mimeType กลับมา ให้แก้ไขตรงบรรทัดนี้นะครับ
                 const isFolder = file.mimeType === 'application/vnd.google-apps.folder' || file.name.endsWith('[FOLDER]'); 
 
-                let actionHtml = '';
-                let iconHtml = '';
+                let actionHtml = ''; let iconHtml = '';
 
                 if(isFolder) {
-                    // ถ้าเป็นโฟลเดอร์ ให้กดเพื่อเจาะจงเข้าโฟลเดอร์นั้น
                     iconHtml = `<div class="file-icon" style="background:var(--ibm-key-dark); color:#fff;">📁</div>`;
                     actionHtml = `<a class="file-link folder-item sound-trigger" onclick="enterFolder('${file.id}', '${safeName}')" style="font-weight:bold;">[DIR] ${file.name}</a>`;
                 } else {
-                    // ถ้าเป็นไฟล์ปกติ ให้เปิดดูรูปภาพ/ไฟล์
                     iconHtml = file.hasThumbnail ? `<img src="${file.thumbnailLink}" class="file-thumb">` : `<div class="file-icon">📄</div>`;
                     actionHtml = `<a class="file-link sound-trigger" href="${file.webViewLink}" target="_blank" onclick="notifyServerOnCall('${safeName}')">${file.name}</a>`;
                 }
                 
-                fileListDiv.innerHTML += `
-                    <div class="file-item">
-                        <div class="file-info">
-                            ${iconHtml}
-                            ${actionHtml}
-                        </div>
-                    </div>
-                `;
+                fileListDiv.innerHTML += `<div class="file-item"><div class="file-info">${iconHtml}${actionHtml}</div></div>`;
             });
         }
 
-        // 4. ระบบกดเข้า/ออก โฟลเดอร์ย่อย
-        function enterFolder(folderId, folderName) {
-            folderHistory.push({ id: folderId, name: folderName });
-            currentFolderId = folderId;
-            updatePathDisplay();
-            fetchFiles(currentFolderId, false);
-        }
-
-        function goBackFolder() {
-            if(folderHistory.length > 1) {
-                folderHistory.pop(); // เอาโฟลเดอร์ปัจจุบันออก
-                const prevFolder = folderHistory[folderHistory.length - 1];
-                currentFolderId = prevFolder.id;
-                updatePathDisplay();
-                fetchFiles(currentFolderId, false);
-            }
-        }
-
+        function enterFolder(folderId, folderName) { folderHistory.push({ id: folderId, name: folderName }); currentFolderId = folderId; updatePathDisplay(); fetchFiles(currentFolderId); }
+        function goBackFolder() { if(folderHistory.length > 1) { folderHistory.pop(); currentFolderId = folderHistory[folderHistory.length - 1].id; updatePathDisplay(); fetchFiles(currentFolderId); } }
         function updatePathDisplay() {
             let pathStr = "C:\\ARCHIVE";
             folderHistory.forEach(f => { pathStr += `\\${f.name}`; });
-            pathStr += "\\";
-            document.getElementById('archive-path').innerText = pathStr;
-            
-            // ซ่อน/แสดง ปุ่มถอยกลับ
+            document.getElementById('archive-path').innerText = pathStr + "\\";
             document.getElementById('btn-back-folder').style.display = folderHistory.length > 1 ? 'inline-block' : 'none';
         }
+        function filterFiles() { const keyword = document.getElementById('search-input').value.toLowerCase(); renderFilesList(allFiles.filter(file => file.name.toLowerCase().includes(keyword))); }
 
-        // 5. ค้นหาไฟล์
-        function filterFiles() {
-            const keyword = document.getElementById('search-input').value.toLowerCase();
-            renderFilesList(allFiles.filter(file => file.name.toLowerCase().includes(keyword)));
-        }
-
-        // แจ้งเตือนเซิร์ฟเวอร์เวลากดไฟล์ (ระบบเดิมของคุณ)
         async function notifyServerOnCall(fileName) {
             try {
-                const currentUser = firebase.auth().currentUser;
-                if(!currentUser) return;
+                const currentUser = firebase.auth().currentUser; if(!currentUser) return;
                 const token = await currentUser.getIdToken();
-                fetch(`${SERVER_URL}/notify-click`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-                    body: JSON.stringify({ fileName: fileName })
-                });
-            } catch (error) { console.error('Failed to notify server:', error); }
+                fetch(`${SERVER_URL}/notify-click`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ fileName: fileName }) });
+            } catch (error) { console.error('Failed to notify:', error); }
         }
 
         /* =========================================
-           ระบบ Calendar & Firebase พื้นฐาน
+           Calendar & Basic UI
            ========================================= */
         function renderCalendar() {
             const grid = document.getElementById('calendar-grid'); const monthYearLabel = document.getElementById('month-year-label');
@@ -584,29 +554,22 @@
             for (let day = 1; day <= daysInMonth; day++) {
                 const cell = document.createElement('div'); cell.className = 'calendar-day';
                 const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                
-                const dayEvents = scheduleData.filter(e => e.date === dateStr);
-                const activeEvents = dayEvents.filter(e => !e.completed);
+                const dayEvents = scheduleData.filter(e => e.date === dateStr); const activeEvents = dayEvents.filter(e => !e.completed);
                 const pinIcon = activeEvents.length > 0 ? ' <span style="font-size: 1rem;">📌</span>' : '';
                 cell.innerHTML = `<div class="day-number">${day}${pinIcon}</div>`;
                 
                 const eventsContainer = document.createElement('div'); eventsContainer.className = 'events-container';
                 dayEvents.forEach(ev => {
-                    const globalIndex = scheduleData.indexOf(ev);
-                    const evEl = document.createElement('div');
+                    const globalIndex = scheduleData.indexOf(ev); const evEl = document.createElement('div');
                     evEl.className = 'calendar-event' + (ev.completed ? ' completed' : '');
                     const textSpan = document.createElement('span'); textSpan.innerHTML = `> ${ev.title}`;
                     textSpan.onclick = (e) => { if(document.body.classList.contains('edit-mode')) { e.stopPropagation(); toggleQuest(globalIndex); } };
                     evEl.appendChild(textSpan);
-                    
                     const delBtn = document.createElement('button'); delBtn.className = 'delete-event-btn sound-trigger'; delBtn.textContent = 'x';
                     delBtn.onclick = (e) => { e.stopPropagation(); deleteScheduleEvent(globalIndex); };
-                    evEl.appendChild(delBtn);
-                    eventsContainer.appendChild(evEl);
+                    evEl.appendChild(delBtn); eventsContainer.appendChild(evEl);
                 });
-                cell.appendChild(eventsContainer);
-                cell.onclick = () => { if(document.body.classList.contains('edit-mode')) promptAddEvent(dateStr); };
-                grid.appendChild(cell);
+                cell.appendChild(eventsContainer); cell.onclick = () => { if(document.body.classList.contains('edit-mode')) promptAddEvent(dateStr); }; grid.appendChild(cell);
             }
         }
         function changeMonth(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
@@ -668,9 +631,10 @@
                 document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
                 renderProjects(); 
                 
-                // โหลดไฟล์ในระบบ Archive ทันทีเมื่อล็อกอินเสร็จ
-                folderHistory = [{id: 'root', name: 'SERVER_HOST'}];
-                fetchFiles('root', true);
+                // ถ้าระบบโชว์ File explorer อยู่ ให้โหลดไฟล์ทันทีที่ล็อกอินเสร็จ
+                if(document.getElementById('native-explorer').style.display !== 'none') {
+                    fetchFiles(currentFolderId);
+                }
             } else { 
                 document.body.classList.remove('edit-mode'); 
                 document.getElementById('login-show-btn').style.display = 'block'; 
