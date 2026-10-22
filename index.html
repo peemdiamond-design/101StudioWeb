@@ -170,15 +170,18 @@
 
         /* Admin Panel / Login */
         #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; flex-wrap: wrap; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; max-width: 90vw; justify-content: flex-end;}
-        #admin-panel button { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-text); padding: 8px 15px; font-family: 'VT323'; font-size: 1.2rem; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); }
+        #admin-panel button { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-text); padding: 8px 15px; font-family: 'VT323'; font-size: 1.2rem; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); transition: 0.1s; }
         #admin-panel button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-text); }
+        #add-user-btn { background-color: #0f62fe !important; color: #fff !important; display: none; border-color: #0f62fe; }
         #save-btn { background-color: #24a148 !important; color: #fff !important; display: none; }
         #logout-btn { display: none; background-color: #da1e28 !important; color: #fff !important;}
 
-        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22,22,22,0.9); justify-content: center; align-items: center; z-index: 999;}
+        #login-modal, #create-user-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22,22,22,0.9); justify-content: center; align-items: center; z-index: 999;}
+        #create-user-modal { background: rgba(15,98,254,0.9); }
         .login-box { background: var(--ibm-pearl); border: 4px solid var(--ibm-text); padding: 30px; text-align: center; max-width: 400px; width: 90%; box-shadow: 10px 10px 0 var(--ibm-shadow); }
-        .login-box input { width: 100%; padding: 10px; margin: 10px 0; background: #fff; border: 2px solid var(--ibm-text); color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem;}
-        .login-box button { width: 100%; background: var(--ibm-accent-blue); color: #fff; border: 2px solid var(--ibm-text); padding: 12px; margin-top: 15px; font-weight: bold; font-family: 'VT323'; font-size: 1.5rem; box-shadow: 3px 3px 0 var(--ibm-text); }
+        .login-box input { width: 100%; padding: 10px; margin: 10px 0; background: #fff; border: 2px solid var(--ibm-text); color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; outline: none; }
+        .login-box input:focus { border-color: var(--ibm-accent-blue); }
+        .login-box button { width: 100%; background: var(--ibm-accent-blue); color: #fff; border: 2px solid var(--ibm-text); padding: 12px; margin-top: 15px; font-weight: bold; font-family: 'VT323'; font-size: 1.5rem; box-shadow: 3px 3px 0 var(--ibm-text); transition: 0.1s; }
         .login-box button:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ibm-text); }
 
         /* ================= DOS Table & Preview Modal ================= */
@@ -204,35 +207,6 @@
         /* Sortable Header Hover */
         .sortable-header { cursor: pointer; user-select: none; transition: 0.1s; }
         .sortable-header:hover { color: var(--ibm-accent-blue); }
-
-        /* ================= Terminal Interactive (Google Search Style) ================= */
-        .terminal-box { 
-            width: 100%; max-width: 850px; height: 350px; 
-            background: rgba(0, 0, 0, 0.85); border: 4px solid var(--ibm-text); 
-            padding: 20px; color: #24a148; font-family: 'VT323', monospace; 
-            font-size: 1.5rem; text-align: left; overflow-y: auto; 
-            display: flex; flex-direction: column; 
-            box-shadow: 10px 10px 0 var(--ibm-shadow); 
-            margin-top: 20px; position: relative; z-index: 10;
-        }
-        .terminal-box::-webkit-scrollbar { width: 10px; }
-        .terminal-box::-webkit-scrollbar-thumb { background: var(--ibm-key-dark); border: 2px solid #000; }
-        
-        #terminal-output { flex-grow: 1; display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; overflow-y: auto; }
-        
-        .terminal-search-bar { 
-            display: flex; align-items: center; width: 100%;
-            background: #111; border: 3px solid #24a148; 
-            padding: 10px 20px; border-radius: 8px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-        }
-        .prompt { margin-right: 15px; color: #0f62fe; font-size: 1.8rem; font-weight: bold; }
-        #cmd-input { 
-            flex: 1; background: transparent; border: none; color: #24a148; 
-            font-family: 'VT323', monospace; font-size: 1.8rem; outline: none; caret-color: #24a148;
-        }
-        #cmd-input::placeholder { color: rgba(36, 161, 72, 0.4); font-size: 1.5rem; }
-        #cmd-input::selection { background: #24a148; color: #000; }
     </style>
 </head>
 <body>
@@ -268,21 +242,11 @@
                 <div class="window-body">
                     <div class="home-content">
                         
-                        <div class="hero-section" style="min-height: 450px;">
+                        <!-- ถอด Terminal ออก คืนความคลีน -->
+                        <div class="hero-section" style="min-height: 250px;">
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
-                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
-                            
-                            <!-- กล่อง Terminal Interactive (ปิด autofill สำหรับ terminal เท่านั้น) -->
-                            <div id="terminal-container" class="terminal-box" onclick="document.getElementById('cmd-input').focus()">
-                                <div id="terminal-output">
-                                    <div>> SECURE CONNECTION ESTABLISHED.</div>
-                                    <div style="color:var(--ibm-shadow);">> TYPE 'help' FOR A LIST OF AVAILABLE COMMANDS.</div>
-                                </div>
-                                <div class="terminal-search-bar">
-                                    <span class="prompt">C:\&gt;</span>
-                                    <input type="text" id="cmd-input" autocomplete="off" spellcheck="false" class="sound-trigger" autofocus placeholder="พิมพ์คำสั่ง (เช่น help)...">
-                                </div>
-                            </div>
+                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4.5rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
+                            <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
                         </div>
                         
                         <!-- โซนโชว์โปรเจกต์ -->
@@ -442,11 +406,13 @@
     <!-- Admin Panel (Root) -->
     <div id="admin-panel">
         <button id="login-show-btn" class="sound-trigger">ROOT LOGIN</button>
+        <!-- ปุ่มสร้างผู้ใช้ (เฉพาะ Admin ถึงจะเห็น) -->
+        <button id="add-user-btn" class="sound-trigger" style="display:none; background:#0f62fe; color:#fff; border-color:#0f62fe;">[+] ADD STUDENT</button>
         <button id="save-btn" class="sound-trigger">SAVE CONFIG</button>
         <button id="logout-btn" class="sound-trigger">LOGOUT</button>
     </div>
 
-    <!-- Root Login Modal (อนุญาตให้ Autofill ได้) -->
+    <!-- Root Login Modal -->
     <div id="login-modal">
         <div class="login-box">
             <h2 style="color: var(--ibm-text); margin-bottom: 20px; font-family: 'VT323'; font-size: 2rem;">AUTHENTICATION REQUIRED</h2>
@@ -454,6 +420,18 @@
             <input type="password" id="password" placeholder="ACCESS CODE" autocomplete="current-password">
             <button id="login-submit-btn" class="sound-trigger">ENTER SYSTEM</button>
             <button onclick="document.getElementById('login-modal').style.display='none'" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Modal สำหรับแอดมินสร้างรหัสนักศึกษา -->
+    <div id="create-user-modal">
+        <div class="login-box" style="border-color: #0f62fe; box-shadow: 10px 10px 0 #0f62fe;">
+            <h2 style="color: #0f62fe; margin-bottom: 10px; font-family: 'VT323'; font-size: 2.2rem;">ADD NEW STUDENT</h2>
+            <p style="color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; margin-bottom: 20px;">REGISTER FOR SECRET ACCESS</p>
+            <input type="email" id="new-user-email" placeholder="STUDENT ID (EMAIL)" style="text-align: center; margin-bottom: 10px;" autocomplete="off">
+            <input type="password" id="new-user-password" placeholder="PASSWORD (MIN 6 CHARS)" style="text-align: center; letter-spacing: 2px;" autocomplete="off">
+            <button id="create-user-submit-btn" class="sound-trigger" style="background: #0f62fe; box-shadow: 3px 3px 0 #000; border-color:#0f62fe;">REGISTER USER</button>
+            <button onclick="document.getElementById('create-user-modal').style.display='none'" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">CANCEL</button>
         </div>
     </div>
 
@@ -550,19 +528,26 @@
         let currentViewMode = 'list'; 
         let targetSecretBtn = null;
 
-        // ==========================================
-        // ฟังก์ชันระบบล็อกอินโฟลเดอร์ลับใหม่ (Firebase + BOT Notify)
-        // ==========================================
+        // ระบบแจ้งเตือนเข้า LINE บอท
+        function sendLineNotify(dateStr, title) { 
+            const formData = new URLSearchParams(); 
+            formData.append("action", "notify_now"); 
+            formData.append("date", dateStr); 
+            formData.append("title", title); 
+            fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: formData, mode: 'no-cors' }); 
+        }
+
+        // โฟลเดอร์ลับ + แจ้งเตือน
         window.loadSecretFolder = function(btnElement) {
             const currentUser = firebase.auth().currentUser;
+            const hasSecretAccess = sessionStorage.getItem('secret_unlocked') === 'true';
             
-            if (currentUser) {
-                // ถ้าล็อกอินอยู่แล้ว (ไม่ว่าจะเป็น admin หรือนศ. ก็ให้ดูไฟล์ได้)
+            if (currentUser || hasSecretAccess) {
                 loadDriveFolder(btnElement, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
                 
-                // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้แจ้งเตือน LINE ว่าเข้ามาดูโฟลเดอร์
-                if (currentUser.email !== 'peemdiamond@gmail.com') {
-                    sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 ผู้ใช้ ${currentUser.email} ได้เข้าดูโฟลเดอร์ TOP SECRET`);
+                // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้เตือนว่าแอบเข้าโฟลเดอร์ลับ
+                if (currentUser && currentUser.email !== 'peemdiamond@gmail.com') {
+                    sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${currentUser.email} เข้าดูโฟลเดอร์ TOP SECRET`);
                 }
             } else {
                 playRetroClick();
@@ -595,21 +580,18 @@
             return Math.ceil(bytes / 1024).toLocaleString() + " KB";
         }
 
-        // ==========================================
-        // แจ้งเตือนเมื่อกดเปิดดูไฟล์ (Preview)
-        // ==========================================
+        // ระบบดูไฟล์ + แจ้งเตือน
         window.openPreview = function(fileId, fileName) {
             document.getElementById('preview-title').innerText = `VIEWING: ${fileName}`;
             document.getElementById('preview-frame').src = `https://drive.google.com/file/d/${fileId}/preview`;
             document.getElementById('preview-modal').style.display = 'flex';
-            
+
             const currentUser = firebase.auth().currentUser;
-            // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้แจ้งเตือน LINE ว่ากำลังดูไฟล์อะไรอยู่
+            // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้แจ้งเตือนว่ากำลังดูไฟล์ไหนอยู่
             if (currentUser && currentUser.email !== 'peemdiamond@gmail.com') {
-                sendLineNotify(new Date().toLocaleDateString('en-CA'), `👁️ ผู้ใช้ ${currentUser.email} กำลังเปิดดูไฟล์: ${fileName}`);
+                sendLineNotify(new Date().toLocaleDateString('en-CA'), `👁️ นักศึกษา ${currentUser.email} กำลังเปิดไฟล์: ${fileName}`);
             }
         }
-
         window.closePreview = function() {
             document.getElementById('preview-modal').style.display = 'none';
             document.getElementById('preview-frame').src = '';
@@ -790,15 +772,6 @@
         }
         window.changeMonth = function(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
         window.toggleQuest = function(index) { scheduleData[index].completed = !scheduleData[index].completed; if(scheduleData[index].completed) playLevelUpSound(); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } }
-        
-        function sendLineNotify(dateStr, title) { 
-            const formData = new URLSearchParams(); 
-            formData.append("action", "notify_now"); 
-            formData.append("date", dateStr); 
-            formData.append("title", title); 
-            fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: formData, mode: 'no-cors' }); 
-        }
-        
         window.promptAddEvent = function(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
         window.deleteScheduleEvent = function(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
 
@@ -847,7 +820,7 @@
             const pwInput = document.getElementById('password');
             if(pwInput) pwInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
 
-            // ระบบล็อกอิน Secret Folder (เชื่อมกับ Firebase Auth)
+            // ระบบล็อกอิน Secret Folder 
             const secretSubmitBtn = document.getElementById('secret-submit-btn');
             const secretEmailInput = document.getElementById('secret-email');
             const secretPwdInput = document.getElementById('secret-password');
@@ -865,7 +838,7 @@
                         
                         // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้แจ้งเตือน LINE
                         if (user.email !== 'peemdiamond@gmail.com') {
-                            sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 ผู้ใช้ ${user.email} ได้ล็อกอินเข้าดูโฟลเดอร์ TOP SECRET`);
+                            sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${user.email} ปลดล็อกเข้าดูโฟลเดอร์ TOP SECRET`);
                         }
                         
                         if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
@@ -945,6 +918,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             const firebaseConfig = { apiKey: "AIzaSyAME4-lEvIycQnsWHPbi7CaBlwNiu7_qFk", authDomain: "website101-1f97f.firebaseapp.com", projectId: "website101-1f97f", storageBucket: "website101-1f97f.firebasestorage.app", messagingSenderId: "1001758477689", appId: "1:1001758477689:web:80bc85fb1a2e8af90873a8", measurementId: "G-JB4XSPMCLS" };
             if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+            
+            // สร้าง App ตัวที่ 2 สำหรับแอดมินใช้สร้างบัญชี โดยไม่ให้กระทบบัญชีหลักที่แอดมินล็อกอินอยู่
+            const secondaryApp = firebase.initializeApp(firebaseConfig, "SecondaryApp");
+            
             const db = firebase.firestore(); 
             const auth = firebase.auth(); 
             const docRef = db.collection("website").doc("pixel_portfolio");
@@ -965,20 +942,22 @@
 
             auth.onAuthStateChanged((user) => {
                 if (user) { 
-                    // ถ้าล็อกอินสำเร็จ (เป็นใครก็ตาม) โชว์ปุ่ม Logout
+                    // ถ้าล็อกอินสำเร็จ ซ่อนปุ่ม Login โชว์ปุ่ม Logout
                     document.getElementById('login-show-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'block'; 
                     
-                    // แต่ถ้าเป็น แอดมิน (peemdiamond@gmail.com) ถึงจะให้แก้เว็บได้
+                    // แต่ถ้าเป็น "แอดมิน" (peemdiamond@gmail.com) ถึงจะให้สิทธิ์แก้เว็บ และโชว์ปุ่มเพิ่มผู้ใช้
                     if (user.email === 'peemdiamond@gmail.com') {
                         document.body.classList.add('edit-mode'); 
                         document.getElementById('save-btn').style.display = 'block'; 
+                        document.getElementById('add-user-btn').style.display = 'block'; 
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
                         document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
                     } else {
-                        // นักศึกษา (ไม่ให้สิทธิ์แก้เว็บ)
+                        // ถ้านักศึกษาแอบล็อกอินหน้าเว็บหลัก (ไม่ใช่ผ่านปุ่มแดง) จะไม่ให้สิทธิ์แก้
                         document.body.classList.remove('edit-mode'); 
                         document.getElementById('save-btn').style.display = 'none'; 
+                        document.getElementById('add-user-btn').style.display = 'none'; 
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'none');
                         document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
                     }
@@ -989,6 +968,7 @@
                     document.body.classList.remove('edit-mode'); 
                     document.getElementById('login-show-btn').style.display = 'block'; 
                     document.getElementById('save-btn').style.display = 'none'; 
+                    document.getElementById('add-user-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'none'; 
                     document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'none');
                     document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
@@ -1004,9 +984,11 @@
                 }
             });
 
+            // ปุ่มแสดง Modal แอดมินล็อกอิน
             const loginShowBtn = document.getElementById('login-show-btn');
             if(loginShowBtn) loginShowBtn.onclick = () => document.getElementById('login-modal').style.display = 'flex';
             
+            // ประมวลผลล็อกอิน แอดมิน
             const loginSubmitBtn = document.getElementById('login-submit-btn');
             if(loginSubmitBtn) {
                 loginSubmitBtn.onclick = async () => { 
@@ -1043,65 +1025,46 @@
                 };
             }
 
-            loadData();
-        });
-
-        // ==========================================
-        // 12. Interactive Terminal Command Line
-        // ==========================================
-        document.addEventListener('DOMContentLoaded', () => {
-            const cmdInput = document.getElementById('cmd-input');
-            const termOutput = document.getElementById('terminal-output');
-            const termContainer = document.getElementById('terminal-container');
-
-            if (cmdInput && termOutput) {
-                cmdInput.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') {
-                        const val = this.value.trim();
-                        if (!val) return;
-                        
-                        termOutput.innerHTML += `<div><span style="color: #0f62fe;">C:\\&gt;</span> ${val}</div>`;
-                        this.value = ''; 
-                        
-                        const args = val.toLowerCase().split(' ');
-                        const cmd = args[0];
-
-                        setTimeout(() => {
-                            if (cmd === 'help') {
-                                termOutput.innerHTML += `<div style="color: var(--ibm-key-dark);">
-                                    AVAILABLE COMMANDS:<br>
-                                    &nbsp;- help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: SHOW THIS MESSAGE<br>
-                                    &nbsp;- clear&nbsp;&nbsp;&nbsp;&nbsp;: CLEAR SCREEN<br>
-                                    &nbsp;- date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: SHOW CURRENT SYSTEM DATE<br>
-                                    &nbsp;- whoami&nbsp;&nbsp;&nbsp;: IDENTIFY CURRENT USER<br>
-                                    &nbsp;- cd [dir] : NAVIGATE SYSTEM (DIRS: home, calendar, archive, profile, network)
-                                </div>`;
-                            } else if (cmd === 'clear') {
-                                termOutput.innerHTML = '';
-                            } else if (cmd === 'date') {
-                                termOutput.innerHTML += `<div>> SYSTEM DATE: ${new Date().toLocaleString('th-TH')}</div>`;
-                            } else if (cmd === 'whoami') {
-                                const user = firebase.auth().currentUser;
-                                termOutput.innerHTML += `<div>> CURRENT_USER: ${user ? user.email : 'GUEST_USER'}</div>`;
-                            } else if (cmd === 'cd') {
-                                const dir = args[1];
-                                const map = { 'home': 'home', 'calendar': 'schedule', 'archive': 'archive', 'profile': 'about', 'network': 'contact' };
-                                if (map[dir]) {
-                                    termOutput.innerHTML += `<div>> JUMPING TO DIRECTORY: \\${dir.toUpperCase()}...</div>`;
-                                    setTimeout(() => { switchTab(null, map[dir]); }, 500);
-                                } else if (!dir) {
-                                    termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: DIRECTORY NAME REQUIRED.</div>`;
-                                } else {
-                                    termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: DIRECTORY '\\${dir.toUpperCase()}' NOT FOUND.</div>`;
-                                }
-                            } else {
-                                termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: '${cmd}' IS NOT RECOGNIZED AS AN INTERNAL COMMAND.</div>`;
-                            }
-                            termContainer.scrollTop = termContainer.scrollHeight;
-                        }, 150); 
-                    }
-                });
+            // ==========================================
+            // ฟังก์ชันแอดมินสร้างรหัสนักศึกษา (ใช้งานผ่าน SecondaryApp)
+            // ==========================================
+            const addUserBtn = document.getElementById('add-user-btn');
+            if(addUserBtn) {
+                addUserBtn.onclick = () => {
+                    document.getElementById('new-user-email').value = '';
+                    document.getElementById('new-user-password').value = '';
+                    document.getElementById('create-user-modal').style.display = 'flex';
+                }
             }
+
+            const createUserSubmitBtn = document.getElementById('create-user-submit-btn');
+            if(createUserSubmitBtn) {
+                createUserSubmitBtn.onclick = async () => {
+                    const email = document.getElementById('new-user-email').value.trim();
+                    const pwd = document.getElementById('new-user-password').value;
+
+                    if(!email || pwd.length < 6) {
+                        alert("ERROR: กรุณากรอกรหัสนักศึกษา (อีเมล) และรหัสผ่านอย่างน้อย 6 ตัวอักษร");
+                        return;
+                    }
+
+                    try {
+                        createUserSubmitBtn.innerText = "CREATING...";
+                        // สร้างยูสเซอร์โดยใช้ SecondaryApp แอดมินหลักจะไม่เด้งหลุด
+                        await secondaryApp.auth().createUserWithEmailAndPassword(email, pwd);
+                        await secondaryApp.auth().signOut(); // ล็อกเอาท์แอพรองทันที
+                        
+                        alert("✅ สร้างบัญชีผู้ใช้ " + email + " สำเร็จแล้ว!\nให้นักศึกษานำรหัสนี้ไปล็อกอินโฟลเดอร์ TOP SECRET ได้เลย");
+                        document.getElementById('create-user-modal').style.display = 'none';
+                        createUserSubmitBtn.innerText = "REGISTER USER";
+                    } catch (error) {
+                        alert("FAILED TO CREATE USER: " + error.message);
+                        createUserSubmitBtn.innerText = "REGISTER USER";
+                    }
+                }
+            }
+
+            loadData();
         });
     </script>
 </body>
