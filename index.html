@@ -204,36 +204,6 @@
         /* Sortable Header Hover */
         .sortable-header { cursor: pointer; user-select: none; transition: 0.1s; }
         .sortable-header:hover { color: var(--ibm-accent-blue); }
-
-        /* ================= Terminal Interactive (Google Search Style) ================= */
-        .terminal-box { 
-            width: 100%; max-width: 850px; height: 350px; /* ขยายให้ใหญ่ขึ้น */
-            background: rgba(0, 0, 0, 0.85); border: 4px solid var(--ibm-text); 
-            padding: 20px; color: #24a148; font-family: 'VT323', monospace; 
-            font-size: 1.5rem; text-align: left; overflow-y: auto; 
-            display: flex; flex-direction: column; 
-            box-shadow: 10px 10px 0 var(--ibm-shadow); 
-            margin-top: 20px; position: relative; z-index: 10;
-        }
-        .terminal-box::-webkit-scrollbar { width: 10px; }
-        .terminal-box::-webkit-scrollbar-thumb { background: var(--ibm-key-dark); border: 2px solid #000; }
-        
-        #terminal-output { flex-grow: 1; display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; overflow-y: auto; }
-        
-        /* เปลี่ยนช่องพิมพ์ให้เป็นกรอบใหญ่แบบช่อง Search */
-        .terminal-search-bar { 
-            display: flex; align-items: center; width: 100%;
-            background: #111; border: 3px solid #24a148; 
-            padding: 10px 20px; border-radius: 8px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-        }
-        .prompt { margin-right: 15px; color: #0f62fe; font-size: 1.8rem; font-weight: bold; }
-        #cmd-input { 
-            flex: 1; background: transparent; border: none; color: #24a148; 
-            font-family: 'VT323', monospace; font-size: 1.8rem; outline: none; caret-color: #24a148;
-        }
-        #cmd-input::placeholder { color: rgba(36, 161, 72, 0.4); font-size: 1.5rem; }
-        #cmd-input::selection { background: #24a148; color: #000; }
     </style>
 </head>
 <body>
@@ -269,21 +239,10 @@
                 <div class="window-body">
                     <div class="home-content">
                         
-                        <div class="hero-section" style="min-height: 450px;">
+                        <div class="hero-section">
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
-                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
-                            
-                            <!-- กล่อง Terminal Interactive (อัปเกรดให้ใหญ่เหมือน Google Search) -->
-                            <div id="terminal-container" class="terminal-box" onclick="document.getElementById('cmd-input').focus()">
-                                <div id="terminal-output">
-                                    <div>> SECURE CONNECTION ESTABLISHED.</div>
-                                    <div style="color:var(--ibm-shadow);">> TYPE 'help' FOR A LIST OF AVAILABLE COMMANDS.</div>
-                                </div>
-                                <div class="terminal-search-bar">
-                                    <span class="prompt">C:\&gt;</span>
-                                    <input type="text" id="cmd-input" name="dummy_cmd" autocomplete="new-password" data-lpignore="true" spellcheck="false" class="sound-trigger" autofocus placeholder="พิมพ์คำสั่ง (เช่น help)...">
-                                </div>
-                            </div>
+                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none;">SYSTEM TERMINAL</h1>
+                            <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
                         </div>
                         
                         <!-- โซนโชว์โปรเจกต์ -->
@@ -440,7 +399,7 @@
         </div>
     </div>
 
-    <!-- Admin Panel -->
+    <!-- Admin Panel (Root) -->
     <div id="admin-panel">
         <button id="login-show-btn" class="sound-trigger">ROOT LOGIN</button>
         <button id="save-btn" class="sound-trigger">SAVE CONFIG</button>
@@ -988,64 +947,6 @@
             }
 
             loadData();
-        });
-
-        // ==========================================
-        // 12. Interactive Terminal Command Line
-        // ==========================================
-        document.addEventListener('DOMContentLoaded', () => {
-            const cmdInput = document.getElementById('cmd-input');
-            const termOutput = document.getElementById('terminal-output');
-            const termContainer = document.getElementById('terminal-container');
-
-            if (cmdInput && termOutput) {
-                cmdInput.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') {
-                        const val = this.value.trim();
-                        if (!val) return;
-                        
-                        termOutput.innerHTML += `<div><span style="color: #0f62fe;">C:\\&gt;</span> ${val}</div>`;
-                        this.value = ''; 
-                        
-                        const args = val.toLowerCase().split(' ');
-                        const cmd = args[0];
-
-                        setTimeout(() => {
-                            if (cmd === 'help') {
-                                termOutput.innerHTML += `<div style="color: var(--ibm-key-dark);">
-                                    AVAILABLE COMMANDS:<br>
-                                    &nbsp;- help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: SHOW THIS MESSAGE<br>
-                                    &nbsp;- clear&nbsp;&nbsp;&nbsp;&nbsp;: CLEAR SCREEN<br>
-                                    &nbsp;- date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: SHOW CURRENT SYSTEM DATE<br>
-                                    &nbsp;- whoami&nbsp;&nbsp;&nbsp;: IDENTIFY CURRENT USER<br>
-                                    &nbsp;- cd [dir] : NAVIGATE SYSTEM (DIRS: home, calendar, archive, profile, network)
-                                </div>`;
-                            } else if (cmd === 'clear') {
-                                termOutput.innerHTML = '';
-                            } else if (cmd === 'date') {
-                                termOutput.innerHTML += `<div>> SYSTEM DATE: ${new Date().toLocaleString('th-TH')}</div>`;
-                            } else if (cmd === 'whoami') {
-                                const user = firebase.auth().currentUser;
-                                termOutput.innerHTML += `<div>> CURRENT_USER: ${user ? user.email : 'GUEST_USER'}</div>`;
-                            } else if (cmd === 'cd') {
-                                const dir = args[1];
-                                const map = { 'home': 'home', 'calendar': 'schedule', 'archive': 'archive', 'profile': 'about', 'network': 'contact' };
-                                if (map[dir]) {
-                                    termOutput.innerHTML += `<div>> JUMPING TO DIRECTORY: \\${dir.toUpperCase()}...</div>`;
-                                    setTimeout(() => { switchTab(null, map[dir]); }, 500);
-                                } else if (!dir) {
-                                    termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: DIRECTORY NAME REQUIRED.</div>`;
-                                } else {
-                                    termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: DIRECTORY '\\${dir.toUpperCase()}' NOT FOUND.</div>`;
-                                }
-                            } else {
-                                termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: '${cmd}' IS NOT RECOGNIZED AS AN INTERNAL COMMAND.</div>`;
-                            }
-                            termContainer.scrollTop = termContainer.scrollHeight;
-                        }, 150); 
-                    }
-                });
-            }
         });
     </script>
 </body>
