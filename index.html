@@ -99,7 +99,7 @@
         .btn-sync:active { transform: translate(2px,2px); box-shadow: 0 0 0 var(--ibm-shadow); }
 
         .file-list-container { flex: 1; overflow-y: auto; padding: 10px; background: #fff; display: flex; flex-direction: column; gap: 5px;}
-        .file-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border: 1px solid var(--ibm-key-dark); background: var(--ibm-key-light); font-family: 'VT323', monospace; font-size: 1.2rem; transition: 0.1s; }
+        .file-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border: 1px dashed var(--ibm-key-dark); background: var(--ibm-key-light); font-family: 'VT323', monospace; font-size: 1.2rem; transition: 0.1s; }
         .file-item:hover { background: #e6f0ff; border-color: var(--ibm-accent-blue); transform: translateX(3px); }
         .file-info { display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; }
         .file-thumb { width: 35px; height: 35px; object-fit: cover; border: 1px solid var(--ibm-text); }
@@ -186,6 +186,15 @@
         .login-box input { width: 100%; padding: 10px; margin: 10px 0; background: #fff; border: 2px solid var(--ibm-text); color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem;}
         .login-box button { width: 100%; background: var(--ibm-accent-blue); color: #fff; border: 2px solid var(--ibm-text); padding: 12px; margin-top: 15px; font-weight: bold; font-family: 'VT323'; font-size: 1.5rem; box-shadow: 3px 3px 0 var(--ibm-text); }
         .login-box button:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ibm-text); }
+
+        /* ================= DOS Table & Preview Modal ================= */
+        .dos-table-header { display: flex; font-family: 'VT323'; font-size: 1.2rem; color: var(--ibm-text); border-bottom: 2px dashed var(--ibm-key-dark); padding: 5px 10px; margin-bottom: 5px; background: var(--ibm-pearl); font-weight: bold; }
+        .dos-col-name { flex: 1; overflow: hidden; }
+        .dos-col-date { width: 150px; text-align: center; }
+        .dos-col-size { width: 90px; text-align: right; }
+        
+        #preview-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
+        .preview-container { width: 95%; max-width: 1000px; height: 90vh; background: var(--ibm-pearl); border: 4px solid var(--ibm-text); display: flex; flex-direction: column; box-shadow: 10px 10px 0 #000; }
     </style>
 </head>
 <body>
@@ -396,6 +405,17 @@
         </div>
     </div>
 
+    <!-- In-App Preview Modal -->
+    <div id="preview-modal">
+        <div class="preview-container">
+            <div class="window-header">
+                <span class="window-title" id="preview-title">PREVIEW.EXE</span>
+                <button class="action-btn sound-trigger" onclick="closePreview()" style="margin-left:auto; background:#da1e28; padding: 2px 10px;">[ X ] CLOSE</button>
+            </div>
+            <iframe id="preview-frame" style="width:100%; flex:1; border:none; background:#fff;"></iframe>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script>
         const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTA1ZaJi3ieoEJt6mQD12Y-Ti5KY-uuyS3SdgmoFGL64jtgZM2xVdyg7GP1pSer46ZCQ/exec";
@@ -461,15 +481,46 @@
             fetchFiles(currentFolderId);
         }
 
+        // ฟังก์ชันแปลงวันที่และขนาดไฟล์สไตล์ DOS
+        function formatDOSDate(isoDate) {
+            if(!isoDate) return "<DIR>";
+            const d = new Date(isoDate);
+            return `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        }
+        function formatDOSSize(bytes) {
+            if(!bytes) return "";
+            return Math.ceil(bytes / 1024).toLocaleString() + " KB";
+        }
+
+        // ระบบ In-App Preview
+        function openPreview(fileId, fileName) {
+            document.getElementById('preview-title').innerText = `VIEWING: ${fileName}`;
+            document.getElementById('preview-frame').src = `https://drive.google.com/file/d/${fileId}/preview`;
+            document.getElementById('preview-modal').style.display = 'flex';
+        }
+        function closePreview() {
+            document.getElementById('preview-modal').style.display = 'none';
+            document.getElementById('preview-frame').src = '';
+        }
+
+        // อัปเกรดระบบโหลดข้อมูลด้วย ASCII Progress Bar
+        let asciiTimer;
         async function fetchFiles(folderId) {
             const fileListDiv = document.getElementById('file-list');
-            fileListDiv.innerHTML = '<span style="color:var(--ibm-accent-blue); font-family: \'VT323\'; font-size:1.4rem;">> FETCHING DATA FROM CLOUD...</span>';
+            let progress = 0;
+            clearInterval(asciiTimer);
+            
+            // แอนิเมชัน ASCII โหลดข้อมูลแบบ Retro
+            asciiTimer = setInterval(() => {
+                progress += Math.floor(Math.random() * 15) + 5;
+                if (progress > 95) progress = 95;
+                const bars = "█".repeat(Math.floor(progress / 10));
+                const spaces = "-".repeat(10 - Math.floor(progress / 10));
+                fileListDiv.innerHTML = `<span style="color:var(--ibm-accent-blue); font-family: 'VT323'; font-size:1.4rem;">> ESTABLISHING SECURE CONNECTION...<br>> FETCHING DATA [${bars}${spaces}] ${progress}%</span>`;
+            }, 150);
             
             try {
-                const headers = {
-                    'ngrok-skip-browser-warning': 'true'
-                };
-
+                const headers = { 'ngrok-skip-browser-warning': 'true' };
                 const currentUser = firebase.auth().currentUser;
                 if (currentUser) {
                     const token = await currentUser.getIdToken(); 
@@ -480,46 +531,79 @@
                 const response = await fetch(fetchUrl, { headers: headers });
                 
                 if (!response.ok) throw new Error(`HTTP ERROR: ${response.status}`);
-                
                 allFiles = await response.json(); 
-                if (!Array.isArray(allFiles)) throw new Error("Server did not return a valid array of files.");
                 
-                filterFiles(); 
+                clearInterval(asciiTimer);
+                fileListDiv.innerHTML = `<span style="color:#24a148; font-family: 'VT323'; font-size:1.4rem;">> FETCHING DATA [██████████] 100%<br>> ACCESS GRANTED.</span>`;
+                
+                // ดีเลย์นิดหน่อยเพื่อความเท่ก่อนแสดงไฟล์
+                setTimeout(() => { filterFiles(); }, 400);
+
             } catch (error) { 
-                fileListDiv.innerHTML = `<span style="color:#da1e28; font-family: 'VT323'; font-size:1.4rem;">> ERROR: ไม่สามารถดึงข้อมูลได้ โปรดตรวจสอบการเชื่อมต่อกับ SERVER<br>> รายละเอียด: ${error.message}</span>`; 
+                clearInterval(asciiTimer);
+                fileListDiv.innerHTML = `<span style="color:#da1e28; font-family: 'VT323'; font-size:1.4rem;">> ERROR: CONNECTION LOST<br>> DETAILS: ${error.message}</span>`; 
             }
         }
 
+        // อัปเกรดระบบแสดงผลตารางแบบ DOS
         function renderFilesList(filesToDisplay) {
             const fileListDiv = document.getElementById('file-list');
             fileListDiv.innerHTML = ''; 
+            
+            // สร้าง Header ของตาราง
+            fileListDiv.innerHTML += `
+            <div class="dos-table-header">
+                <span class="dos-col-name">FILE_NAME</span>
+                <span class="dos-col-date">DATE_MODIFIED</span>
+                <span class="dos-col-size">SIZE</span>
+            </div>`;
+
+            // ปุ่มย้อนกลับ (จัดให้เข้ากับตาราง)
+            if (folderHistory.length > 1) {
+                fileListDiv.innerHTML += `
+                <div class="file-item sound-trigger" style="background: rgba(218, 30, 40, 0.05); cursor: pointer;" onclick="goBackFolder()">
+                    <span class="dos-col-name" style="color: #da1e28; font-weight: bold; padding-left: 5px;">[ .. ] UP LEVEL DIRECTORY</span>
+                    <span class="dos-col-date" style="color: #da1e28;">&lt;DIR&gt;</span>
+                    <span class="dos-col-size"></span>
+                </div>`;
+            }
 
             if (filesToDisplay.length === 0) {
-                fileListDiv.innerHTML += '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem;">> NO FILES FOUND IN DIRECTORY.</span>';
+                fileListDiv.innerHTML += '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem; padding: 10px;">> DIRECTORY IS EMPTY.</span>';
                 return;
             }
 
             filesToDisplay.forEach(file => {
                 const safeName = file.name.replace(/'/g, "\\'");
                 const isFolder = file.mimeType === 'application/vnd.google-apps.folder' || file.name.endsWith('[FOLDER]'); 
+                
+                const dateStr = formatDOSDate(file.createdTime);
+                const sizeStr = formatDOSSize(file.size);
 
-                let actionHtml = ''; let iconHtml = '';
+                let clickAction = '';
+                let iconHtml = isFolder ? `<span style="display:inline-block; width:28px;">📁</span>` : 
+                               (file.hasThumbnail ? `<img src="${file.thumbnailLink}" style="width:24px; height:24px; vertical-align:middle; border:1px solid #a8a8a8; margin-right:4px;">` : `<span style="display:inline-block; width:28px;">📄</span>`);
 
                 if(isFolder) {
-                    iconHtml = `<div class="file-icon" style="background:var(--ibm-key-dark); color:#fff;">📁</div>`;
-                    actionHtml = `<a class="file-link folder-item sound-trigger" onclick="enterFolder('${file.id}', '${safeName}')" style="font-weight:bold;">[DIR] ${file.name}</a>`;
+                    clickAction = `onclick="enterFolder('${file.id}', '${safeName}')"`;
                 } else {
-                    iconHtml = file.hasThumbnail ? `<img src="${file.thumbnailLink}" class="file-thumb">` : `<div class="file-icon">📄</div>`;
-                    actionHtml = `<a class="file-link sound-trigger" href="${file.webViewLink}" target="_blank">${file.name}</a>`;
+                    clickAction = `onclick="openPreview('${file.id}', '${safeName}')"`;
                 }
                 
-                fileListDiv.innerHTML += `<div class="file-item"><div class="file-info">${iconHtml}${actionHtml}</div></div>`;
+                fileListDiv.innerHTML += `
+                <div class="file-item sound-trigger" ${clickAction} style="cursor: pointer; display: flex; align-items: center;">
+                    <span class="dos-col-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right:10px;">
+                        ${iconHtml} <a class="file-link" style="display:inline; text-decoration:none;">${file.name}</a>
+                    </span>
+                    <span class="dos-col-date" style="color:var(--ibm-shadow); font-family: 'VT323'; font-size: 1.1rem;">${dateStr}</span>
+                    <span class="dos-col-size" style="color:var(--ibm-shadow); font-family: 'VT323'; font-size: 1.1rem;">${sizeStr}</span>
+                </div>`;
             });
         }
 
         function enterFolder(folderId, folderName) { folderHistory.push({ id: folderId, name: folderName }); currentFolderId = folderId; updatePathDisplay(); fetchFiles(currentFolderId); }
         
-        // โค้ดสร้าง Breadcrumb เลียนแบบ Google Drive ที่คุณขอมา
+        // โค้ดสร้าง Breadcrumb เลียนแบบ Google Drive
         function jumpToFolder(index) {
             folderHistory = folderHistory.slice(0, index + 1);
             currentFolderId = folderHistory[folderHistory.length - 1].id;
