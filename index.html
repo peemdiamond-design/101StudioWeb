@@ -327,7 +327,7 @@
                             <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'SOURCE_CODE', '17TUnUfOEEOAdxi050iieJe0YMPFbc0G4')">📁 SOURCE CODE</button>
                             <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'EXAM_AND_WORK', '1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3')">📁 EXAM & WORK</button>
                             <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'PORTFOLIO', '1JIzrSaA0m32kf85xLa54qO82fPVQYWPj')">📁 PORTFOLIO</button>
-                            <!-- ปุ่มโฟลเดอร์ชั้นความลับที่ต้อง Login (สีแดงโดดเด่น) -->
+                            <!-- ปุ่มโฟลเดอร์ชั้นความลับที่ต้องใส่รหัสแยก (สีแดงโดดเด่น) -->
                             <button class="folder-btn sound-trigger" onclick="loadSecretFolder(this)" style="color: #da1e28; border-color: #da1e28;">🔒 TOP SECRET</button>
                         </div>
                         
@@ -412,13 +412,14 @@
         </div>
     </div>
 
-    <!-- Admin Panel -->
+    <!-- Admin Panel (Root) -->
     <div id="admin-panel">
         <button id="login-show-btn" class="sound-trigger">ROOT LOGIN</button>
         <button id="save-btn" class="sound-trigger">SAVE CONFIG</button>
         <button id="logout-btn" class="sound-trigger">LOGOUT</button>
     </div>
 
+    <!-- Root Login Modal -->
     <div id="login-modal">
         <div class="login-box">
             <h2 style="color: var(--ibm-text); margin-bottom: 20px; font-family: 'VT323'; font-size: 2rem;">AUTHENTICATION REQUIRED</h2>
@@ -426,6 +427,17 @@
             <input type="password" id="password" placeholder="ACCESS CODE">
             <button id="login-submit-btn" class="sound-trigger">ENTER SYSTEM</button>
             <button onclick="document.getElementById('login-modal').style.display='none'" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Secret Folder Login Modal (New) -->
+    <div id="secret-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(218,30,40,0.9); justify-content: center; align-items: center; z-index: 999;">
+        <div class="login-box" style="border-color: #fff; box-shadow: 10px 10px 0 #000;">
+            <h2 style="color: #da1e28; margin-bottom: 10px; font-family: 'VT323'; font-size: 2.2rem;">TOP SECRET AREA</h2>
+            <p style="color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; margin-bottom: 20px;">ENTER CLEARANCE CODE</p>
+            <input type="password" id="secret-password" placeholder="***" style="text-align: center; letter-spacing: 5px;">
+            <button id="secret-submit-btn" class="sound-trigger" style="background: #da1e28; box-shadow: 3px 3px 0 #000; border-color:#da1e28;">DECRYPT</button>
+            <button onclick="document.getElementById('secret-modal').style.display='none'" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">ABORT</button>
         </div>
     </div>
 
@@ -482,21 +494,25 @@
         let allFiles = []; 
         let folderHistory = []; 
         let currentFolderId = 'root';
-        
         let currentSort = { column: 'date', direction: 'desc' }; 
         let currentViewMode = 'list'; 
+        let targetSecretBtn = null;
 
-        // ฟังก์ชันสำหรับโฟลเดอร์ลับ ต้องทำการตรวจสอบก่อนเข้าถึง
+        // ระบบโฟลเดอร์ลับ (แยกจาก Admin)
         function loadSecretFolder(btnElement) {
             const currentUser = firebase.auth().currentUser;
-            if (currentUser) {
-                // หาก Login แล้ว ให้เปิดโฟลเดอร์ได้เลย (แทนที่ ID ด้วยโฟลเดอร์ของคุณเอง)
+            const hasSecretAccess = sessionStorage.getItem('secret_unlocked') === 'true';
+
+            if (currentUser || hasSecretAccess) {
+                // ถ้าเป็น Admin หรือใส่รหัสลับผ่านแล้ว เข้าดูได้เลย
                 loadDriveFolder(btnElement, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
             } else {
-                // หากยังไม่ Login ให้แจ้งเตือนและเด้งกล่อง Login ขึ้นมา
+                // ถ้ายังไม่ผ่าน ให้เด้งหน้าต่างแดง
                 playRetroClick();
-                alert("ACCESS DENIED: ROOT LOGIN REQUIRED TO ACCESS THIS DIRECTORY.");
-                document.getElementById('login-modal').style.display = 'flex';
+                targetSecretBtn = btnElement;
+                document.getElementById('secret-password').value = '';
+                document.getElementById('secret-modal').style.display = 'flex';
+                document.getElementById('secret-password').focus();
             }
         }
 
@@ -762,6 +778,37 @@
         document.getElementById('password').addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
         
         // ==========================================
+        // การเช็คสิทธิ์ล็อกอิน Secret Folder (รหัส 123456)
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const secretSubmitBtn = document.getElementById('secret-submit-btn');
+            const secretInput = document.getElementById('secret-password');
+
+            if(secretSubmitBtn) {
+                secretSubmitBtn.onclick = () => {
+                    const pwd = secretInput.value;
+                    // *** เปลี่ยนรหัสผ่านตรงนี้ได้เลย (ปัจจุบันคือ 123456) ***
+                    if (pwd === '6910') { 
+                        sessionStorage.setItem('secret_unlocked', 'true');
+                        document.getElementById('secret-modal').style.display = 'none';
+                        playLevelUpSound();
+                        if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
+                    } else {
+                        alert("ACCESS DENIED: INVALID CLEARANCE CODE.");
+                        secretInput.value = '';
+                    }
+                };
+            }
+            
+            // กด Enter เพื่อส่งรหัส
+            if(secretInput) {
+                secretInput.addEventListener('keypress', function(e) { 
+                    if (e.key === 'Enter') secretSubmitBtn.click(); 
+                });
+            }
+        });
+
+        // ==========================================
         // เสียง Mechanical Keyboard
         // ==========================================
         function playKeystrokeSound() { 
@@ -876,7 +923,7 @@
                 renderProjects(); 
 
                 // เด้งออกจากหน้าโฟลเดอร์ลับ หากกด Logout
-                if(currentFolderId === 'ใส่_ID_โฟลเดอร์ลับของคุณตรงนี้') {
+                if(currentFolderId === '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8') {
                      document.getElementById('file-list').innerHTML = '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem; padding:10px;">> ACCESS DENIED.</span>';
                      folderHistory = [];
                      document.getElementById('archive-path').innerText = "C:\\ARCHIVE\\";
