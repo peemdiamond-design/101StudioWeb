@@ -6,8 +6,8 @@
     <title>PEEMCN25 | IBM Retro Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
-    <!-- เชื่อมต่อกับไฟล์ CSS -->
-    <link rel="stylesheet" href="style.css">
+    <!-- ใส่ ?v=3 เพื่อบังคับเบราว์เซอร์ไม่ให้จำไฟล์เก่าที่พัง -->
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -46,7 +46,7 @@
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
                             <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
                             
-                            <!-- เริ่มกล่อง Terminal Interactive -->
+                            <!-- กล่อง Terminal Interactive (อัปเดตบล็อก Auto-fill) -->
                             <div id="terminal-container" class="terminal-box" onclick="document.getElementById('cmd-input').focus()">
                                 <div id="terminal-output">
                                     <div>> SECURE CONNECTION ESTABLISHED.</div>
@@ -54,10 +54,9 @@
                                 </div>
                                 <div class="terminal-input-line">
                                     <span class="prompt">C:\&gt;</span>
-                                    <input type="text" id="cmd-input" autocomplete="off" spellcheck="false" class="sound-trigger" autofocus>
+                                    <input type="text" id="cmd-input" name="dummy_cmd" autocomplete="new-password" data-lpignore="true" spellcheck="false" class="sound-trigger" autofocus placeholder="พิมพ์คำสั่ง เช่น help ที่นี่...">
                                 </div>
                             </div>
-                            <!-- จบกล่อง Terminal Interactive -->
                         </div>
                         
                         <!-- โซนโชว์โปรเจกต์ -->
@@ -115,7 +114,7 @@
             </div>
         </main>
 
-        <!-- ARCHIVE (HYBRID) -->
+        <!-- ARCHIVE -->
         <main id="archive" class="section">
             <div class="retro-window">
                 <div class="window-header">
@@ -126,12 +125,12 @@
                     <h1 class="editable" id="archive-title" data-field="archive_title" style="margin-bottom: 20px;">SYSTEM ARCHIVE</h1>
                     
                     <div class="archive-layout">
-                        <!-- เมนูด้านซ้าย (หมวดหมู่หลัก) -->
+                        <!-- เมนูด้านซ้าย -->
                         <div class="archive-sidebar">
                             <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'SOURCE_CODE', '17TUnUfOEEOAdxi050iieJe0YMPFbc0G4')">📁 SOURCE CODE</button>
                             <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'EXAM_AND_WORK', '1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3')">📁 EXAM & WORK</button>
                             <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'PORTFOLIO', '1JIzrSaA0m32kf85xLa54qO82fPVQYWPj')">📁 PORTFOLIO</button>
-                            <!-- ปุ่มโฟลเดอร์ชั้นความลับที่ต้องใส่รหัสแยก (สีแดงโดดเด่น) -->
+                            <!-- ปุ่มโฟลเดอร์ลับ -->
                             <button class="folder-btn sound-trigger" onclick="loadSecretFolder(this)" style="color: #da1e28; border-color: #da1e28;">🔒 TOP SECRET</button>
                         </div>
                         
@@ -154,7 +153,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </main>
@@ -215,7 +213,7 @@
         </div>
     </div>
 
-    <!-- Admin Panel (Root) -->
+    <!-- Admin Panel -->
     <div id="admin-panel">
         <button id="login-show-btn" class="sound-trigger">ROOT LOGIN</button>
         <button id="save-btn" class="sound-trigger">SAVE CONFIG</button>
@@ -238,7 +236,7 @@
         <div class="login-box" style="border-color: #fff; box-shadow: 10px 10px 0 #000;">
             <h2 style="color: #da1e28; margin-bottom: 10px; font-family: 'VT323'; font-size: 2.2rem;">TOP SECRET AREA</h2>
             <p style="color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; margin-bottom: 20px;">ENTER CLEARANCE CODE</p>
-            <input type="password" id="secret-password" placeholder="***" style="text-align: center; letter-spacing: 5px;">
+            <input type="password" id="secret-password" placeholder="***" style="text-align: center; letter-spacing: 5px;" autocomplete="new-password">
             <button id="secret-submit-btn" class="sound-trigger" style="background: #da1e28; box-shadow: 3px 3px 0 #000; border-color:#da1e28;">DECRYPT</button>
             <button onclick="document.getElementById('secret-modal').style.display='none'" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">ABORT</button>
         </div>
@@ -255,11 +253,12 @@
         </div>
     </div>
 
-    <!-- เชื่อมต่อ Firebase และไฟล์ Script ของคุณ -->
+    <!-- เชื่อมต่อ Firebase และ Script -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="app.js"></script>
+    <!-- ใส่ ?v=3 เพื่อบังคับให้ดึงโค้ดสมองกลตัวใหม่ -->
+    <script src="app.js?v=3"></script>
 
 </body>
 </html>
