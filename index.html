@@ -242,7 +242,6 @@
                 <div class="window-body">
                     <div class="home-content">
                         
-                        <!-- ถอด Terminal ออก คืนความคลีน -->
                         <div class="hero-section" style="min-height: 250px;">
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
                             <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4.5rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
@@ -423,24 +422,24 @@
         </div>
     </div>
 
-    <!-- Modal สำหรับแอดมินสร้างรหัสนักศึกษา -->
+    <!-- Modal สำหรับแอดมินสร้างรหัสนักศึกษา (กรอกแค่รหัส 10 หลัก) -->
     <div id="create-user-modal">
         <div class="login-box" style="border-color: #0f62fe; box-shadow: 10px 10px 0 #0f62fe;">
             <h2 style="color: #0f62fe; margin-bottom: 10px; font-family: 'VT323'; font-size: 2.2rem;">ADD NEW STUDENT</h2>
             <p style="color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; margin-bottom: 20px;">REGISTER FOR SECRET ACCESS</p>
-            <input type="email" id="new-user-email" placeholder="STUDENT ID (EMAIL)" style="text-align: center; margin-bottom: 10px;" autocomplete="off">
+            <input type="text" id="new-user-email" placeholder="STUDENT ID (10 DIGITS)" maxlength="10" style="text-align: center; margin-bottom: 10px;" autocomplete="off">
             <input type="password" id="new-user-password" placeholder="PASSWORD (MIN 6 CHARS)" style="text-align: center; letter-spacing: 2px;" autocomplete="off">
             <button id="create-user-submit-btn" class="sound-trigger" style="background: #0f62fe; box-shadow: 3px 3px 0 #000; border-color:#0f62fe;">REGISTER USER</button>
             <button onclick="document.getElementById('create-user-modal').style.display='none'" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">CANCEL</button>
         </div>
     </div>
 
-    <!-- Secret Folder Login Modal (Firebase Auth) -->
+    <!-- Secret Folder Login Modal (กรอกแค่รหัส 10 หลัก) -->
     <div id="secret-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(218,30,40,0.9); justify-content: center; align-items: center; z-index: 999;">
         <div class="login-box" style="border-color: #fff; box-shadow: 10px 10px 0 #000;">
             <h2 style="color: #da1e28; margin-bottom: 10px; font-family: 'VT323'; font-size: 2.2rem;">TOP SECRET AREA</h2>
-            <p style="color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; margin-bottom: 20px;">ENTER STUDENT ID & PASSWORD</p>
-            <input type="email" id="secret-email" placeholder="STUDENT ID (EMAIL)" autocomplete="email" style="text-align: center; margin-bottom: 10px;">
+            <p style="color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; margin-bottom: 20px;">ENTER 10-DIGIT STUDENT ID</p>
+            <input type="text" id="secret-email" placeholder="STUDENT ID (10 DIGITS)" maxlength="10" autocomplete="username" style="text-align: center; margin-bottom: 10px;">
             <input type="password" id="secret-password" placeholder="***" autocomplete="current-password" style="text-align: center; letter-spacing: 5px;">
             <button id="secret-submit-btn" class="sound-trigger" style="background: #da1e28; box-shadow: 3px 3px 0 #000; border-color:#da1e28;">DECRYPT</button>
             <button onclick="document.getElementById('secret-modal').style.display='none'" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">ABORT</button>
@@ -547,7 +546,9 @@
                 
                 // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้เตือนว่าแอบเข้าโฟลเดอร์ลับ
                 if (currentUser && currentUser.email !== 'peemdiamond@gmail.com') {
-                    sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${currentUser.email} เข้าดูโฟลเดอร์ TOP SECRET`);
+                    // ดึงเฉพาะตัวเลขรหัสนักศึกษาหน้า @
+                    const studentId = currentUser.email.split('@')[0];
+                    sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${studentId} เข้าดูโฟลเดอร์ TOP SECRET`);
                 }
             } else {
                 playRetroClick();
@@ -589,7 +590,8 @@
             const currentUser = firebase.auth().currentUser;
             // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้แจ้งเตือนว่ากำลังดูไฟล์ไหนอยู่
             if (currentUser && currentUser.email !== 'peemdiamond@gmail.com') {
-                sendLineNotify(new Date().toLocaleDateString('en-CA'), `👁️ นักศึกษา ${currentUser.email} กำลังเปิดไฟล์: ${fileName}`);
+                const studentId = currentUser.email.split('@')[0];
+                sendLineNotify(new Date().toLocaleDateString('en-CA'), `👁️ นักศึกษา ${studentId} กำลังเปิดไฟล์: ${fileName}`);
             }
         }
         window.closePreview = function() {
@@ -820,14 +822,26 @@
             const pwInput = document.getElementById('password');
             if(pwInput) pwInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
 
-            // ระบบล็อกอิน Secret Folder 
+            // ==========================================
+            // ระบบล็อกอิน Secret Folder (นักศึกษากรอกแค่ 10 หลัก)
+            // ==========================================
             const secretSubmitBtn = document.getElementById('secret-submit-btn');
             const secretEmailInput = document.getElementById('secret-email');
             const secretPwdInput = document.getElementById('secret-password');
+            
             if(secretSubmitBtn) {
                 secretSubmitBtn.onclick = async () => {
-                    const email = secretEmailInput.value.trim();
+                    const studentId = secretEmailInput.value.trim();
                     const pwd = secretPwdInput.value;
+                    
+                    // ดักจับว่าต้องกรอกเป็นตัวเลข 10 หลักเท่านั้น
+                    if(!/^\d{10}$/.test(studentId)) {
+                        alert("ACCESS DENIED: กรุณากรอกรหัสนักศึกษาเป็นตัวเลข 10 หลักให้ถูกต้อง");
+                        return;
+                    }
+                    
+                    // เติมโดเมนให้เองหลังบ้านอัตโนมัติ
+                    const email = `${studentId}@dome.tu.ac.th`;
                     
                     try {
                         const userCredential = await firebase.auth().signInWithEmailAndPassword(email, pwd);
@@ -838,13 +852,13 @@
                         
                         // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้แจ้งเตือน LINE
                         if (user.email !== 'peemdiamond@gmail.com') {
-                            sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${user.email} ปลดล็อกเข้าดูโฟลเดอร์ TOP SECRET`);
+                            sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${studentId} ปลดล็อกเข้าดูโฟลเดอร์ TOP SECRET`);
                         }
                         
                         if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
                         
                     } catch (error) {
-                        alert("ACCESS DENIED: " + error.message);
+                        alert("ACCESS DENIED: รหัสผ่านไม่ถูกต้อง หรือยังไม่ได้ลงทะเบียน");
                         secretPwdInput.value = '';
                     }
                 };
@@ -954,7 +968,7 @@
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
                         document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
                     } else {
-                        // ถ้านักศึกษาแอบล็อกอินหน้าเว็บหลัก (ไม่ใช่ผ่านปุ่มแดง) จะไม่ให้สิทธิ์แก้
+                        // นักศึกษา (ไม่ให้สิทธิ์แก้เว็บ)
                         document.body.classList.remove('edit-mode'); 
                         document.getElementById('save-btn').style.display = 'none'; 
                         document.getElementById('add-user-btn').style.display = 'none'; 
@@ -1040,13 +1054,21 @@
             const createUserSubmitBtn = document.getElementById('create-user-submit-btn');
             if(createUserSubmitBtn) {
                 createUserSubmitBtn.onclick = async () => {
-                    const email = document.getElementById('new-user-email').value.trim();
+                    const studentId = document.getElementById('new-user-email').value.trim();
                     const pwd = document.getElementById('new-user-password').value;
 
-                    if(!email || pwd.length < 6) {
-                        alert("ERROR: กรุณากรอกรหัสนักศึกษา (อีเมล) และรหัสผ่านอย่างน้อย 6 ตัวอักษร");
+                    // ดักจับว่าแอดมินต้องกรอกตัวเลข 10 หลัก
+                    if(!/^\d{10}$/.test(studentId)) {
+                        alert("ERROR: กรุณากรอกรหัสนักศึกษาเป็นตัวเลข 10 หลักให้ถูกต้อง");
                         return;
                     }
+                    if(pwd.length < 6) {
+                        alert("ERROR: รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร");
+                        return;
+                    }
+
+                    // เติมโดเมนให้เองหลังบ้านอัตโนมัติ
+                    const email = `${studentId}@dome.tu.ac.th`;
 
                     try {
                         createUserSubmitBtn.innerText = "CREATING...";
@@ -1054,7 +1076,7 @@
                         await secondaryApp.auth().createUserWithEmailAndPassword(email, pwd);
                         await secondaryApp.auth().signOut(); // ล็อกเอาท์แอพรองทันที
                         
-                        alert("✅ สร้างบัญชีผู้ใช้ " + email + " สำเร็จแล้ว!\nให้นักศึกษานำรหัสนี้ไปล็อกอินโฟลเดอร์ TOP SECRET ได้เลย");
+                        alert("✅ สร้างบัญชีผู้ใช้สำหรับรหัส " + studentId + " สำเร็จแล้ว!\nให้นักศึกษานำรหัสนักศึกษานี้ไปล็อกอินโฟลเดอร์ TOP SECRET ได้เลย");
                         document.getElementById('create-user-modal').style.display = 'none';
                         createUserSubmitBtn.innerText = "REGISTER USER";
                     } catch (error) {
