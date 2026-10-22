@@ -208,11 +208,11 @@ h1.editable, h3.editable, h2.editable { display: block !important; width: 100% !
 }
 .terminal-box::-webkit-scrollbar { width: 10px; }
 .terminal-box::-webkit-scrollbar-thumb { background: var(--ibm-key-dark); border: 2px solid #000; }
-#terminal-output { display: flex; flex-direction: column; gap: 4px; }
-.terminal-input-line { display: flex; align-items: center; margin-top: 4px; }
+#terminal-output { display: flex; flex-direction: column; gap: 4px; margin-bottom: 5px; }
+.terminal-input-line { display: flex; align-items: center; width: 100%; }
 .prompt { margin-right: 8px; color: #0f62fe; }
 #cmd-input { 
     flex: 1; background: transparent; border: none; color: #24a148; 
-    font-family: 'VT323', monospace; font-size: 1.4rem; outline: none; 
+    font-family: 'VT323', monospace; font-size: 1.4rem; outline: none; caret-color: #a8a8a8;
 }
-#cmd-input::selection { background: #24a148; color: #000; }
+#cmd-input::placeholder { color: rgba(36, 161, 72, 0.4); }
