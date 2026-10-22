@@ -243,7 +243,8 @@
                         
                         <div class="hero-section">
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
-                            <h1 style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none;">SYSTEM TERMINAL</h1>
+                            <!-- เพิ่มคลาส editable และ id ให้กดแก้ไขได้ -->
+                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none;">SYSTEM TERMINAL</h1>
                             <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
                         </div>
                         
@@ -679,7 +680,7 @@
         document.getElementById('password').addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
         
         // ==========================================
-        // อัปเกรด: เสียง Mechanical Keyboard และ Dial-up Modem
+        // อัปเกรด: เสียง Mechanical Keyboard
         // ==========================================
         function playKeystrokeSound() { 
             if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } 
@@ -694,30 +695,10 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.02); 
         }
 
-        function playModemSound() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc1 = audioCtx.createOscillator(); const osc2 = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-            osc1.type = 'sawtooth'; osc2.type = 'square';
-            osc1.connect(gain); osc2.connect(gain); gain.connect(audioCtx.destination);
-            osc1.start(); osc2.start();
-            
-            for(let i=0; i<20; i++) {
-                const time = audioCtx.currentTime + (i * 0.05);
-                osc1.frequency.setValueAtTime(600 + Math.random() * 1000, time);
-                osc2.frequency.setValueAtTime(400 + Math.random() * 800, time);
-            }
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
-            osc1.stop(audioCtx.currentTime + 1); osc2.stop(audioCtx.currentTime + 1);
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('input').forEach(input => {
                 input.addEventListener('keydown', playKeystrokeSound);
             });
-            const rootBtn = document.getElementById('login-show-btn');
-            if(rootBtn) rootBtn.addEventListener('mousedown', playModemSound);
         });
 
         // ==========================================
