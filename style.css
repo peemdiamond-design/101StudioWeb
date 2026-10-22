@@ -195,6 +195,7 @@ h1.editable, h3.editable, h2.editable { display: block !important; width: 100% !
 /* Sortable Header Hover */
 .sortable-header { cursor: pointer; user-select: none; transition: 0.1s; }
 .sortable-header:hover { color: var(--ibm-accent-blue); }
+
 /* ================= Terminal Interactive ================= */
 .terminal-box { 
     width: 90%; max-width: 800px; height: 220px; 
