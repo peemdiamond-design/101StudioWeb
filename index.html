@@ -496,8 +496,20 @@
         function renderFilesList(filesToDisplay) {
             const fileListDiv = document.getElementById('file-list');
             fileListDiv.innerHTML = ''; 
+            
+            // --- เพิ่มปุ่มย้อนกลับ (..) ไว้บรรทัดแรกสุด ถ้ามีการมุดเข้าโฟลเดอร์ย่อย ---
+            if (folderHistory.length > 1) {
+                fileListDiv.innerHTML += `
+                <div class="file-item sound-trigger" style="background: var(--ibm-pearl); border-bottom: 2px solid var(--ibm-key-dark); cursor: pointer;" onclick="goBackFolder()">
+                    <div class="file-info">
+                        <div class="file-icon" style="background: #da1e28; color: #fff; border-color: var(--ibm-text);">^</div>
+                        <a class="file-link" style="font-weight: bold; color: #da1e28; font-size: 1.3rem;">[ .. กลับไปโฟลเดอร์ก่อนหน้า ]</a>
+                    </div>
+                </div>`;
+            }
+
             if (filesToDisplay.length === 0) {
-                fileListDiv.innerHTML = '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem;">> NO FILES FOUND IN DIRECTORY.</span>';
+                fileListDiv.innerHTML += '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem;">> NO FILES FOUND IN DIRECTORY.</span>';
                 return;
             }
 
