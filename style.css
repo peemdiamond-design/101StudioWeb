@@ -195,3 +195,23 @@ h1.editable, h3.editable, h2.editable { display: block !important; width: 100% !
 /* Sortable Header Hover */
 .sortable-header { cursor: pointer; user-select: none; transition: 0.1s; }
 .sortable-header:hover { color: var(--ibm-accent-blue); }
+/* ================= Terminal Interactive ================= */
+.terminal-box { 
+    width: 90%; max-width: 800px; height: 220px; 
+    background: rgba(0, 0, 0, 0.85); border: 3px solid var(--ibm-key-dark); 
+    padding: 15px; color: #24a148; font-family: 'VT323', monospace; 
+    font-size: 1.4rem; text-align: left; overflow-y: auto; 
+    display: flex; flex-direction: column; 
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 8px 8px 0 var(--ibm-shadow); 
+    cursor: text !important; position: relative; z-index: 10; margin-top: 15px;
+}
+.terminal-box::-webkit-scrollbar { width: 10px; }
+.terminal-box::-webkit-scrollbar-thumb { background: var(--ibm-key-dark); border: 2px solid #000; }
+#terminal-output { display: flex; flex-direction: column; gap: 4px; }
+.terminal-input-line { display: flex; align-items: center; margin-top: 4px; }
+.prompt { margin-right: 8px; color: #0f62fe; }
+#cmd-input { 
+    flex: 1; background: transparent; border: none; color: #24a148; 
+    font-family: 'VT323', monospace; font-size: 1.4rem; outline: none; 
+}
+#cmd-input::selection { background: #24a148; color: #000; }
