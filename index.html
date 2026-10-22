@@ -507,17 +507,7 @@
         let asciiTimer;
         async function fetchFiles(folderId) {
             const fileListDiv = document.getElementById('file-list');
-            let progress = 0;
-            clearInterval(asciiTimer);
-            
-            // แอนิเมชัน ASCII โหลดข้อมูลแบบ Retro
-            asciiTimer = setInterval(() => {
-                progress += Math.floor(Math.random() * 15) + 5;
-                if (progress > 95) progress = 95;
-                const bars = "█".repeat(Math.floor(progress / 10));
-                const spaces = "-".repeat(10 - Math.floor(progress / 10));
-                fileListDiv.innerHTML = `<span style="color:var(--ibm-accent-blue); font-family: 'VT323'; font-size:1.4rem;">> ESTABLISHING SECURE CONNECTION...<br>> FETCHING DATA [${bars}${spaces}] ${progress}%</span>`;
-            }, 150);
+            fileListDiv.innerHTML = `<span style="color:var(--ibm-accent-blue); font-family: 'VT323'; font-size:1.4rem;">> FETCHING DATA...</span>`;
             
             try {
                 const headers = { 'ngrok-skip-browser-warning': 'true' };
@@ -533,19 +523,14 @@
                 if (!response.ok) throw new Error(`HTTP ERROR: ${response.status}`);
                 allFiles = await response.json(); 
                 
-                clearInterval(asciiTimer);
-                fileListDiv.innerHTML = `<span style="color:#24a148; font-family: 'VT323'; font-size:1.4rem;">> FETCHING DATA [██████████] 100%<br>> ACCESS GRANTED.</span>`;
-                
-                // ดีเลย์นิดหน่อยเพื่อความเท่ก่อนแสดงไฟล์
-                setTimeout(() => { filterFiles(); }, 400);
+                // ดึงข้อมูลเสร็จปุ๊บ สั่งแสดงผลทันที ไม่ต้องมีดีเลย์
+                filterFiles(); 
 
             } catch (error) { 
-                clearInterval(asciiTimer);
                 fileListDiv.innerHTML = `<span style="color:#da1e28; font-family: 'VT323'; font-size:1.4rem;">> ERROR: CONNECTION LOST<br>> DETAILS: ${error.message}</span>`; 
             }
         }
 
-        // อัปเกรดระบบแสดงผลตารางแบบ DOS
         function renderFilesList(filesToDisplay) {
             const fileListDiv = document.getElementById('file-list');
             fileListDiv.innerHTML = ''; 
@@ -557,16 +542,6 @@
                 <span class="dos-col-date">DATE_MODIFIED</span>
                 <span class="dos-col-size">SIZE</span>
             </div>`;
-
-            // ปุ่มย้อนกลับ (จัดให้เข้ากับตาราง)
-            if (folderHistory.length > 1) {
-                fileListDiv.innerHTML += `
-                <div class="file-item sound-trigger" style="background: rgba(218, 30, 40, 0.05); cursor: pointer;" onclick="goBackFolder()">
-                    <span class="dos-col-name" style="color: #da1e28; font-weight: bold; padding-left: 5px;">[ .. ] UP LEVEL DIRECTORY</span>
-                    <span class="dos-col-date" style="color: #da1e28;">&lt;DIR&gt;</span>
-                    <span class="dos-col-size"></span>
-                </div>`;
-            }
 
             if (filesToDisplay.length === 0) {
                 fileListDiv.innerHTML += '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem; padding: 10px;">> DIRECTORY IS EMPTY.</span>';
