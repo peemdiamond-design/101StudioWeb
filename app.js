@@ -315,12 +315,9 @@ function playKeystrokeSound() {
 
 // 8. Event Listeners เบ็ดเตล็ดเมื่อเปิดหน้าเว็บ
 document.addEventListener('DOMContentLoaded', () => {
-    // ผูกเสียงคลิก
     document.querySelectorAll('.sound-trigger, .nav-btn, .btn-drive, .btn-social, .logo, .action-btn, .folder-btn').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
-    // ผูกเสียงพิมพ์
     document.querySelectorAll('input').forEach(input => { input.addEventListener('keydown', playKeystrokeSound); });
 
-    // กด Enter แก้ไขข้อความได้
     document.addEventListener('keydown', function(event) { 
         if (event.key === 'Enter') { 
             if (event.target.classList.contains('editable-block') || event.target.classList.contains('project-desc')) { 
@@ -330,16 +327,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } 
         } 
     });
-    // ทำความสะอาดข้อความเมื่อเลิกพิมพ์
     document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { 
         el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); 
     });
 
-    // ปุ่ม Login ใน Modal
     const pwInput = document.getElementById('password');
     if(pwInput) pwInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
 
-    // ระบบรหัสลับ TOP SECRET (123456)
     const secretSubmitBtn = document.getElementById('secret-submit-btn');
     const secretInput = document.getElementById('secret-password');
     if(secretSubmitBtn) {
@@ -358,7 +352,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if(secretInput) { secretInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') secretSubmitBtn.click(); }); }
     
-    // โหลด Matrix Canvas
     initMatrix();
 });
 
@@ -424,7 +417,6 @@ function drawMatrix() {
 
 // 11. Firebase Setup & Authentication Rules
 document.addEventListener('DOMContentLoaded', () => {
-    // ตั้งค่า Firebase
     const firebaseConfig = { apiKey: "AIzaSyAME4-lEvIycQnsWHPbi7CaBlwNiu7_qFk", authDomain: "website101-1f97f.firebaseapp.com", projectId: "website101-1f97f", storageBucket: "website101-1f97f.firebasestorage.app", messagingSenderId: "1001758477689", appId: "1:1001758477689:web:80bc85fb1a2e8af90873a8", measurementId: "G-JB4XSPMCLS" };
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.firestore(); 
@@ -463,7 +455,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
             renderProjects(); 
 
-            // เด้งออกจากหน้าโฟลเดอร์ลับ หากกด Logout
             if(currentFolderId === '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8') {
                  document.getElementById('file-list').innerHTML = '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem; padding:10px;">> ACCESS DENIED.</span>';
                  folderHistory = [];
@@ -514,6 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadData();
 });
+
 // ==========================================
 // 12. Interactive Terminal Command Line
 // ==========================================
@@ -528,14 +520,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const val = this.value.trim();
                 if (!val) return;
                 
-                // พิมพ์คำสั่งที่ผู้ใช้กรอกลงไปในจอ
                 termOutput.innerHTML += `<div><span style="color: #0f62fe;">C:\\&gt;</span> ${val}</div>`;
-                this.value = ''; // เคลียร์ช่องพิมพ์
+                this.value = ''; 
                 
                 const args = val.toLowerCase().split(' ');
                 const cmd = args[0];
 
-                // ประมวลผลคำสั่ง (หน่วงเวลานิดนึงให้ดูสมจริง)
                 setTimeout(() => {
                     if (cmd === 'help') {
                         termOutput.innerHTML += `<div style="color: var(--ibm-key-dark);">
@@ -544,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             &nbsp;- clear&nbsp;&nbsp;&nbsp;&nbsp;: CLEAR SCREEN<br>
                             &nbsp;- date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: SHOW CURRENT SYSTEM DATE<br>
                             &nbsp;- whoami&nbsp;&nbsp;&nbsp;: IDENTIFY CURRENT USER<br>
-                            &nbsp;- cd [dir] : NAVIGATE SYSTEM (DIRS: home, calendar, data, profile, network)
+                            &nbsp;- cd [dir] : NAVIGATE SYSTEM (DIRS: home, calendar, archive, profile, network)
                         </div>`;
                     } else if (cmd === 'clear') {
                         termOutput.innerHTML = '';
@@ -555,11 +545,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         termOutput.innerHTML += `<div>> CURRENT_USER: ${user ? user.email : 'GUEST_USER'}</div>`;
                     } else if (cmd === 'cd') {
                         const dir = args[1];
-                        // จับคู่คำสั่งกับ ID ของหน้าเว็บ
-                        const map = { 'home': 'home', 'calendar': 'schedule', 'data': 'archive', 'profile': 'about', 'network': 'contact' };
+                        const map = { 'home': 'home', 'calendar': 'schedule', 'archive': 'archive', 'profile': 'about', 'network': 'contact' };
                         if (map[dir]) {
                             termOutput.innerHTML += `<div>> JUMPING TO DIRECTORY: \\${dir.toUpperCase()}...</div>`;
-                            // หน่วงเวลา 0.5 วินาทีแล้วสลับหน้า
                             setTimeout(() => { switchTab(null, map[dir]); }, 500);
                         } else if (!dir) {
                             termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: DIRECTORY NAME REQUIRED.</div>`;
@@ -569,10 +557,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: '${cmd}' IS NOT RECOGNIZED AS AN INTERNAL COMMAND.</div>`;
                     }
-                    
-                    // เลื่อนหน้าจอลงมาล่างสุดอัตโนมัติเวลาคำสั่งยาว
                     termContainer.scrollTop = termContainer.scrollHeight;
-                }, 150); // ดีเลย์ 150ms ให้ได้อารมณ์พิมพ์คำสั่ง
+                }, 150); 
             }
         });
     }
