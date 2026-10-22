@@ -204,6 +204,35 @@
         /* Sortable Header Hover */
         .sortable-header { cursor: pointer; user-select: none; transition: 0.1s; }
         .sortable-header:hover { color: var(--ibm-accent-blue); }
+
+        /* ================= Terminal Interactive (Google Search Style) ================= */
+        .terminal-box { 
+            width: 100%; max-width: 850px; height: 350px; 
+            background: rgba(0, 0, 0, 0.85); border: 4px solid var(--ibm-text); 
+            padding: 20px; color: #24a148; font-family: 'VT323', monospace; 
+            font-size: 1.5rem; text-align: left; overflow-y: auto; 
+            display: flex; flex-direction: column; 
+            box-shadow: 10px 10px 0 var(--ibm-shadow); 
+            margin-top: 20px; position: relative; z-index: 10;
+        }
+        .terminal-box::-webkit-scrollbar { width: 10px; }
+        .terminal-box::-webkit-scrollbar-thumb { background: var(--ibm-key-dark); border: 2px solid #000; }
+        
+        #terminal-output { flex-grow: 1; display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; overflow-y: auto; }
+        
+        .terminal-search-bar { 
+            display: flex; align-items: center; width: 100%;
+            background: #111; border: 3px solid #24a148; 
+            padding: 10px 20px; border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+        .prompt { margin-right: 15px; color: #0f62fe; font-size: 1.8rem; font-weight: bold; }
+        #cmd-input { 
+            flex: 1; background: transparent; border: none; color: #24a148; 
+            font-family: 'VT323', monospace; font-size: 1.8rem; outline: none; caret-color: #24a148;
+        }
+        #cmd-input::placeholder { color: rgba(36, 161, 72, 0.4); font-size: 1.5rem; }
+        #cmd-input::selection { background: #24a148; color: #000; }
     </style>
 </head>
 <body>
@@ -239,10 +268,21 @@
                 <div class="window-body">
                     <div class="home-content">
                         
-                        <div class="hero-section">
+                        <div class="hero-section" style="min-height: 450px;">
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
-                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none;">SYSTEM TERMINAL</h1>
-                            <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
+                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
+                            
+                            <!-- กล่อง Terminal Interactive (ปิด autofill สำหรับ terminal เท่านั้น) -->
+                            <div id="terminal-container" class="terminal-box" onclick="document.getElementById('cmd-input').focus()">
+                                <div id="terminal-output">
+                                    <div>> SECURE CONNECTION ESTABLISHED.</div>
+                                    <div style="color:var(--ibm-shadow);">> TYPE 'help' FOR A LIST OF AVAILABLE COMMANDS.</div>
+                                </div>
+                                <div class="terminal-search-bar">
+                                    <span class="prompt">C:\&gt;</span>
+                                    <input type="text" id="cmd-input" autocomplete="off" spellcheck="false" class="sound-trigger" autofocus placeholder="พิมพ์คำสั่ง (เช่น help)...">
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- โซนโชว์โปรเจกต์ -->
@@ -406,23 +446,24 @@
         <button id="logout-btn" class="sound-trigger">LOGOUT</button>
     </div>
 
-    <!-- Root Login Modal -->
+    <!-- Root Login Modal (อนุญาตให้ Autofill ได้) -->
     <div id="login-modal">
         <div class="login-box">
             <h2 style="color: var(--ibm-text); margin-bottom: 20px; font-family: 'VT323'; font-size: 2rem;">AUTHENTICATION REQUIRED</h2>
-            <input type="email" id="email" placeholder="USER ID (EMAIL)">
-            <input type="password" id="password" placeholder="ACCESS CODE">
+            <input type="email" id="email" placeholder="USER ID (EMAIL)" autocomplete="email">
+            <input type="password" id="password" placeholder="ACCESS CODE" autocomplete="current-password">
             <button id="login-submit-btn" class="sound-trigger">ENTER SYSTEM</button>
             <button onclick="document.getElementById('login-modal').style.display='none'" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">CANCEL</button>
         </div>
     </div>
 
-    <!-- Secret Folder Login Modal -->
+    <!-- Secret Folder Login Modal (Firebase Auth) -->
     <div id="secret-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(218,30,40,0.9); justify-content: center; align-items: center; z-index: 999;">
         <div class="login-box" style="border-color: #fff; box-shadow: 10px 10px 0 #000;">
             <h2 style="color: #da1e28; margin-bottom: 10px; font-family: 'VT323'; font-size: 2.2rem;">TOP SECRET AREA</h2>
-            <p style="color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; margin-bottom: 20px;">ENTER CLEARANCE CODE</p>
-            <input type="password" id="secret-password" placeholder="***" style="text-align: center; letter-spacing: 5px;" autocomplete="new-password">
+            <p style="color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; margin-bottom: 20px;">ENTER STUDENT ID & PASSWORD</p>
+            <input type="email" id="secret-email" placeholder="STUDENT ID (EMAIL)" autocomplete="email" style="text-align: center; margin-bottom: 10px;">
+            <input type="password" id="secret-password" placeholder="***" autocomplete="current-password" style="text-align: center; letter-spacing: 5px;">
             <button id="secret-submit-btn" class="sound-trigger" style="background: #da1e28; box-shadow: 3px 3px 0 #000; border-color:#da1e28;">DECRYPT</button>
             <button onclick="document.getElementById('secret-modal').style.display='none'" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">ABORT</button>
         </div>
@@ -509,17 +550,27 @@
         let currentViewMode = 'list'; 
         let targetSecretBtn = null;
 
+        // ==========================================
+        // ฟังก์ชันระบบล็อกอินโฟลเดอร์ลับใหม่ (Firebase + BOT Notify)
+        // ==========================================
         window.loadSecretFolder = function(btnElement) {
             const currentUser = firebase.auth().currentUser;
-            const hasSecretAccess = sessionStorage.getItem('secret_unlocked') === 'true';
-            if (currentUser || hasSecretAccess) {
+            
+            if (currentUser) {
+                // ถ้าล็อกอินอยู่แล้ว (ไม่ว่าจะเป็น admin หรือนศ. ก็ให้ดูไฟล์ได้)
                 loadDriveFolder(btnElement, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
+                
+                // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้แจ้งเตือน LINE ว่าเข้ามาดูโฟลเดอร์
+                if (currentUser.email !== 'peemdiamond@gmail.com') {
+                    sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 ผู้ใช้ ${currentUser.email} ได้เข้าดูโฟลเดอร์ TOP SECRET`);
+                }
             } else {
                 playRetroClick();
                 targetSecretBtn = btnElement;
+                document.getElementById('secret-email').value = '';
                 document.getElementById('secret-password').value = '';
                 document.getElementById('secret-modal').style.display = 'flex';
-                document.getElementById('secret-password').focus();
+                document.getElementById('secret-email').focus();
             }
         }
 
@@ -544,11 +595,21 @@
             return Math.ceil(bytes / 1024).toLocaleString() + " KB";
         }
 
+        // ==========================================
+        // แจ้งเตือนเมื่อกดเปิดดูไฟล์ (Preview)
+        // ==========================================
         window.openPreview = function(fileId, fileName) {
             document.getElementById('preview-title').innerText = `VIEWING: ${fileName}`;
             document.getElementById('preview-frame').src = `https://drive.google.com/file/d/${fileId}/preview`;
             document.getElementById('preview-modal').style.display = 'flex';
+            
+            const currentUser = firebase.auth().currentUser;
+            // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้แจ้งเตือน LINE ว่ากำลังดูไฟล์อะไรอยู่
+            if (currentUser && currentUser.email !== 'peemdiamond@gmail.com') {
+                sendLineNotify(new Date().toLocaleDateString('en-CA'), `👁️ ผู้ใช้ ${currentUser.email} กำลังเปิดดูไฟล์: ${fileName}`);
+            }
         }
+
         window.closePreview = function() {
             document.getElementById('preview-modal').style.display = 'none';
             document.getElementById('preview-frame').src = '';
@@ -729,7 +790,15 @@
         }
         window.changeMonth = function(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
         window.toggleQuest = function(index) { scheduleData[index].completed = !scheduleData[index].completed; if(scheduleData[index].completed) playLevelUpSound(); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } }
-        function sendLineNotify(dateStr, title) { const formData = new URLSearchParams(); formData.append("action", "notify_now"); formData.append("date", dateStr); formData.append("title", title); fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: formData, mode: 'no-cors' }); }
+        
+        function sendLineNotify(dateStr, title) { 
+            const formData = new URLSearchParams(); 
+            formData.append("action", "notify_now"); 
+            formData.append("date", dateStr); 
+            formData.append("title", title); 
+            fetch(GOOGLE_APP_SCRIPT_URL, { method: "POST", body: formData, mode: 'no-cors' }); 
+        }
+        
         window.promptAddEvent = function(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
         window.deleteScheduleEvent = function(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
 
@@ -774,26 +843,40 @@
                 el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); 
             });
 
+            // Enter สำหรับ Login แอดมิน
             const pwInput = document.getElementById('password');
             if(pwInput) pwInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
 
+            // ระบบล็อกอิน Secret Folder (เชื่อมกับ Firebase Auth)
             const secretSubmitBtn = document.getElementById('secret-submit-btn');
-            const secretInput = document.getElementById('secret-password');
+            const secretEmailInput = document.getElementById('secret-email');
+            const secretPwdInput = document.getElementById('secret-password');
             if(secretSubmitBtn) {
-                secretSubmitBtn.onclick = () => {
-                    const pwd = secretInput.value;
-                    if (pwd === '6910') { 
-                        sessionStorage.setItem('secret_unlocked', 'true');
+                secretSubmitBtn.onclick = async () => {
+                    const email = secretEmailInput.value.trim();
+                    const pwd = secretPwdInput.value;
+                    
+                    try {
+                        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, pwd);
+                        const user = userCredential.user;
+                        
                         document.getElementById('secret-modal').style.display = 'none';
                         playLevelUpSound();
+                        
+                        // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้แจ้งเตือน LINE
+                        if (user.email !== 'peemdiamond@gmail.com') {
+                            sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 ผู้ใช้ ${user.email} ได้ล็อกอินเข้าดูโฟลเดอร์ TOP SECRET`);
+                        }
+                        
                         if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
-                    } else {
-                        alert("ACCESS DENIED: INVALID CLEARANCE CODE.");
-                        secretInput.value = '';
+                        
+                    } catch (error) {
+                        alert("ACCESS DENIED: " + error.message);
+                        secretPwdInput.value = '';
                     }
                 };
             }
-            if(secretInput) { secretInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') secretSubmitBtn.click(); }); }
+            if(secretPwdInput) { secretPwdInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') secretSubmitBtn.click(); }); }
             
             initMatrix();
         });
@@ -882,14 +965,27 @@
 
             auth.onAuthStateChanged((user) => {
                 if (user) { 
-                    document.body.classList.add('edit-mode'); 
+                    // ถ้าล็อกอินสำเร็จ (เป็นใครก็ตาม) โชว์ปุ่ม Logout
                     document.getElementById('login-show-btn').style.display = 'none'; 
-                    document.getElementById('save-btn').style.display = 'block'; 
                     document.getElementById('logout-btn').style.display = 'block'; 
-                    document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
-                    document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
+                    
+                    // แต่ถ้าเป็น แอดมิน (peemdiamond@gmail.com) ถึงจะให้แก้เว็บได้
+                    if (user.email === 'peemdiamond@gmail.com') {
+                        document.body.classList.add('edit-mode'); 
+                        document.getElementById('save-btn').style.display = 'block'; 
+                        document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
+                        document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
+                    } else {
+                        // นักศึกษา (ไม่ให้สิทธิ์แก้เว็บ)
+                        document.body.classList.remove('edit-mode'); 
+                        document.getElementById('save-btn').style.display = 'none'; 
+                        document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'none');
+                        document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
+                    }
                     renderProjects(); 
+
                 } else { 
+                    // ถ้าไม่ได้ล็อกอิน
                     document.body.classList.remove('edit-mode'); 
                     document.getElementById('login-show-btn').style.display = 'block'; 
                     document.getElementById('save-btn').style.display = 'none'; 
@@ -898,6 +994,7 @@
                     document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
                     renderProjects(); 
 
+                    // เด้งออกจากหน้าโฟลเดอร์ลับ หากกด Logout
                     if(currentFolderId === '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8') {
                          document.getElementById('file-list').innerHTML = '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem; padding:10px;">> ACCESS DENIED.</span>';
                          folderHistory = [];
@@ -947,6 +1044,64 @@
             }
 
             loadData();
+        });
+
+        // ==========================================
+        // 12. Interactive Terminal Command Line
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const cmdInput = document.getElementById('cmd-input');
+            const termOutput = document.getElementById('terminal-output');
+            const termContainer = document.getElementById('terminal-container');
+
+            if (cmdInput && termOutput) {
+                cmdInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        const val = this.value.trim();
+                        if (!val) return;
+                        
+                        termOutput.innerHTML += `<div><span style="color: #0f62fe;">C:\\&gt;</span> ${val}</div>`;
+                        this.value = ''; 
+                        
+                        const args = val.toLowerCase().split(' ');
+                        const cmd = args[0];
+
+                        setTimeout(() => {
+                            if (cmd === 'help') {
+                                termOutput.innerHTML += `<div style="color: var(--ibm-key-dark);">
+                                    AVAILABLE COMMANDS:<br>
+                                    &nbsp;- help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: SHOW THIS MESSAGE<br>
+                                    &nbsp;- clear&nbsp;&nbsp;&nbsp;&nbsp;: CLEAR SCREEN<br>
+                                    &nbsp;- date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: SHOW CURRENT SYSTEM DATE<br>
+                                    &nbsp;- whoami&nbsp;&nbsp;&nbsp;: IDENTIFY CURRENT USER<br>
+                                    &nbsp;- cd [dir] : NAVIGATE SYSTEM (DIRS: home, calendar, archive, profile, network)
+                                </div>`;
+                            } else if (cmd === 'clear') {
+                                termOutput.innerHTML = '';
+                            } else if (cmd === 'date') {
+                                termOutput.innerHTML += `<div>> SYSTEM DATE: ${new Date().toLocaleString('th-TH')}</div>`;
+                            } else if (cmd === 'whoami') {
+                                const user = firebase.auth().currentUser;
+                                termOutput.innerHTML += `<div>> CURRENT_USER: ${user ? user.email : 'GUEST_USER'}</div>`;
+                            } else if (cmd === 'cd') {
+                                const dir = args[1];
+                                const map = { 'home': 'home', 'calendar': 'schedule', 'archive': 'archive', 'profile': 'about', 'network': 'contact' };
+                                if (map[dir]) {
+                                    termOutput.innerHTML += `<div>> JUMPING TO DIRECTORY: \\${dir.toUpperCase()}...</div>`;
+                                    setTimeout(() => { switchTab(null, map[dir]); }, 500);
+                                } else if (!dir) {
+                                    termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: DIRECTORY NAME REQUIRED.</div>`;
+                                } else {
+                                    termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: DIRECTORY '\\${dir.toUpperCase()}' NOT FOUND.</div>`;
+                                }
+                            } else {
+                                termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: '${cmd}' IS NOT RECOGNIZED AS AN INTERNAL COMMAND.</div>`;
+                            }
+                            termContainer.scrollTop = termContainer.scrollHeight;
+                        }, 150); 
+                    }
+                });
+            }
         });
     </script>
 </body>
