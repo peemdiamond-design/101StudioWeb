@@ -461,18 +461,15 @@
             fetchFiles(currentFolderId);
         }
 
-        // --- แก้ไขตัวบล็อกการโหลดไฟล์ออกทั้งหมด ---
         async function fetchFiles(folderId) {
             const fileListDiv = document.getElementById('file-list');
             fileListDiv.innerHTML = '<span style="color:var(--ibm-accent-blue); font-family: \'VT323\'; font-size:1.4rem;">> FETCHING DATA FROM CLOUD...</span>';
             
             try {
-                // เตรียม Headers ข้าม ngrok เสมอ
                 const headers = {
                     'ngrok-skip-browser-warning': 'true'
                 };
 
-                // ถ้ามี User ล็อกอินอยู่ ถึงจะส่ง Token ไปด้วย
                 const currentUser = firebase.auth().currentUser;
                 if (currentUser) {
                     const token = await currentUser.getIdToken(); 
@@ -496,17 +493,6 @@
         function renderFilesList(filesToDisplay) {
             const fileListDiv = document.getElementById('file-list');
             fileListDiv.innerHTML = ''; 
-            
-            // --- เพิ่มปุ่มย้อนกลับ (..) ไว้บรรทัดแรกสุด ถ้ามีการมุดเข้าโฟลเดอร์ย่อย ---
-            if (folderHistory.length > 1) {
-                fileListDiv.innerHTML += `
-                <div class="file-item sound-trigger" style="background: var(--ibm-pearl); border-bottom: 2px solid var(--ibm-key-dark); cursor: pointer;" onclick="goBackFolder()">
-                    <div class="file-info">
-                        <div class="file-icon" style="background: #da1e28; color: #fff; border-color: var(--ibm-text);">^</div>
-                        <a class="file-link" style="font-weight: bold; color: #da1e28; font-size: 1.3rem;">[ .. กลับไปโฟลเดอร์ก่อนหน้า ]</a>
-                    </div>
-                </div>`;
-            }
 
             if (filesToDisplay.length === 0) {
                 fileListDiv.innerHTML += '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem;">> NO FILES FOUND IN DIRECTORY.</span>';
@@ -532,13 +518,28 @@
         }
 
         function enterFolder(folderId, folderName) { folderHistory.push({ id: folderId, name: folderName }); currentFolderId = folderId; updatePathDisplay(); fetchFiles(currentFolderId); }
-        function goBackFolder() { if(folderHistory.length > 1) { folderHistory.pop(); currentFolderId = folderHistory[folderHistory.length - 1].id; updatePathDisplay(); fetchFiles(currentFolderId); } }
-        function updatePathDisplay() {
-            let pathStr = "C:\\ARCHIVE";
-            folderHistory.forEach(f => { pathStr += `\\${f.name}`; });
-            document.getElementById('archive-path').innerText = pathStr + "\\";
-            document.getElementById('btn-back-folder').style.display = folderHistory.length > 1 ? 'inline-block' : 'none';
+        
+        // โค้ดสร้าง Breadcrumb เลียนแบบ Google Drive ที่คุณขอมา
+        function jumpToFolder(index) {
+            folderHistory = folderHistory.slice(0, index + 1);
+            currentFolderId = folderHistory[folderHistory.length - 1].id;
+            updatePathDisplay();
+            fetchFiles(currentFolderId);
         }
+
+        function updatePathDisplay() {
+            const pathContainer = document.getElementById('archive-path');
+            let breadcrumbsHtml = `<span style="color: var(--ibm-key-dark); font-family: 'VT323';">C:\\ARCHIVE</span>`;
+            
+            folderHistory.forEach((f, index) => {
+                breadcrumbsHtml += `<span style="margin: 0 8px; color: var(--ibm-key-dark);">></span>`;
+                breadcrumbsHtml += `<a class="sound-trigger" style="color: #fff; font-family: 'VT323'; text-decoration: none; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='var(--ibm-accent-blue)'; this.style.textDecoration='underline';" onmouseout="this.style.color='#fff'; this.style.textDecoration='none';" onclick="jumpToFolder(${index})">${f.name}</a>`;
+            });
+            
+            pathContainer.innerHTML = breadcrumbsHtml;
+            document.getElementById('btn-back-folder').style.display = 'none'; 
+        }
+
         function filterFiles() { const keyword = document.getElementById('search-input').value.toLowerCase(); renderFilesList(allFiles.filter(file => file.name.toLowerCase().includes(keyword))); }
 
         async function notifyServerOnCall(fileName) {
