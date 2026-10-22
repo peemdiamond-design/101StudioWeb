@@ -514,3 +514,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadData();
 });
+// ==========================================
+// 12. Interactive Terminal Command Line
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const cmdInput = document.getElementById('cmd-input');
+    const termOutput = document.getElementById('terminal-output');
+    const termContainer = document.getElementById('terminal-container');
+
+    if (cmdInput && termOutput) {
+        cmdInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const val = this.value.trim();
+                if (!val) return;
+                
+                // พิมพ์คำสั่งที่ผู้ใช้กรอกลงไปในจอ
+                termOutput.innerHTML += `<div><span style="color: #0f62fe;">C:\\&gt;</span> ${val}</div>`;
+                this.value = ''; // เคลียร์ช่องพิมพ์
+                
+                const args = val.toLowerCase().split(' ');
+                const cmd = args[0];
+
+                // ประมวลผลคำสั่ง (หน่วงเวลานิดนึงให้ดูสมจริง)
+                setTimeout(() => {
+                    if (cmd === 'help') {
+                        termOutput.innerHTML += `<div style="color: var(--ibm-key-dark);">
+                            AVAILABLE COMMANDS:<br>
+                            &nbsp;- help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: SHOW THIS MESSAGE<br>
+                            &nbsp;- clear&nbsp;&nbsp;&nbsp;&nbsp;: CLEAR SCREEN<br>
+                            &nbsp;- date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: SHOW CURRENT SYSTEM DATE<br>
+                            &nbsp;- whoami&nbsp;&nbsp;&nbsp;: IDENTIFY CURRENT USER<br>
+                            &nbsp;- cd [dir] : NAVIGATE SYSTEM (DIRS: home, calendar, data, profile, network)
+                        </div>`;
+                    } else if (cmd === 'clear') {
+                        termOutput.innerHTML = '';
+                    } else if (cmd === 'date') {
+                        termOutput.innerHTML += `<div>> SYSTEM DATE: ${new Date().toLocaleString('th-TH')}</div>`;
+                    } else if (cmd === 'whoami') {
+                        const user = firebase.auth().currentUser;
+                        termOutput.innerHTML += `<div>> CURRENT_USER: ${user ? user.email : 'GUEST_USER'}</div>`;
+                    } else if (cmd === 'cd') {
+                        const dir = args[1];
+                        // จับคู่คำสั่งกับ ID ของหน้าเว็บ
+                        const map = { 'home': 'home', 'calendar': 'schedule', 'data': 'archive', 'profile': 'about', 'network': 'contact' };
+                        if (map[dir]) {
+                            termOutput.innerHTML += `<div>> JUMPING TO DIRECTORY: \\${dir.toUpperCase()}...</div>`;
+                            // หน่วงเวลา 0.5 วินาทีแล้วสลับหน้า
+                            setTimeout(() => { switchTab(null, map[dir]); }, 500);
+                        } else if (!dir) {
+                            termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: DIRECTORY NAME REQUIRED.</div>`;
+                        } else {
+                            termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: DIRECTORY '\\${dir.toUpperCase()}' NOT FOUND.</div>`;
+                        }
+                    } else {
+                        termOutput.innerHTML += `<div style="color: #da1e28;">> ERROR: '${cmd}' IS NOT RECOGNIZED AS AN INTERNAL COMMAND.</div>`;
+                    }
+                    
+                    // เลื่อนหน้าจอลงมาล่างสุดอัตโนมัติเวลาคำสั่งยาว
+                    termContainer.scrollTop = termContainer.scrollHeight;
+                }, 150); // ดีเลย์ 150ms ให้ได้อารมณ์พิมพ์คำสั่ง
+            }
+        });
+    }
+});
