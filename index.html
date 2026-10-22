@@ -195,9 +195,26 @@
         
         #preview-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
         .preview-container { width: 95%; max-width: 1000px; height: 90vh; background: var(--ibm-pearl); border: 4px solid var(--ibm-text); display: flex; flex-direction: column; box-shadow: 10px 10px 0 #000; }
+
+        /* ================= Boot Screen ================= */
+        #boot-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; color: #a8a8a8; z-index: 9999;
+            font-family: 'VT323', monospace; font-size: 1.6rem; padding: 20px;
+            display: flex; flex-direction: column; align-items: flex-start;
+            transition: opacity 0.5s;
+        }
+        .cursor-blink { animation: blink 1s step-end infinite; display: inline-block; width: 12px; height: 1.4rem; background-color: #a8a8a8; margin-left: 5px; vertical-align: bottom; }
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
+
+    <!-- Boot Sequence Screen -->
+    <div id="boot-screen">
+        <div id="boot-text"></div>
+        <div class="cursor-blink" id="boot-cursor"></div>
+    </div>
 
     <nav class="navbar">
         <div class="logo sound-trigger" onclick="switchTab(event, 'home')">
@@ -308,7 +325,6 @@
                         <div class="archive-viewer">
                             <div class="archive-viewer-header">
                                 <span id="archive-path">C:\ARCHIVE\SERVER_HOST\</span>
-                                <button id="btn-back-folder" class="back-btn sound-trigger" onclick="goBackFolder()">[ ^ UP LEVEL ]</button>
                                 <a id="archive-ext-link" href="https://peemdiamond-design.github.io/101-cloud-web/" target="_blank" class="sound-trigger" style="color:#0f62fe; background:#fff; padding:0 8px; text-decoration:none; border: 1px solid var(--ibm-text); font-size:1.1rem; display:flex; align-items:center; margin-left: auto;">[ OPEN TAB ]</a>
                             </div>
                             
@@ -463,7 +479,6 @@
             document.querySelectorAll('.folder-btn').forEach(b => b.classList.remove('active'));
             btnElement.classList.add('active');
             document.getElementById('archive-path').innerText = "C:\\ARCHIVE\\SERVER_HOST\\";
-            document.getElementById('btn-back-folder').style.display = 'none';
             document.getElementById('archive-ext-link').href = "https://peemdiamond-design.github.io/101-cloud-web/";
             document.getElementById('archive-iframe').style.display = 'block';
             document.getElementById('native-explorer').style.display = 'none';
@@ -503,8 +518,6 @@
             document.getElementById('preview-frame').src = '';
         }
 
-        // อัปเกรดระบบโหลดข้อมูลด้วย ASCII Progress Bar
-        let asciiTimer;
         async function fetchFiles(folderId) {
             const fileListDiv = document.getElementById('file-list');
             fileListDiv.innerHTML = `<span style="color:var(--ibm-accent-blue); font-family: 'VT323'; font-size:1.4rem;">> FETCHING DATA...</span>`;
@@ -523,7 +536,6 @@
                 if (!response.ok) throw new Error(`HTTP ERROR: ${response.status}`);
                 allFiles = await response.json(); 
                 
-                // ดึงข้อมูลเสร็จปุ๊บ สั่งแสดงผลทันที ไม่ต้องมีดีเลย์
                 filterFiles(); 
 
             } catch (error) { 
@@ -596,7 +608,6 @@
             });
             
             pathContainer.innerHTML = breadcrumbsHtml;
-            document.getElementById('btn-back-folder').style.display = 'none'; 
         }
 
         function filterFiles() { const keyword = document.getElementById('search-input').value.toLowerCase(); renderFilesList(allFiles.filter(file => file.name.toLowerCase().includes(keyword))); }
@@ -667,6 +678,93 @@
         document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); });
         document.getElementById('password').addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
         
+        // ==========================================
+        // อัปเกรด: เสียง Mechanical Keyboard และ Dial-up Modem
+        // ==========================================
+        function playKeystrokeSound() { 
+            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } 
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); } 
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); 
+            osc.type = 'square'; 
+            osc.frequency.setValueAtTime(150 + Math.random() * 50, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.02); 
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime); 
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02); 
+            osc.connect(gain); gain.connect(audioCtx.destination); 
+            osc.start(); osc.stop(audioCtx.currentTime + 0.02); 
+        }
+
+        function playModemSound() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc1 = audioCtx.createOscillator(); const osc2 = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc1.type = 'sawtooth'; osc2.type = 'square';
+            osc1.connect(gain); osc2.connect(gain); gain.connect(audioCtx.destination);
+            osc1.start(); osc2.start();
+            
+            for(let i=0; i<20; i++) {
+                const time = audioCtx.currentTime + (i * 0.05);
+                osc1.frequency.setValueAtTime(600 + Math.random() * 1000, time);
+                osc2.frequency.setValueAtTime(400 + Math.random() * 800, time);
+            }
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+            osc1.stop(audioCtx.currentTime + 1); osc2.stop(audioCtx.currentTime + 1);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('keydown', playKeystrokeSound);
+            });
+            const rootBtn = document.getElementById('login-show-btn');
+            if(rootBtn) rootBtn.addEventListener('mousedown', playModemSound);
+        });
+
+        // ==========================================
+        // อัปเกรด: ระบบ Boot Sequence หน้าจอดำ
+        // ==========================================
+        window.addEventListener('load', () => {
+            if (sessionStorage.getItem('hasBooted')) {
+                document.getElementById('boot-screen').style.display = 'none';
+                return;
+            }
+            
+            const bootScreen = document.getElementById('boot-screen');
+            const bootText = document.getElementById('boot-text');
+            const bootCursor = document.getElementById('boot-cursor');
+            const lines = [
+                "BIOS Date 10/22/26 12:23:00 Ver 1.01",
+                "CPU: IBM Personal Computer AT",
+                "Checking RAM: 64000 KB .................... OK",
+                "Loading Drivers ........................... OK",
+                "Establishing Secure Connection ............ OK",
+                "Accessing Mainframe ......................."
+            ];
+            
+            let delay = 0;
+            lines.forEach((line) => {
+                setTimeout(() => {
+                    bootText.innerHTML += line + "<br>";
+                    playRetroClick();
+                }, delay);
+                delay += 300 + Math.random() * 350; 
+            });
+
+            setTimeout(() => {
+                bootCursor.style.display = 'none';
+                bootText.innerHTML += "<span style='color:#24a148;'>ACCESS GRANTED. INITIALIZING SYSTEM...</span><br>";
+                playLevelUpSound();
+            }, delay + 200);
+
+            setTimeout(() => {
+                bootScreen.style.opacity = '0';
+                setTimeout(() => {
+                    bootScreen.style.display = 'none';
+                    sessionStorage.setItem('hasBooted', 'true');
+                }, 500);
+            }, delay + 1200);
+        });
+
         const mCanvas = document.getElementById('matrixCanvas'); const mCtx = mCanvas.getContext('2d'); let mWidth, mHeight, columns, drops = []; const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</>{}[]~#'.split(''); const fontSize = 14;
         function initMatrix() { const resizeMatrix = () => { mWidth = mCanvas.parentElement.clientWidth; mHeight = mCanvas.parentElement.clientHeight; mCanvas.width = mWidth; mCanvas.height = mHeight; columns = Math.floor(mWidth / fontSize); drops = []; for(let i = 0; i < columns; i++) drops[i] = Math.random() * -100; }; window.addEventListener('resize', resizeMatrix); resizeMatrix(); setInterval(drawMatrix, 50); }
         function drawMatrix() { mCtx.fillStyle = 'rgba(244, 244, 244, 0.3)'; mCtx.fillRect(0, 0, mWidth, mHeight); mCtx.fillStyle = '#a8a8a8'; mCtx.font = fontSize + 'px "VT323", monospace'; for(let i = 0; i < drops.length; i++) { const text = chars[Math.floor(Math.random() * chars.length)]; mCtx.fillText(text, i * fontSize, drops[i] * fontSize); if(drops[i] * fontSize > mHeight && Math.random() > 0.95) drops[i] = 0; drops[i]++; } } initMatrix();
@@ -717,7 +815,6 @@
                 renderProjects(); 
             }
 
-            // --- แก้ไข: ให้โหลดไฟล์เสมอ ไม่ว่าจะล็อกอินหรือไม่ก็ตาม ---
             if(document.getElementById('native-explorer').style.display !== 'none') {
                 fetchFiles(currentFolderId);
             }
