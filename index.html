@@ -88,9 +88,10 @@
         .btn-sync { background: var(--ibm-text); color: #fff; border: 2px solid #000; padding: 0 15px; font-family: 'VT323'; font-size: 1.2rem; box-shadow: 2px 2px 0 var(--ibm-shadow); transition: 0.1s;}
         .btn-sync:active { transform: translate(2px,2px); box-shadow: 0 0 0 var(--ibm-shadow); }
 
-        .file-list-container { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px; padding-bottom: 20px; background: #fff; display: flex; flex-direction: column; gap: 5px; min-height: 0; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
-        .file-list-container > * { box-sizing: border-box; }
-        .file-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border: 1px dashed var(--ibm-key-dark); background: var(--ibm-key-light); font-family: 'VT323', monospace; font-size: 1.2rem; transition: 0.1s; box-sizing: border-box; }
+        /* แก้ปัญหาตกขอบเด็ดขาด 100%: ปิด flex, เปลี่ยนเป็น block, บังคับ scrollbar, เว้นระยะขวา */
+        .file-list-container { flex: 1; overflow-y: scroll; overflow-x: hidden; padding: 10px 12px 20px 10px; background: #fff; display: block; min-height: 0; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+        .file-list-container > * { box-sizing: border-box; max-width: 100%; }
+        .file-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; margin-bottom: 6px; border: 1px dashed var(--ibm-key-dark); background: var(--ibm-key-light); font-family: 'VT323', monospace; font-size: 1.2rem; transition: 0.1s; box-sizing: border-box; width: 100%; }
         .file-item:hover { background: #e6f0ff; border-color: var(--ibm-accent-blue); transform: translateX(3px); }
         .file-info { display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; min-width: 0; }
         .file-thumb { width: 35px; height: 35px; object-fit: cover; border: 1px solid var(--ibm-text); }
@@ -199,7 +200,7 @@
         .login-box button:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ibm-text); }
 
         /* ================= DOS Table & Preview Modal ================= */
-        .dos-table-header { display: flex; font-family: 'VT323'; font-size: 1.2rem; color: var(--ibm-text); border-bottom: 2px dashed var(--ibm-key-dark); padding: 5px 10px; margin-bottom: 5px; background: var(--ibm-pearl); font-weight: bold; align-items: center; box-sizing: border-box; }
+        .dos-table-header { display: flex; font-family: 'VT323'; font-size: 1.2rem; color: var(--ibm-text); border-bottom: 2px dashed var(--ibm-key-dark); padding: 5px 10px; margin-bottom: 6px; background: var(--ibm-pearl); font-weight: bold; align-items: center; box-sizing: border-box; width: 100%; }
         .dos-col-name { flex: 1; overflow: hidden; white-space: nowrap; min-width: 0; }
         .dos-col-date { width: 170px; text-align: center; white-space: nowrap; }
         @media screen and (max-width: 768px) { 
@@ -241,12 +242,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Boot Sequence Screen -->
-    <div id="boot-screen">
-        <div id="boot-text"></div>
-        <div class="cursor-blink" id="boot-cursor"></div>
-    </div>
 
     <nav class="navbar">
         <div class="logo sound-trigger" onclick="switchTab(event, 'home')">
@@ -936,44 +931,6 @@
             }
             
             initMatrix();
-        });
-
-        // 9. ระบบ Boot Screen
-        window.addEventListener('load', () => {
-            if (sessionStorage.getItem('hasBooted')) {
-                const bs = document.getElementById('boot-screen');
-                if(bs) bs.style.display = 'none';
-                return;
-            }
-            const bootScreen = document.getElementById('boot-screen');
-            const bootText = document.getElementById('boot-text');
-            const bootCursor = document.getElementById('boot-cursor');
-            if(!bootScreen) return;
-
-            const lines = [
-                "BIOS Date 10/22/26 12:23:00 Ver 1.01",
-                "CPU: IBM Personal Computer AT",
-                "Checking RAM: 64000 KB .................... OK",
-                "Loading Drivers ........................... OK",
-                "Establishing Secure Connection ............ OK",
-                "Accessing Mainframe ......................."
-            ];
-            let delay = 0;
-            lines.forEach((line) => {
-                setTimeout(() => { bootText.innerHTML += line + "<br>"; }, delay);
-                delay += 300 + Math.random() * 350; 
-            });
-            setTimeout(() => {
-                bootCursor.style.display = 'none';
-                bootText.innerHTML += "<span style='color:#24a148;'>ACCESS GRANTED. INITIALIZING SYSTEM...</span><br>";
-            }, delay + 200);
-            setTimeout(() => {
-                bootScreen.style.opacity = '0';
-                setTimeout(() => {
-                    bootScreen.style.display = 'none';
-                    sessionStorage.setItem('hasBooted', 'true');
-                }, 500);
-            }, delay + 1200);
         });
 
         // 10. Matrix Background 
