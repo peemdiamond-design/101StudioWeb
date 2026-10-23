@@ -42,7 +42,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Retro Window */
-        .retro-window { background-color: var(--ibm-key-light); border: 4px solid var(--ibm-text); border-radius: 8px; box-shadow: 10px 10px 0px var(--ibm-shadow); overflow: hidden; margin-bottom: 30px; }
+        .retro-window { background-color: var(--ibm-key-light); border: 4px solid var(--ibm-text); border-radius: 8px; box-shadow: 10px 10px 0px var(--ibm-shadow); overflow: hidden; }
         .window-header { background-color: var(--ibm-key-dark); padding: 10px 15px; display: flex; gap: 8px; align-items: center; border-bottom: 4px solid var(--ibm-text); }
         .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ibm-text); background-color: var(--ibm-pearl); }
         .window-title { margin-left: 10px; font-family: 'VT323'; color: #fff; font-size: 1.2rem; letter-spacing: 1px; }
@@ -82,12 +82,12 @@
         .archive-viewer-header { background: var(--ibm-text); color: #fff; padding: 8px 12px; font-family: 'VT323'; font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--ibm-key-dark);}
 
         .search-row { display: flex; gap: 10px; padding: 10px; background: var(--ibm-key-light); border-bottom: 2px dashed var(--ibm-key-dark); }
-        .search-row input { flex: 1; padding: 8px 10px; border: 2px solid var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; outline: none; width: 100%; }
+        .search-row input { flex: 1; padding: 8px 10px; border: 2px solid var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; outline: none; }
         .search-row input:focus { border-color: var(--ibm-accent-blue); background: #f0f8ff; }
-        .btn-sync { background: var(--ibm-text); color: #fff; border: 2px solid #000; padding: 0 15px; font-family: 'VT323'; font-size: 1.2rem; box-shadow: 2px 2px 0 var(--ibm-shadow); transition: 0.1s; white-space: nowrap; }
+        .btn-sync { background: var(--ibm-text); color: #fff; border: 2px solid #000; padding: 0 15px; font-family: 'VT323'; font-size: 1.2rem; box-shadow: 2px 2px 0 var(--ibm-shadow); transition: 0.1s;}
         .btn-sync:active { transform: translate(2px,2px); box-shadow: 0 0 0 var(--ibm-shadow); }
 
-        .file-list-container { flex: 1; overflow-y: auto; overflow-x: auto; padding: 10px; padding-bottom: 20px; background: #fff; display: flex; flex-direction: column; gap: 5px; min-height: 0; }
+        .file-list-container { flex: 1; overflow-y: auto; padding: 10px; padding-bottom: 20px; background: #fff; display: flex; flex-direction: column; gap: 5px; min-height: 0; }
         .file-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border: 1px dashed var(--ibm-key-dark); background: var(--ibm-key-light); font-family: 'VT323', monospace; font-size: 1.2rem; transition: 0.1s; }
         .file-item:hover { background: #e6f0ff; border-color: var(--ibm-accent-blue); transform: translateX(3px); }
         .file-info { display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; }
@@ -144,42 +144,19 @@
         #admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; width: 100%; text-align: left; }
         .edit-mode #admin-hint { display: block; }
 
-        /* About (Profile) CSS */
-        .about-layout { display: flex; gap: 40px; align-items: flex-start; margin: 20px 0; text-align: left; width: 100%; background: #fff; border: 2px solid var(--ibm-text); padding: 20px; box-shadow: 5px 5px 0px var(--ibm-shadow); }
-        .about-image-wrapper { flex: 0 0 250px; border: 4px solid var(--ibm-text); background-color: var(--ibm-key-light); padding: 8px; }
-        .about-text-content { flex: 1; padding: 10px; }
-
-        /* ================= RESPONSIVE (MOBILE) ================= */
         @media screen and (max-width: 768px) { 
             .navbar { flex-direction: column; padding: 15px; gap: 15px; } 
             .nav-links { flex-wrap: wrap; justify-content: center; gap: 8px; } 
             .nav-btn { font-size: 1rem; padding: 6px 12px; }
             .container { margin: 20px auto; padding: 0 10px; } 
             .window-body { padding: 20px 15px; } 
-            
-            /* Fix Mobile Typography */
             h1 { font-size: 2.2rem; } 
-            
             .timeline-item { padding-left: 20px; }
             .timeline-dot { left: -10px; width: 16px; height: 16px; top: 18px; }
             .logo img { height: 35px; }
-            
-            /* Fix Archive Layout for Mobile */
-            .archive-layout { flex-direction: column; height: 75vh; padding: 10px; gap: 10px;}
+            .archive-layout { flex-direction: column; height: 80vh; padding: 10px; gap: 10px;}
             .archive-sidebar { flex: none; border-right: none; border-bottom: 2px dashed var(--ibm-key-dark); padding-right: 0; padding-bottom: 10px; flex-direction: row; overflow-x: auto; height: auto; }
             .folder-btn { font-size: 1rem; white-space: nowrap; padding: 8px; }
-            .search-row { flex-wrap: wrap; }
-            .search-row input { width: 100%; flex: 100%; margin-bottom: 5px; }
-            
-            /* Fix Profile Layout for Mobile */
-            .about-layout { flex-direction: column; align-items: center; gap: 20px; padding: 15px; }
-            .about-image-wrapper { flex: none; width: 80%; max-width: 250px; }
-            .about-text-content { width: 100%; text-align: left; }
-
-            /* Fix Admin Panel for Mobile */
-            #admin-panel { flex-direction: column; bottom: 10px; right: 10px; max-width: 60vw; align-items: flex-end; padding: 8px;}
-            #admin-panel button { padding: 6px 10px; font-size: 1rem; width: 100%; text-align: right;}
-            #admin-view-count { font-size: 1rem; padding: 6px 10px; margin-right: 0; margin-bottom: 5px; width: 100%; text-align: right;}
         }
 
         /* Edit Mode */
@@ -192,7 +169,7 @@
         .edit-mode .editable:empty::before { content: "[พิมพ์ข้อความ...]"; color: #888; font-size: 0.9em; font-family:'VT323'; }
 
         /* Admin Panel / Login */
-        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; flex-wrap: wrap; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; max-width: 90vw; justify-content: flex-end; align-items: center;}
+        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; flex-wrap: wrap; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; max-width: 90vw; justify-content: flex-end;}
         #admin-panel button { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-text); padding: 8px 15px; font-family: 'VT323'; font-size: 1.2rem; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); transition: 0.1s; }
         #admin-panel button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-text); }
         #add-user-btn { background-color: #0f62fe !important; color: #fff !important; display: none; border-color: #0f62fe; }
@@ -377,9 +354,9 @@
                     <span class="window-title">C:\101_STUDIO\profile.exe</span>
                 </div>
                 <div class="window-body">
-                    <div class="about-layout">
-                        <div class="about-image-wrapper"><img src="images/S__5734407.jpg" id="profile-pic" alt="Profile Picture" style="width: 100%; height: auto; display: block; border: 2px solid var(--ibm-key-dark); filter: contrast(1.1);"></div>
-                        <div class="about-text-content">
+                    <div class="about-layout" style="display: flex; gap: 40px; align-items: flex-start; margin: 20px 0; text-align: left; width: 100%; background: #fff; border: 2px solid var(--ibm-text); padding: 20px; box-shadow: 5px 5px 0px var(--ibm-shadow);">
+                        <div class="about-image-wrapper" style="flex: 0 0 250px; border: 4px solid var(--ibm-text); background-color: var(--ibm-key-light); padding: 8px;"><img src="images/S__5734407.jpg" id="profile-pic" alt="Profile Picture" style="width: 100%; height: auto; display: block; border: 2px solid var(--ibm-key-dark); filter: contrast(1.1);"></div>
+                        <div class="about-text-content" style="flex: 1; padding: 10px;">
                             <h2 style="color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.5rem; margin-bottom: 10px; border-bottom: 2px solid var(--ibm-key-dark);">USER PROFILE</h2>
                             <p class="editable editable-block" id="about-details" data-field="about_details" style="font-size: 1.3rem; color: #333; line-height: 1.6; font-family: 'VT323';">> STATUS: ONLINE<br>> LOCATION: BANGKOK<br>> SKILLS: HTML, CSS, JS, FIREBASE<br><br>[ กรุณากรอกประวัติเพิ่มเติม... ]</p>
                         </div>
@@ -427,12 +404,8 @@
 
     <!-- Admin Panel (Root) -->
     <div id="admin-panel">
-        <!-- กล่องแสดงจำนวนยอดวิวคนเข้าเว็บ (ซ่อนไว้ ให้เฉพาะ Admin เห็น) -->
-        <div id="admin-view-count" style="display:none; color: #0f62fe; font-family: 'VT323'; font-size: 1.2rem; background: var(--ibm-key-light); border: 2px solid var(--ibm-text); padding: 8px 15px; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); margin-right: auto;">
-            👁️ VISITS: <span id="view-counter-value">0000</span>
-        </div>
-
         <button id="login-show-btn" class="sound-trigger">ROOT LOGIN</button>
+        <!-- ปุ่มสร้างผู้ใช้ (เฉพาะ Admin ถึงจะเห็น) -->
         <button id="add-user-btn" class="sound-trigger" style="display:none; background:#0f62fe; color:#fff; border-color:#0f62fe;">[+] ADD STUDENT</button>
         <button id="save-btn" class="sound-trigger">SAVE CONFIG</button>
         <button id="logout-btn" class="sound-trigger">LOGOUT</button>
@@ -440,6 +413,7 @@
 
     <!-- Root Login Modal -->
     <div id="login-modal">
+        <!-- เพิ่มแท็ก form และบล็อกการรีเฟรชหน้าเว็บอัตโนมัติ -->
         <form id="root-login-form" class="login-box">
             <h2 style="color: var(--ibm-text); margin-bottom: 20px; font-family: 'VT323'; font-size: 2rem;">AUTHENTICATION REQUIRED</h2>
             <input type="email" id="email" placeholder="USER ID (EMAIL)" autocomplete="username" required>
@@ -449,7 +423,7 @@
         </form>
     </div>
 
-    <!-- Modal สำหรับแอดมินสร้างรหัสนักศึกษา -->
+    <!-- Modal สำหรับแอดมินสร้างรหัสนักศึกษา (กรอกแค่รหัส 10 หลัก) -->
     <div id="create-user-modal">
         <form id="create-user-form" class="login-box" style="border-color: #0f62fe; box-shadow: 10px 10px 0 #0f62fe;">
             <h2 style="color: #0f62fe; margin-bottom: 10px; font-family: 'VT323'; font-size: 2.2rem;">ADD NEW STUDENT</h2>
@@ -461,7 +435,7 @@
         </form>
     </div>
 
-    <!-- Secret Folder Login Modal (นักศึกษา) -->
+    <!-- Secret Folder Login Modal (กรอกแค่รหัส 10 หลัก) -->
     <div id="secret-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(218,30,40,0.9); justify-content: center; align-items: center; z-index: 999;">
         <form id="secret-login-form" class="login-box" style="border-color: #fff; box-shadow: 10px 10px 0 #000;">
             <h2 style="color: #da1e28; margin-bottom: 10px; font-family: 'VT323'; font-size: 2.2rem;">TOP SECRET AREA</h2>
@@ -692,6 +666,8 @@
                 return;
             }
 
+            // *** ไม่แสดง UP LEVEL DIRECTORY ตามที่ขอ ***
+
             if (currentViewMode === 'list') {
                 const getSortIndicator = (col) => currentSort.column === col ? (currentSort.direction === 'asc' ? '&nbsp;▲' : '&nbsp;▼') : '';
                 htmlStr += `
@@ -744,6 +720,7 @@
 
         window.enterFolder = function(folderId, folderName) { folderHistory.push({ id: folderId, name: folderName }); currentFolderId = folderId; updatePathDisplay(); fetchFiles(currentFolderId); }
         window.jumpToFolder = function(index) { folderHistory = folderHistory.slice(0, index + 1); currentFolderId = folderHistory[folderHistory.length - 1].id; updatePathDisplay(); fetchFiles(currentFolderId); }
+        window.goBackFolder = function() { if (folderHistory.length > 1) { jumpToFolder(folderHistory.length - 2); } }
 
         function updatePathDisplay() {
             const pathContainer = document.getElementById('archive-path');
@@ -790,7 +767,6 @@
         }
         window.changeMonth = function(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
         window.toggleQuest = function(index) { scheduleData[index].completed = !scheduleData[index].completed; if(scheduleData[index].completed) playLevelUpSound(); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } }
-        
         window.promptAddEvent = function(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
         window.deleteScheduleEvent = function(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
 
@@ -817,17 +793,6 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.02); 
         }
 
-        // ==========================================
-        // ฟังก์ชันอัปเดตยอดวิวแยกออกมา เพื่อความปลอดภัย
-        // ==========================================
-        function recordVisitSafely(docRef) {
-            if (!sessionStorage.getItem('site_visited')) {
-                docRef.set({ view_count: firebase.firestore.FieldValue.increment(1) }, { merge: true })
-                .then(() => sessionStorage.setItem('site_visited', 'true'))
-                .catch(err => console.warn("Guest view count update skipped (expected behavior if no write access)."));
-            }
-        }
-
         // 8. Event Listeners เบ็ดเตล็ดเมื่อเปิดหน้าเว็บ
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.sound-trigger, .nav-btn, .btn-drive, .btn-social, .logo, .action-btn, .folder-btn').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
@@ -842,11 +807,105 @@
                     } 
                 } 
             });
-            
             document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { 
                 el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); 
             });
 
+            // Enter สำหรับ Login แอดมิน
+            const pwInput = document.getElementById('password');
+            if(pwInput) pwInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
+
+            // ==========================================
+            // ระบบฟอร์มล็อกอิน (ปรับปรุงเรื่อง Auto-fill)
+            // ==========================================
+            
+            // 1. แอดมินล็อกอิน
+            const rootLoginForm = document.getElementById('root-login-form');
+            if(rootLoginForm) {
+                rootLoginForm.onsubmit = async (e) => { 
+                    e.preventDefault(); // กันไม่ให้หน้าเว็บรีเฟรช
+                    try { 
+                        await firebase.auth().signInWithEmailAndPassword(document.getElementById('email').value.trim(), document.getElementById('password').value); 
+                        document.getElementById('login-modal').style.display = 'none'; 
+                        alert("SYSTEM ACCESS GRANTED"); 
+                    } catch (error) { 
+                        alert("ACCESS DENIED: " + error.message); 
+                        console.error("Firebase Auth Error:", error); 
+                    } 
+                };
+            }
+
+            // 2. สร้างยูสเซอร์ใหม่ (แอดมินเท่านั้น)
+            const createUserForm = document.getElementById('create-user-form');
+            if(createUserForm) {
+                createUserForm.onsubmit = async (e) => {
+                    e.preventDefault();
+                    const studentId = document.getElementById('new-user-email').value.trim();
+                    const pwd = document.getElementById('new-user-password').value;
+                    const btn = document.getElementById('create-user-submit-btn');
+
+                    if(!/^\d{10}$/.test(studentId)) {
+                        alert("ERROR: กรุณากรอกรหัสนักศึกษาเป็นตัวเลข 10 หลักให้ถูกต้อง");
+                        return;
+                    }
+                    if(pwd.length < 6) {
+                        alert("ERROR: รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร");
+                        return;
+                    }
+
+                    const email = `${studentId}@dome.tu.ac.th`;
+
+                    try {
+                        btn.innerText = "CREATING...";
+                        // สมมติว่ามี secondaryApp อยู่ (โค้ดด้านล่าง)
+                        await window.secondaryApp.auth().createUserWithEmailAndPassword(email, pwd);
+                        await window.secondaryApp.auth().signOut();
+                        
+                        alert("✅ สร้างบัญชีผู้ใช้สำหรับรหัส " + studentId + " สำเร็จแล้ว!\nให้นักศึกษานำรหัสนักศึกษานี้ไปล็อกอินโฟลเดอร์ TOP SECRET ได้เลย");
+                        document.getElementById('create-user-modal').style.display = 'none';
+                        btn.innerText = "REGISTER USER";
+                    } catch (error) {
+                        alert("FAILED TO CREATE USER: " + error.message);
+                        btn.innerText = "REGISTER USER";
+                    }
+                }
+            }
+
+            // 3. ระบบล็อกอินโฟลเดอร์ลับ (นักศึกษา)
+            const secretLoginForm = document.getElementById('secret-login-form');
+            if(secretLoginForm) {
+                secretLoginForm.onsubmit = async (e) => {
+                    e.preventDefault();
+                    const studentId = document.getElementById('secret-email').value.trim();
+                    const pwd = document.getElementById('secret-password').value;
+                    
+                    if(!/^\d{10}$/.test(studentId)) {
+                        alert("ACCESS DENIED: กรุณากรอกรหัสนักศึกษาเป็นตัวเลข 10 หลักให้ถูกต้อง");
+                        return;
+                    }
+                    
+                    const email = `${studentId}@dome.tu.ac.th`;
+                    
+                    try {
+                        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, pwd);
+                        const user = userCredential.user;
+                        
+                        document.getElementById('secret-modal').style.display = 'none';
+                        playLevelUpSound();
+                        
+                        if (user.email !== 'peemdiamond@gmail.com') {
+                            sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${studentId} ปลดล็อกเข้าดูโฟลเดอร์ TOP SECRET`);
+                        }
+                        
+                        if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
+                        
+                    } catch (error) {
+                        alert("ACCESS DENIED: รหัสผ่านไม่ถูกต้อง หรือยังไม่ได้ลงทะเบียน");
+                        document.getElementById('secret-password').value = '';
+                    }
+                };
+            }
+            
             initMatrix();
         });
 
@@ -923,32 +982,17 @@
             const docRef = db.collection("website").doc("pixel_portfolio");
 
             async function loadData() {
-                // บันทึกยอดวิวอย่างปลอดภัย
-                recordVisitSafely(docRef);
-
                 try {
                     const docSnap = await docRef.get();
                     if (docSnap.exists) {
                         const data = docSnap.data();
-                        
-                        // อัปเดตหน้าจอตัวเลข Counter ให้มีเลข 0 นำหน้า 4 หลัก (เช่น 0001)
-                        if (data.view_count !== undefined) {
-                            const counterElem = document.getElementById('view-counter-value');
-                            if(counterElem) counterElem.innerText = String(data.view_count).padStart(4, '0');
-                        }
-
                         document.querySelectorAll('.editable').forEach(el => { const fieldName = el.getAttribute('data-field'); if (data[fieldName] !== undefined) { el.innerHTML = data[fieldName]; } });
                         if (data.schedule_list) { try { scheduleData = JSON.parse(data.schedule_list); } catch(e) { scheduleData = []; } }
                         if (data.project_list) { try { projectData = JSON.parse(data.project_list); } catch(e) {} }
-                        
-                    } 
-                } catch (error) { 
-                    console.error("โหลดข้อมูลล้มเหลว หรือถูกปิดกั้นสิทธิ์:", error); 
-                } finally {
-                    // ทำงานต่อเสมอ ไม่ว่าจะดึงข้อมูลสำเร็จหรือไม่
-                    renderCalendar(); 
-                    renderProjects();
-                }
+                        renderCalendar(); 
+                        renderProjects();
+                    } else { renderCalendar(); renderProjects(); }
+                } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); renderCalendar(); renderProjects(); }
             }
 
             auth.onAuthStateChanged((user) => {
@@ -957,18 +1001,16 @@
                     document.getElementById('login-show-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'block'; 
                     
-                    // แต่ถ้าเป็น "แอดมิน" (peemdiamond@gmail.com) ถึงจะให้สิทธิ์แก้เว็บ โชว์ปุ่มเพิ่มผู้ใช้ และยอดคนเข้าดู
+                    // แต่ถ้าเป็น "แอดมิน" (peemdiamond@gmail.com) ถึงจะให้สิทธิ์แก้เว็บ และโชว์ปุ่มเพิ่มผู้ใช้
                     if (user.email === 'peemdiamond@gmail.com') {
                         document.body.classList.add('edit-mode'); 
-                        document.getElementById('admin-view-count').style.display = 'block'; // โชว์ยอดวิว
                         document.getElementById('save-btn').style.display = 'block'; 
                         document.getElementById('add-user-btn').style.display = 'block'; 
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
                         document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
                     } else {
-                        // นักศึกษา (ไม่ให้สิทธิ์แก้เว็บ และไม่ให้เห็นยอดวิว)
+                        // นักศึกษา (ไม่ให้สิทธิ์แก้เว็บ)
                         document.body.classList.remove('edit-mode'); 
-                        document.getElementById('admin-view-count').style.display = 'none'; // ซ่อนยอดวิว
                         document.getElementById('save-btn').style.display = 'none'; 
                         document.getElementById('add-user-btn').style.display = 'none'; 
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'none');
@@ -979,7 +1021,6 @@
                 } else { 
                     // ถ้าไม่ได้ล็อกอิน
                     document.body.classList.remove('edit-mode'); 
-                    document.getElementById('admin-view-count').style.display = 'none'; // ซ่อนยอดวิว
                     document.getElementById('login-show-btn').style.display = 'block'; 
                     document.getElementById('save-btn').style.display = 'none'; 
                     document.getElementById('add-user-btn').style.display = 'none'; 
@@ -1030,108 +1071,6 @@
                     document.getElementById('new-user-password').value = '';
                     document.getElementById('create-user-modal').style.display = 'flex';
                 }
-            }
-
-            <!-- ... existing code ... -->
-            const addUserBtn = document.getElementById('add-user-btn');
-            if(addUserBtn) {
-                addUserBtn.onclick = () => {
-                    document.getElementById('new-user-email').value = '';
-                    document.getElementById('new-user-password').value = '';
-                    document.getElementById('create-user-modal').style.display = 'flex';
-                }
-            }
-
-            // ==========================================
-            // กู้คืนระบบฟอร์มล็อกอิน (แอดมิน, สร้างบัญชี, นักศึกษา)
-            // ==========================================
-            
-            // 1. แอดมินล็อกอิน
-            const rootLoginForm = document.getElementById('root-login-form');
-            if(rootLoginForm) {
-                rootLoginForm.onsubmit = async (e) => { 
-                    e.preventDefault(); // กันไม่ให้หน้าเว็บรีเฟรช
-                    try { 
-                        await firebase.auth().signInWithEmailAndPassword(document.getElementById('email').value.trim(), document.getElementById('password').value); 
-                        document.getElementById('login-modal').style.display = 'none'; 
-                        alert("SYSTEM ACCESS GRANTED"); 
-                        rootLoginForm.reset();
-                    } catch (error) { 
-                        alert("ACCESS DENIED: " + error.message); 
-                        console.error("Firebase Auth Error:", error); 
-                    } 
-                };
-            }
-
-            // 2. สร้างยูสเซอร์ใหม่ (แอดมินเท่านั้น)
-            const createUserForm = document.getElementById('create-user-form');
-            if(createUserForm) {
-                createUserForm.onsubmit = async (e) => {
-                    e.preventDefault();
-                    const studentId = document.getElementById('new-user-email').value.trim();
-                    const pwd = document.getElementById('new-user-password').value;
-                    const btn = document.getElementById('create-user-submit-btn');
-
-                    if(!/^\d{10}$/.test(studentId)) {
-                        alert("ERROR: กรุณากรอกรหัสนักศึกษาเป็นตัวเลข 10 หลักให้ถูกต้อง");
-                        return;
-                    }
-                    if(pwd.length < 6) {
-                        alert("ERROR: รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร");
-                        return;
-                    }
-
-                    const email = `${studentId}@dome.tu.ac.th`;
-
-                    try {
-                        btn.innerText = "CREATING...";
-                        await window.secondaryApp.auth().createUserWithEmailAndPassword(email, pwd);
-                        await window.secondaryApp.auth().signOut();
-                        
-                        alert("✅ สร้างบัญชีผู้ใช้สำหรับรหัส " + studentId + " สำเร็จแล้ว!\nให้นักศึกษานำรหัสนักศึกษานี้ไปล็อกอินโฟลเดอร์ TOP SECRET ได้เลย");
-                        document.getElementById('create-user-modal').style.display = 'none';
-                        btn.innerText = "REGISTER USER";
-                        createUserForm.reset();
-                    } catch (error) {
-                        alert("FAILED TO CREATE USER: " + error.message);
-                        btn.innerText = "REGISTER USER";
-                    }
-                }
-            }
-
-            // 3. ระบบล็อกอินโฟลเดอร์ลับ (นักศึกษา)
-            const secretLoginForm = document.getElementById('secret-login-form');
-            if(secretLoginForm) {
-                secretLoginForm.onsubmit = async (e) => {
-                    e.preventDefault();
-                    const studentId = document.getElementById('secret-email').value.trim();
-                    const pwd = document.getElementById('secret-password').value;
-                    
-                    if(!/^\d{10}$/.test(studentId)) {
-                        alert("ACCESS DENIED: กรุณากรอกรหัสนักศึกษาเป็นตัวเลข 10 หลักให้ถูกต้อง");
-                        return;
-                    }
-                    
-                    const email = `${studentId}@dome.tu.ac.th`;
-                    
-                    try {
-                        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, pwd);
-                        const user = userCredential.user;
-                        
-                        document.getElementById('secret-modal').style.display = 'none';
-                        playLevelUpSound();
-                        
-                        if (user.email !== 'peemdiamond@gmail.com') {
-                            sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${studentId} ปลดล็อกเข้าดูโฟลเดอร์ TOP SECRET`);
-                        }
-                        
-                        if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
-                        secretLoginForm.reset();
-                    } catch (error) {
-                        alert("ACCESS DENIED: รหัสผ่านไม่ถูกต้อง หรือยังไม่ได้ลงทะเบียน");
-                        document.getElementById('secret-password').value = '';
-                    }
-                };
             }
 
             loadData();
