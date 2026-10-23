@@ -78,7 +78,7 @@
         .folder-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ibm-shadow); background: #fff;}
         .folder-btn.active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-shadow); background: var(--ibm-accent-blue); color: #fff;}
 
-        .archive-viewer { flex: 1; border: 4px solid var(--ibm-text); background: #fff; position: relative; display: flex; flex-direction: column; box-shadow: 4px 4px 0 var(--ibm-shadow); overflow: hidden; }
+        .archive-viewer { flex: 1; border: 4px solid var(--ibm-text); background: #fff; position: relative; display: flex; flex-direction: column; box-shadow: 4px 4px 0 var(--ibm-shadow); overflow: hidden; min-height: 0; }
         .archive-viewer-header { background: var(--ibm-text); color: #fff; padding: 8px 12px; font-family: 'VT323'; font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--ibm-key-dark);}
 
         .search-row { display: flex; gap: 10px; padding: 10px; background: var(--ibm-key-light); border-bottom: 2px dashed var(--ibm-key-dark); }
@@ -87,7 +87,7 @@
         .btn-sync { background: var(--ibm-text); color: #fff; border: 2px solid #000; padding: 0 15px; font-family: 'VT323'; font-size: 1.2rem; box-shadow: 2px 2px 0 var(--ibm-shadow); transition: 0.1s;}
         .btn-sync:active { transform: translate(2px,2px); box-shadow: 0 0 0 var(--ibm-shadow); }
 
-        .file-list-container { flex: 1; overflow-y: auto; padding: 10px; background: #fff; display: flex; flex-direction: column; gap: 5px;}
+        .file-list-container { flex: 1; overflow-y: auto; padding: 10px; padding-bottom: 20px; background: #fff; display: flex; flex-direction: column; gap: 5px; min-height: 0; }
         .file-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border: 1px dashed var(--ibm-key-dark); background: var(--ibm-key-light); font-family: 'VT323', monospace; font-size: 1.2rem; transition: 0.1s; }
         .file-item:hover { background: #e6f0ff; border-color: var(--ibm-accent-blue); transform: translateX(3px); }
         .file-info { display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; }
@@ -178,7 +178,6 @@
 
         #login-modal, #create-user-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22,22,22,0.9); justify-content: center; align-items: center; z-index: 999;}
         #create-user-modal { background: rgba(15,98,254,0.9); }
-        
         .login-box { background: var(--ibm-pearl); border: 4px solid var(--ibm-text); padding: 30px; text-align: center; max-width: 400px; width: 90%; box-shadow: 10px 10px 0 var(--ibm-shadow); }
         .login-box input { width: 100%; padding: 10px; margin: 10px 0; background: #fff; border: 2px solid var(--ibm-text); color: var(--ibm-text); font-family: 'VT323'; font-size: 1.2rem; outline: none; }
         .login-box input:focus { border-color: var(--ibm-accent-blue); }
@@ -667,15 +666,7 @@
                 return;
             }
 
-            if (folderHistory.length > 1) {
-                htmlStr += `
-                <div class="file-item up-level-item sound-trigger" style="background: rgba(218, 30, 40, 0.05); cursor: pointer; border-bottom: 2px solid var(--ibm-key-dark);" onclick="goBackFolder()">
-                    <div class="file-info" style="flex-direction: row; justify-content: flex-start; gap: 10px;">
-                        <span class="dos-col-name" style="color: #da1e28; font-weight: bold; padding-left: 5px; flex:none;">[ .. ] UP LEVEL DIRECTORY</span>
-                        ${currentViewMode === 'list' ? '<span class="dos-col-date" style="color: #da1e28; flex:1;">&lt;DIR&gt;</span>' : ''}
-                    </div>
-                </div>`;
-            }
+            // *** ไม่แสดง UP LEVEL DIRECTORY ตามที่ขอ ***
 
             if (currentViewMode === 'list') {
                 const getSortIndicator = (col) => currentSort.column === col ? (currentSort.direction === 'asc' ? '&nbsp;▲' : '&nbsp;▼') : '';
@@ -819,6 +810,10 @@
             document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { 
                 el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); 
             });
+
+            // Enter สำหรับ Login แอดมิน
+            const pwInput = document.getElementById('password');
+            if(pwInput) pwInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
 
             // ==========================================
             // ระบบฟอร์มล็อกอิน (ปรับปรุงเรื่อง Auto-fill)
@@ -1002,9 +997,11 @@
 
             auth.onAuthStateChanged((user) => {
                 if (user) { 
+                    // ถ้าล็อกอินสำเร็จ ซ่อนปุ่ม Login โชว์ปุ่ม Logout
                     document.getElementById('login-show-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'block'; 
                     
+                    // แต่ถ้าเป็น "แอดมิน" (peemdiamond@gmail.com) ถึงจะให้สิทธิ์แก้เว็บ และโชว์ปุ่มเพิ่มผู้ใช้
                     if (user.email === 'peemdiamond@gmail.com') {
                         document.body.classList.add('edit-mode'); 
                         document.getElementById('save-btn').style.display = 'block'; 
@@ -1012,6 +1009,7 @@
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
                         document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
                     } else {
+                        // นักศึกษา (ไม่ให้สิทธิ์แก้เว็บ)
                         document.body.classList.remove('edit-mode'); 
                         document.getElementById('save-btn').style.display = 'none'; 
                         document.getElementById('add-user-btn').style.display = 'none'; 
@@ -1021,6 +1019,7 @@
                     renderProjects(); 
 
                 } else { 
+                    // ถ้าไม่ได้ล็อกอิน
                     document.body.classList.remove('edit-mode'); 
                     document.getElementById('login-show-btn').style.display = 'block'; 
                     document.getElementById('save-btn').style.display = 'none'; 
@@ -1030,6 +1029,7 @@
                     document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
                     renderProjects(); 
 
+                    // เด้งออกจากหน้าโฟลเดอร์ลับ หากกด Logout
                     if(currentFolderId === '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8') {
                          document.getElementById('file-list').innerHTML = '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem; padding:10px;">> ACCESS DENIED.</span>';
                          folderHistory = [];
