@@ -144,52 +144,31 @@
         #admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; width: 100%; text-align: left; }
         .edit-mode #admin-hint { display: block; }
 
-        /* =========================================
-           MOBILE RESPONSIVE FIXES (อัปเดตใหม่)
-           ========================================= */
         @media screen and (max-width: 768px) { 
-            /* ปรับ Navbar ไม่ให้กินพื้นที่หน้าจอมากเกินไป */
-            .navbar { flex-direction: column; padding: 10px; gap: 10px; position: relative; } 
-            .logo { font-size: 2rem; padding: 5px; }
-            .logo img { height: 28px; margin-left: 10px; }
-            .nav-links { flex-wrap: wrap; justify-content: center; gap: 6px; } 
-            .nav-btn { font-size: 0.95rem; padding: 6px 10px; }
-            
-            /* พื้นที่แสดงผล */
-            .container { margin: 15px auto; padding: 0 10px; } 
-            .window-body { padding: 15px 10px; } 
-            
-            /* บังคับแก้ขนาดตัวอักษรใหญ่เกินไป (ทับ Inline Style) */
-            h1, #system-terminal-title { font-size: 2.2rem !important; } 
-            .timeline-title-main { font-size: 2rem !important; }
-            .subtitle { font-size: 1.1rem !important; word-break: break-word; }
-
-            /* Timeline & Projects Fixes */
+            .navbar { flex-direction: column; padding: 15px; gap: 15px; } 
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 8px; } 
+            .nav-btn { font-size: 1rem; padding: 6px 12px; }
+            .container { margin: 20px auto; padding: 0 10px; } 
+            .window-body { padding: 20px 15px; } 
+            h1 { font-size: 2.2rem; } 
             .timeline-item { padding-left: 20px; }
             .timeline-dot { left: -10px; width: 16px; height: 16px; top: 18px; }
-            .timeline-content { width: 100%; }
-            .project-title { font-size: 1.4rem; }
-            
-            /* Archive Fixes */
+            .logo img { height: 35px; }
             .archive-layout { flex-direction: column; height: 80vh; padding: 10px; gap: 10px;}
             .archive-sidebar { flex: none; border-right: none; border-bottom: 2px dashed var(--ibm-key-dark); padding-right: 0; padding-bottom: 10px; flex-direction: row; overflow-x: auto; height: auto; }
             .folder-btn { font-size: 1rem; white-space: nowrap; padding: 8px; }
-            .grid-container { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+
+            /* --- เพิ่ม CSS แก้ไขตาราง Archive ให้แสดงชื่อไฟล์ในมือถือ --- */
+            .dos-col-size { display: none !important; } /* ซ่อนขนาดไฟล์บนมือถือ */
+            .dos-col-date { width: 75px !important; font-size: 0.9rem !important; white-space: normal !important; text-align: right !important; line-height: 1.1; }
+            .dos-col-name { flex: 1 !important; min-width: 0 !important; }
+            .file-info { min-width: 0 !important; }
+            .file-link { white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
             
-            /* About Section Fixes (บังคับล้าง Inline Style เพื่อไม่ให้ทับกัน) */
-            .about-layout { flex-direction: column !important; gap: 20px !important; align-items: center !important; }
-            .about-image-wrapper { flex: none !important; width: 100% !important; max-width: 250px !important; }
-            .about-text-content { padding: 0 !important; width: 100% !important; text-align: center !important; }
-            .about-text-content h2 { font-size: 2rem !important; }
-            
-            /* Contact Fixes */
-            #contact .subtitle { font-size: 1.1rem !important; }
-            .btn-social { font-size: 1rem; padding: 8px 15px; margin-bottom: 5px; }
-            
-            /* Modals & Admin Panel */
-            .login-box { padding: 20px; width: 95%; }
-            #admin-panel { bottom: 10px; right: 10px; flex-direction: column; align-items: flex-end; }
-            #admin-panel button { font-size: 1rem; padding: 6px 10px; }
+            /* จัดระเบียบช่องค้นหา */
+            .search-row { flex-wrap: wrap; gap: 6px; }
+            .search-row input { flex: 1 1 100%; min-width: 100%; margin-bottom: 5px; }
+            .search-row button { flex: 1; padding: 6px; font-size: 1rem; }
         }
 
         /* Edit Mode */
