@@ -234,6 +234,10 @@
         /* Sortable Header Hover */
         .sortable-header { cursor: pointer; user-select: none; transition: 0.1s; }
         .sortable-header:hover { color: var(--ibm-accent-blue); }
+
+        /* ================= In-App Preview Modal ================= */
+        #preview-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
+        .preview-container { width: 95%; max-width: 1000px; height: 90vh; background: var(--ibm-pearl); border: 4px solid var(--ibm-text); display: flex; flex-direction: column; box-shadow: 10px 10px 0 #000; }
     </style>
 </head>
 <body>
