@@ -169,7 +169,7 @@
         .edit-mode .editable:empty::before { content: "[พิมพ์ข้อความ...]"; color: #888; font-size: 0.9em; font-family:'VT323'; }
 
         /* Admin Panel / Login */
-        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; flex-wrap: wrap; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; max-width: 90vw; justify-content: flex-end;}
+        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; flex-wrap: wrap; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; max-width: 90vw; justify-content: flex-end; align-items: center;}
         #admin-panel button { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-text); padding: 8px 15px; font-family: 'VT323'; font-size: 1.2rem; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); transition: 0.1s; }
         #admin-panel button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-text); }
         #add-user-btn { background-color: #0f62fe !important; color: #fff !important; display: none; border-color: #0f62fe; }
@@ -330,7 +330,7 @@
                                 <a id="archive-ext-link" href="#" target="_blank" class="sound-trigger" style="color:#0f62fe; background:#fff; padding:0 8px; text-decoration:none; border: 1px solid var(--ibm-text); font-size:1.1rem; display:none; align-items:center; margin-left: auto;">[ OPEN TAB ]</a>
                             </div>
                             
-                            <div id="native-explorer" style="display:flex; flex-direction:column; height:100%; flex: 1;">
+                            <div id="native-explorer" style="display:none; flex-direction:column; flex: 1; min-height: 0;">
                                 <div class="search-row">
                                     <input type="text" id="search-input" placeholder="> SEARCH FILE..." onkeyup="filterFiles()">
                                     <button id="view-toggle-btn" class="btn-sync sound-trigger" onclick="toggleViewMode()">[ VIEW: LIST ]</button>
@@ -404,6 +404,11 @@
 
     <!-- Admin Panel (Root) -->
     <div id="admin-panel">
+        <!-- กล่องแสดงจำนวนยอดวิวคนเข้าเว็บ (ซ่อนไว้ ให้เฉพาะ Admin เห็น) -->
+        <div id="admin-view-count" style="display:none; color: #0f62fe; font-family: 'VT323'; font-size: 1.2rem; background: var(--ibm-key-light); border: 2px solid var(--ibm-text); padding: 8px 15px; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); margin-right: auto;">
+            👁️ VISITS: <span id="view-counter-value">0000</span>
+        </div>
+
         <button id="login-show-btn" class="sound-trigger">ROOT LOGIN</button>
         <!-- ปุ่มสร้างผู้ใช้ (เฉพาะ Admin ถึงจะเห็น) -->
         <button id="add-user-btn" class="sound-trigger" style="display:none; background:#0f62fe; color:#fff; border-color:#0f62fe;">[+] ADD STUDENT</button>
@@ -666,8 +671,6 @@
                 return;
             }
 
-            // *** ไม่แสดง UP LEVEL DIRECTORY ตามที่ขอ ***
-
             if (currentViewMode === 'list') {
                 const getSortIndicator = (col) => currentSort.column === col ? (currentSort.direction === 'asc' ? '&nbsp;▲' : '&nbsp;▼') : '';
                 htmlStr += `
@@ -767,6 +770,7 @@
         }
         window.changeMonth = function(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
         window.toggleQuest = function(index) { scheduleData[index].completed = !scheduleData[index].completed; if(scheduleData[index].completed) playLevelUpSound(); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } }
+        
         window.promptAddEvent = function(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
         window.deleteScheduleEvent = function(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
 
@@ -983,9 +987,25 @@
 
             async function loadData() {
                 try {
+                    // ==========================================
+                    // ส่วนเสริม: ระบบนับยอดวิว (Hit Counter)
+                    // ==========================================
+                    if (!sessionStorage.getItem('site_visited')) {
+                        // ถ้าเพิ่งเปิดเว็บครั้งแรก ให้พยายามบวกยอดวิวเพิ่ม 1
+                        docRef.set({ view_count: firebase.firestore.FieldValue.increment(1) }, { merge: true })
+                        .then(() => sessionStorage.setItem('site_visited', 'true'))
+                        .catch(err => console.log("Guest Write Permission Restricted:", err.message));
+                    }
+
                     const docSnap = await docRef.get();
                     if (docSnap.exists) {
                         const data = docSnap.data();
+                        
+                        // อัปเดตหน้าจอตัวเลข Counter ให้มีเลข 0 นำหน้า 4 หลัก (เช่น 0001)
+                        if (data.view_count !== undefined) {
+                            document.getElementById('view-counter-value').innerText = String(data.view_count).padStart(4, '0');
+                        }
+
                         document.querySelectorAll('.editable').forEach(el => { const fieldName = el.getAttribute('data-field'); if (data[fieldName] !== undefined) { el.innerHTML = data[fieldName]; } });
                         if (data.schedule_list) { try { scheduleData = JSON.parse(data.schedule_list); } catch(e) { scheduleData = []; } }
                         if (data.project_list) { try { projectData = JSON.parse(data.project_list); } catch(e) {} }
@@ -1001,16 +1021,18 @@
                     document.getElementById('login-show-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'block'; 
                     
-                    // แต่ถ้าเป็น "แอดมิน" (peemdiamond@gmail.com) ถึงจะให้สิทธิ์แก้เว็บ และโชว์ปุ่มเพิ่มผู้ใช้
+                    // แต่ถ้าเป็น "แอดมิน" (peemdiamond@gmail.com) ถึงจะให้สิทธิ์แก้เว็บ โชว์ปุ่มเพิ่มผู้ใช้ และยอดคนเข้าดู
                     if (user.email === 'peemdiamond@gmail.com') {
                         document.body.classList.add('edit-mode'); 
+                        document.getElementById('admin-view-count').style.display = 'block'; // โชว์ยอดวิว
                         document.getElementById('save-btn').style.display = 'block'; 
                         document.getElementById('add-user-btn').style.display = 'block'; 
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
                         document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
                     } else {
-                        // นักศึกษา (ไม่ให้สิทธิ์แก้เว็บ)
+                        // นักศึกษา (ไม่ให้สิทธิ์แก้เว็บ และไม่ให้เห็นยอดวิว)
                         document.body.classList.remove('edit-mode'); 
+                        document.getElementById('admin-view-count').style.display = 'none'; // ซ่อนยอดวิว
                         document.getElementById('save-btn').style.display = 'none'; 
                         document.getElementById('add-user-btn').style.display = 'none'; 
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'none');
@@ -1021,6 +1043,7 @@
                 } else { 
                     // ถ้าไม่ได้ล็อกอิน
                     document.body.classList.remove('edit-mode'); 
+                    document.getElementById('admin-view-count').style.display = 'none'; // ซ่อนยอดวิว
                     document.getElementById('login-show-btn').style.display = 'block'; 
                     document.getElementById('save-btn').style.display = 'none'; 
                     document.getElementById('add-user-btn').style.display = 'none'; 
