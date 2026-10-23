@@ -1032,6 +1032,108 @@
                 }
             }
 
+            <!-- ... existing code ... -->
+            const addUserBtn = document.getElementById('add-user-btn');
+            if(addUserBtn) {
+                addUserBtn.onclick = () => {
+                    document.getElementById('new-user-email').value = '';
+                    document.getElementById('new-user-password').value = '';
+                    document.getElementById('create-user-modal').style.display = 'flex';
+                }
+            }
+
+            // ==========================================
+            // กู้คืนระบบฟอร์มล็อกอิน (แอดมิน, สร้างบัญชี, นักศึกษา)
+            // ==========================================
+            
+            // 1. แอดมินล็อกอิน
+            const rootLoginForm = document.getElementById('root-login-form');
+            if(rootLoginForm) {
+                rootLoginForm.onsubmit = async (e) => { 
+                    e.preventDefault(); // กันไม่ให้หน้าเว็บรีเฟรช
+                    try { 
+                        await firebase.auth().signInWithEmailAndPassword(document.getElementById('email').value.trim(), document.getElementById('password').value); 
+                        document.getElementById('login-modal').style.display = 'none'; 
+                        alert("SYSTEM ACCESS GRANTED"); 
+                        rootLoginForm.reset();
+                    } catch (error) { 
+                        alert("ACCESS DENIED: " + error.message); 
+                        console.error("Firebase Auth Error:", error); 
+                    } 
+                };
+            }
+
+            // 2. สร้างยูสเซอร์ใหม่ (แอดมินเท่านั้น)
+            const createUserForm = document.getElementById('create-user-form');
+            if(createUserForm) {
+                createUserForm.onsubmit = async (e) => {
+                    e.preventDefault();
+                    const studentId = document.getElementById('new-user-email').value.trim();
+                    const pwd = document.getElementById('new-user-password').value;
+                    const btn = document.getElementById('create-user-submit-btn');
+
+                    if(!/^\d{10}$/.test(studentId)) {
+                        alert("ERROR: กรุณากรอกรหัสนักศึกษาเป็นตัวเลข 10 หลักให้ถูกต้อง");
+                        return;
+                    }
+                    if(pwd.length < 6) {
+                        alert("ERROR: รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร");
+                        return;
+                    }
+
+                    const email = `${studentId}@dome.tu.ac.th`;
+
+                    try {
+                        btn.innerText = "CREATING...";
+                        await window.secondaryApp.auth().createUserWithEmailAndPassword(email, pwd);
+                        await window.secondaryApp.auth().signOut();
+                        
+                        alert("✅ สร้างบัญชีผู้ใช้สำหรับรหัส " + studentId + " สำเร็จแล้ว!\nให้นักศึกษานำรหัสนักศึกษานี้ไปล็อกอินโฟลเดอร์ TOP SECRET ได้เลย");
+                        document.getElementById('create-user-modal').style.display = 'none';
+                        btn.innerText = "REGISTER USER";
+                        createUserForm.reset();
+                    } catch (error) {
+                        alert("FAILED TO CREATE USER: " + error.message);
+                        btn.innerText = "REGISTER USER";
+                    }
+                }
+            }
+
+            // 3. ระบบล็อกอินโฟลเดอร์ลับ (นักศึกษา)
+            const secretLoginForm = document.getElementById('secret-login-form');
+            if(secretLoginForm) {
+                secretLoginForm.onsubmit = async (e) => {
+                    e.preventDefault();
+                    const studentId = document.getElementById('secret-email').value.trim();
+                    const pwd = document.getElementById('secret-password').value;
+                    
+                    if(!/^\d{10}$/.test(studentId)) {
+                        alert("ACCESS DENIED: กรุณากรอกรหัสนักศึกษาเป็นตัวเลข 10 หลักให้ถูกต้อง");
+                        return;
+                    }
+                    
+                    const email = `${studentId}@dome.tu.ac.th`;
+                    
+                    try {
+                        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, pwd);
+                        const user = userCredential.user;
+                        
+                        document.getElementById('secret-modal').style.display = 'none';
+                        playLevelUpSound();
+                        
+                        if (user.email !== 'peemdiamond@gmail.com') {
+                            sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${studentId} ปลดล็อกเข้าดูโฟลเดอร์ TOP SECRET`);
+                        }
+                        
+                        if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
+                        secretLoginForm.reset();
+                    } catch (error) {
+                        alert("ACCESS DENIED: รหัสผ่านไม่ถูกต้อง หรือยังไม่ได้ลงทะเบียน");
+                        document.getElementById('secret-password').value = '';
+                    }
+                };
+            }
+
             loadData();
         });
     </script>
