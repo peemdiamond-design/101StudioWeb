@@ -157,6 +157,11 @@
             .archive-layout { flex-direction: column; height: 80vh; padding: 10px; gap: 10px;}
             .archive-sidebar { flex: none; border-right: none; border-bottom: 2px dashed var(--ibm-key-dark); padding-right: 0; padding-bottom: 10px; flex-direction: row; overflow-x: auto; height: auto; }
             .folder-btn { font-size: 1rem; white-space: nowrap; padding: 8px; }
+            
+            /* Fix Admin Panel for Mobile */
+            #admin-panel { flex-direction: column; bottom: 10px; right: 10px; max-width: 60vw; align-items: flex-end; padding: 8px;}
+            #admin-panel button { padding: 6px 10px; font-size: 1rem; width: 100%; text-align: right;}
+            #admin-view-count { font-size: 1rem; padding: 6px 10px; margin-right: 0; margin-bottom: 5px; width: 100%; text-align: right;}
         }
 
         /* Edit Mode */
@@ -169,7 +174,7 @@
         .edit-mode .editable:empty::before { content: "[พิมพ์ข้อความ...]"; color: #888; font-size: 0.9em; font-family:'VT323'; }
 
         /* Admin Panel / Login */
-        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; flex-wrap: wrap; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; max-width: 90vw; justify-content: flex-end;}
+        #admin-panel { position: fixed; bottom: 20px; right: 20px; background: var(--ibm-pearl); border: 3px solid var(--ibm-text); padding: 10px; display: flex; flex-wrap: wrap; gap: 10px; z-index: 100; box-shadow: 4px 4px 0 #000; max-width: 90vw; justify-content: flex-end; align-items: center;}
         #admin-panel button { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-text); padding: 8px 15px; font-family: 'VT323'; font-size: 1.2rem; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); transition: 0.1s; }
         #admin-panel button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ibm-text); }
         #add-user-btn { background-color: #0f62fe !important; color: #fff !important; display: none; border-color: #0f62fe; }
@@ -404,6 +409,11 @@
 
     <!-- Admin Panel (Root) -->
     <div id="admin-panel">
+        <!-- กล่องแสดงจำนวนยอดวิวคนเข้าเว็บ (ซ่อนไว้ ให้เฉพาะ Admin เห็น) -->
+        <div id="admin-view-count" style="display:none; color: #0f62fe; font-family: 'VT323'; font-size: 1.2rem; background: var(--ibm-key-light); border: 2px solid var(--ibm-text); padding: 8px 15px; font-weight: bold; box-shadow: 2px 2px 0 var(--ibm-text); margin-right: auto;">
+            👁️ VISITS: <span id="view-counter-value">0000</span>
+        </div>
+
         <button id="login-show-btn" class="sound-trigger">ROOT LOGIN</button>
         <!-- ปุ่มสร้างผู้ใช้ (เฉพาะ Admin ถึงจะเห็น) -->
         <button id="add-user-btn" class="sound-trigger" style="display:none; background:#0f62fe; color:#fff; border-color:#0f62fe;">[+] ADD STUDENT</button>
@@ -720,7 +730,6 @@
 
         window.enterFolder = function(folderId, folderName) { folderHistory.push({ id: folderId, name: folderName }); currentFolderId = folderId; updatePathDisplay(); fetchFiles(currentFolderId); }
         window.jumpToFolder = function(index) { folderHistory = folderHistory.slice(0, index + 1); currentFolderId = folderHistory[folderHistory.length - 1].id; updatePathDisplay(); fetchFiles(currentFolderId); }
-        window.goBackFolder = function() { if (folderHistory.length > 1) { jumpToFolder(folderHistory.length - 2); } }
 
         function updatePathDisplay() {
             const pathContainer = document.getElementById('archive-path');
@@ -767,6 +776,7 @@
         }
         window.changeMonth = function(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
         window.toggleQuest = function(index) { scheduleData[index].completed = !scheduleData[index].completed; if(scheduleData[index].completed) playLevelUpSound(); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } }
+        
         window.promptAddEvent = function(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
         window.deleteScheduleEvent = function(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
 
@@ -793,6 +803,17 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.02); 
         }
 
+        // ==========================================
+        // ฟังก์ชันอัปเดตยอดวิวแยกออกมา เพื่อความปลอดภัย
+        // ==========================================
+        function recordVisitSafely(docRef) {
+            if (!sessionStorage.getItem('site_visited')) {
+                docRef.set({ view_count: firebase.firestore.FieldValue.increment(1) }, { merge: true })
+                .then(() => sessionStorage.setItem('site_visited', 'true'))
+                .catch(err => console.warn("Guest view count update skipped (expected behavior if no write access)."));
+            }
+        }
+
         // 8. Event Listeners เบ็ดเตล็ดเมื่อเปิดหน้าเว็บ
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.sound-trigger, .nav-btn, .btn-drive, .btn-social, .logo, .action-btn, .folder-btn').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
@@ -807,16 +828,13 @@
                     } 
                 } 
             });
+            
             document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { 
                 el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); 
             });
 
-            // Enter สำหรับ Login แอดมิน
-            const pwInput = document.getElementById('password');
-            if(pwInput) pwInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { document.getElementById('login-submit-btn').click(); } });
-
             // ==========================================
-            // ระบบฟอร์มล็อกอิน (ปรับปรุงเรื่อง Auto-fill)
+            // กู้คืนระบบฟอร์มล็อกอิน (แอดมิน, สร้างบัญชี, นักศึกษา)
             // ==========================================
             
             // 1. แอดมินล็อกอิน
@@ -828,6 +846,7 @@
                         await firebase.auth().signInWithEmailAndPassword(document.getElementById('email').value.trim(), document.getElementById('password').value); 
                         document.getElementById('login-modal').style.display = 'none'; 
                         alert("SYSTEM ACCESS GRANTED"); 
+                        rootLoginForm.reset();
                     } catch (error) { 
                         alert("ACCESS DENIED: " + error.message); 
                         console.error("Firebase Auth Error:", error); 
@@ -857,13 +876,13 @@
 
                     try {
                         btn.innerText = "CREATING...";
-                        // สมมติว่ามี secondaryApp อยู่ (โค้ดด้านล่าง)
                         await window.secondaryApp.auth().createUserWithEmailAndPassword(email, pwd);
                         await window.secondaryApp.auth().signOut();
                         
                         alert("✅ สร้างบัญชีผู้ใช้สำหรับรหัส " + studentId + " สำเร็จแล้ว!\nให้นักศึกษานำรหัสนักศึกษานี้ไปล็อกอินโฟลเดอร์ TOP SECRET ได้เลย");
                         document.getElementById('create-user-modal').style.display = 'none';
                         btn.innerText = "REGISTER USER";
+                        createUserForm.reset();
                     } catch (error) {
                         alert("FAILED TO CREATE USER: " + error.message);
                         btn.innerText = "REGISTER USER";
@@ -898,14 +917,14 @@
                         }
                         
                         if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
-                        
+                        secretLoginForm.reset();
                     } catch (error) {
                         alert("ACCESS DENIED: รหัสผ่านไม่ถูกต้อง หรือยังไม่ได้ลงทะเบียน");
                         document.getElementById('secret-password').value = '';
                     }
                 };
             }
-            
+
             initMatrix();
         });
 
@@ -982,17 +1001,32 @@
             const docRef = db.collection("website").doc("pixel_portfolio");
 
             async function loadData() {
+                // บันทึกยอดวิวอย่างปลอดภัย
+                recordVisitSafely(docRef);
+
                 try {
                     const docSnap = await docRef.get();
                     if (docSnap.exists) {
                         const data = docSnap.data();
+                        
+                        // อัปเดตหน้าจอตัวเลข Counter ให้มีเลข 0 นำหน้า 4 หลัก (เช่น 0001)
+                        if (data.view_count !== undefined) {
+                            const counterElem = document.getElementById('view-counter-value');
+                            if(counterElem) counterElem.innerText = String(data.view_count).padStart(4, '0');
+                        }
+
                         document.querySelectorAll('.editable').forEach(el => { const fieldName = el.getAttribute('data-field'); if (data[fieldName] !== undefined) { el.innerHTML = data[fieldName]; } });
                         if (data.schedule_list) { try { scheduleData = JSON.parse(data.schedule_list); } catch(e) { scheduleData = []; } }
                         if (data.project_list) { try { projectData = JSON.parse(data.project_list); } catch(e) {} }
-                        renderCalendar(); 
-                        renderProjects();
-                    } else { renderCalendar(); renderProjects(); }
-                } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); renderCalendar(); renderProjects(); }
+                        
+                    } 
+                } catch (error) { 
+                    console.error("โหลดข้อมูลล้มเหลว หรือถูกปิดกั้นสิทธิ์:", error); 
+                } finally {
+                    // ทำงานต่อเสมอ ไม่ว่าจะดึงข้อมูลสำเร็จหรือไม่
+                    renderCalendar(); 
+                    renderProjects();
+                }
             }
 
             auth.onAuthStateChanged((user) => {
@@ -1001,16 +1035,18 @@
                     document.getElementById('login-show-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'block'; 
                     
-                    // แต่ถ้าเป็น "แอดมิน" (peemdiamond@gmail.com) ถึงจะให้สิทธิ์แก้เว็บ และโชว์ปุ่มเพิ่มผู้ใช้
+                    // แต่ถ้าเป็น "แอดมิน" (peemdiamond@gmail.com) ถึงจะให้สิทธิ์แก้เว็บ โชว์ปุ่มเพิ่มผู้ใช้ และยอดคนเข้าดู
                     if (user.email === 'peemdiamond@gmail.com') {
                         document.body.classList.add('edit-mode'); 
+                        document.getElementById('admin-view-count').style.display = 'block'; // โชว์ยอดวิว
                         document.getElementById('save-btn').style.display = 'block'; 
                         document.getElementById('add-user-btn').style.display = 'block'; 
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
                         document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true')); 
                     } else {
-                        // นักศึกษา (ไม่ให้สิทธิ์แก้เว็บ)
+                        // นักศึกษา (ไม่ให้สิทธิ์แก้เว็บ และไม่ให้เห็นยอดวิว)
                         document.body.classList.remove('edit-mode'); 
+                        document.getElementById('admin-view-count').style.display = 'none'; // ซ่อนยอดวิว
                         document.getElementById('save-btn').style.display = 'none'; 
                         document.getElementById('add-user-btn').style.display = 'none'; 
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'none');
@@ -1021,6 +1057,7 @@
                 } else { 
                     // ถ้าไม่ได้ล็อกอิน
                     document.body.classList.remove('edit-mode'); 
+                    document.getElementById('admin-view-count').style.display = 'none'; // ซ่อนยอดวิว
                     document.getElementById('login-show-btn').style.display = 'block'; 
                     document.getElementById('save-btn').style.display = 'none'; 
                     document.getElementById('add-user-btn').style.display = 'none'; 
