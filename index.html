@@ -25,8 +25,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; cursor: url('https://cur.cursors-4u.net/system/sys-1/sys46.png'), auto !important; }
         button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span, .logo, .action-btn, .folder-item, .file-link, .dos-col-name, .dos-col-date, .dos-col-size, .grid-item { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
 
-        html { overscroll-behavior: none; }
-        body { background-color: var(--bg-color); color: var(--ibm-text); min-height: 100vh; overflow-x: hidden; overscroll-behavior: none; position: relative; max-width: 100vw; }
+        body { background-color: var(--bg-color); color: var(--ibm-text); min-height: 100vh; overflow-x: hidden; }
 
         /* Navbar */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background-color: var(--ibm-pearl); border-bottom: 4px solid var(--ibm-key-dark); position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 0 var(--ibm-shadow); }
@@ -73,7 +72,7 @@
 
         /* === สไตล์หน้า ARCHIVE === */
         .archive-layout { display: flex; gap: 20px; width: 100%; text-align: left; height: 500px; background: var(--ibm-pearl); padding: 15px; border: 2px solid var(--ibm-text); box-shadow: inset 4px 4px 0 rgba(255,255,255,0.8), inset -4px -4px 0 var(--ibm-shadow); }
-        .archive-sidebar { flex: 0 0 220px; display: flex; flex-direction: column; gap: 10px; border-right: 2px dashed var(--ibm-key-dark); padding-right: 15px; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+        .archive-sidebar { flex: 0 0 220px; display: flex; flex-direction: column; gap: 10px; border-right: 2px dashed var(--ibm-key-dark); padding-right: 15px; overflow-y: auto;}
         .archive-sidebar::-webkit-scrollbar { width: 8px; } .archive-sidebar::-webkit-scrollbar-thumb { background: var(--ibm-key-dark); }
         .folder-btn { background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-text); padding: 12px 10px; font-family: 'VT323'; font-size: 1.3rem; text-align: left; transition: 0.1s; box-shadow: 3px 3px 0 var(--ibm-shadow); display: flex; align-items: center; gap: 10px;}
         .folder-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ibm-shadow); background: #fff;}
@@ -88,7 +87,7 @@
         .btn-sync { background: var(--ibm-text); color: #fff; border: 2px solid #000; padding: 0 15px; font-family: 'VT323'; font-size: 1.2rem; box-shadow: 2px 2px 0 var(--ibm-shadow); transition: 0.1s;}
         .btn-sync:active { transform: translate(2px,2px); box-shadow: 0 0 0 var(--ibm-shadow); }
 
-        .file-list-container { flex: 1; overflow-y: auto; padding: 10px; padding-bottom: 20px; background: #fff; display: flex; flex-direction: column; gap: 5px; min-height: 0; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+        .file-list-container { flex: 1; overflow-y: auto; padding: 10px; padding-bottom: 20px; background: #fff; display: flex; flex-direction: column; gap: 5px; min-height: 0; }
         .file-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border: 1px dashed var(--ibm-key-dark); background: var(--ibm-key-light); font-family: 'VT323', monospace; font-size: 1.2rem; transition: 0.1s; }
         .file-item:hover { background: #e6f0ff; border-color: var(--ibm-accent-blue); transform: translateX(3px); }
         .file-info { display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; }
